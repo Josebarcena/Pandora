@@ -18,10 +18,10 @@ def Escenario():
     collide = pygame.Rect.colliderect(jugador,base)
     if collide:
         grounded = True
-
     else:
         grounded = False
 
+    print(grounded)
 
     pygame.draw.line(screen, (255,0,0),[300,880], [500,880],5)
     pygame.draw.line(screen, (255,0,0),[700,680], [900,680],5)
@@ -35,7 +35,6 @@ size = (WIDTH,HEIGHT)
 running = True
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-
 
 
 while running:
@@ -53,14 +52,15 @@ while running:
     if pressed[pygame.K_RIGHT]:
         posX += velocidadX
     #fondo
-    bg = pygame.image.load("bg.jpeg")      
-    screen.blit(bg, (0,0))
+    #bg = pygame.image.load("bg.jpeg")      
+    #screen.blit(bg, (0,0))
 
 
     #escenario
     Escenario()
     
     pygame.display.update()
+    clock.tick(60)
 
 
 
