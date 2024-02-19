@@ -3,7 +3,7 @@ import sys
 
 ANCHO = 1080
 ALTO = 720
-FASE = 1
+FASE = 0
 
 
 class Menu_principal:
@@ -24,7 +24,15 @@ class Menu_principal:
         self.pantalla.blit(self.fondo, (0,0))
         self.dibujar_texto("Pulsa ESPACIO para empezar", ANCHO/(2.75), ALTO/1.25)
     
-    
+    def eventos(self,lista_eventos):
+        for evento in lista_eventos:
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        teclasPulsadas = pygame.key.get_pressed()
+        if teclasPulsadas[pygame.K_SPACE]:
+            return True 
 
 if __name__ == '__main__': #Funcion necesaria para definir el main
 
@@ -41,13 +49,17 @@ if __name__ == '__main__': #Funcion necesaria para definir el main
 
         tempo = reloj.tick(120)
 
-        menu.dibujar_fondo()   
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            
 
+        if(FASE == 0):
+            menu.dibujar_fondo()   
+            if (menu.eventos(pygame.event.get())):
+                FASE = 1   
+        if(FASE == 1):
+            print(FASE)
         pygame.display.flip()
 
