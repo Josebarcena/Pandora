@@ -1,8 +1,8 @@
 import pygame
 import sys
 
-ANCHO = 720
-ALTO = 640
+ANCHO = 1080
+ALTO = 720
 FASE = 1
 
 if __name__ == '__main__': #Funcion necesaria para definir el main
