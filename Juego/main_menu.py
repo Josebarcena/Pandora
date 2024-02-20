@@ -10,14 +10,14 @@ FASE = 0
 class Menu_principal:
 
     def __init__(self, pantalla): # constructor de la clase donde tambien se inicializa la musica
-        self.fondo = pygame.image.load("Juego/Imagenes/bg.png")
+        self.fondo = pygame.image.load("Imagenes/bg.png")
         self.pantalla = pantalla
         self.fuente = pygame.font.SysFont("Barron", 40)
         self.color_fuente = (255, 255, 255)
         self.frame = 1
 
         mixer.init()
-        mixer.music.load('Juego/Sonidos/intro.mp3')
+        mixer.music.load('Sonidos/intro.mp3')
         mixer.music.set_volume(0.2)
         mixer.music.play()
 
