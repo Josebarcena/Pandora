@@ -9,9 +9,12 @@ FPS = 60
 SCROLL_LIMIT_X = 106
 SCROLL_LIMIT_Y = 80
 
-# Fuerza de la gravedad y numero de frames que dura el salto
-GRAVITY = 2
-FRAMES_JUMP = 30
+# Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
+GRAVITY = 3
+JUMPING_SPEED = 5
+DASH_SPEED = 8
+FRAMES_JUMP = 25
+FRAMES_DASH = 10
 
 # Diferentes capas para el juego
 PLAYER_LAYER = 2
