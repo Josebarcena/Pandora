@@ -6,6 +6,7 @@ ANCHO = 1080
 ALTO = 720
 FASE = 0
 
+class Juego:
 
 if __name__ == '__main__': #Funcion necesaria para definir el main
 
@@ -32,6 +33,7 @@ if __name__ == '__main__': #Funcion necesaria para definir el main
                 FASE = 1   
         if(FASE == 1):
             tempo = reloj.tick(60)
+            
             print(FASE)
             
         pygame.display.flip()

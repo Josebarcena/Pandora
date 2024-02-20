@@ -25,16 +25,14 @@ class Menu_principal:
         img = self.fuente.render(text, True, self.color_fuente)
         img.set_alpha(255/(self.frame/35))
         self.frame+=1
-        if (self.frame == 60):
+        if (self.frame == 30):
                 self.frame = 1
         self.pantalla.blit(img, (x,y))
         
-    
     def dibujar_fondo(self): # dibujamos el fondo con el texto encima
         self.pantalla.blit(self.fondo, (0,0))
         self.dibujar_texto("Pulsa ESPACIO para empezar", ANCHO/(2.75), ALTO/1.25)
     
-
     def eventos(self,lista_eventos): # controlamos eventos por si el jugador sale o si inicia el juego
         for evento in lista_eventos:
             if evento.type == pygame.QUIT:
