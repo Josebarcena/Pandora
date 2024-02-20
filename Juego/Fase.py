@@ -13,7 +13,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect_anterior = self.rect.copy()
 
         self.direccion = vector(0,0)
-        self.velocidad = 200
+        self.velocidad = 100
 
         self.colision_completa = colision_completa
         self.colision_superior = colision_superior

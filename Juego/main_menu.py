@@ -2,7 +2,7 @@ import pygame
 import sys
 from pygame import mixer
 
-ANCHO = 1080
+ANCHO = 1280
 ALTO = 720
 FASE = 0
 
@@ -23,13 +23,15 @@ class Menu_principal:
 
     def dibujar_texto(self, text, x, y): # escribimos el texto pasado por parametro con la fuente del menu y color que cambia de opacidad por frames
         img = self.fuente.render(text, True, self.color_fuente)
-        img.set_alpha(255/(self.frame/35))
-        self.frame+=1
-        if (self.frame == 30):
+        img.set_alpha(255/(self.frame/40))
+
+        self.frame += 1
+        if (self.frame == 60):
                 self.frame = 1
         self.pantalla.blit(img, (x,y))
         
     def dibujar_fondo(self): # dibujamos el fondo con el texto encima
+
         self.pantalla.blit(self.fondo, (0,0))
         self.dibujar_texto("Pulsa ESPACIO para empezar", ANCHO/(2.75), ALTO/1.25)
     
