@@ -29,26 +29,17 @@ class Personaje():
         self.shape.y += delta_y
 
     def update(self):
-        cooldown_animacion_idle = 150
-        self.image = self.animacion_actual[self.frame_index_idle]
-        if pygame.time.get_ticks() - self.update_time_idle >= cooldown_animacion_idle:
+        cooldown_animacion = 100  # Cooldown para las animaciones
+        if pygame.time.get_ticks() - self.update_time_idle >= cooldown_animacion:
             self.frame_index_idle += 1
             self.update_time_idle = pygame.time.get_ticks()
             if self.frame_index_idle >= len(self.animacion_actual):
                 self.frame_index_idle = 0
-
-    def update_run(self):
-        cooldown_animacion_run = 100  # Cooldown para las animaciones de RUN
-        if pygame.time.get_ticks() - self.update_time_run >= cooldown_animacion_run:
-            self.frame_index_run += 1
-            self.update_time_run = pygame.time.get_ticks()
-            if self.frame_index_run >= len(self.animacion_actual):
-                self.frame_index_run = 0
-        # Se asegura de que frame_index_run no exceda el tamaño de la lista de animaciones
-        if self.frame_index_run < len(self.animacion_actual):
-            self.image = self.animacion_actual[self.frame_index_run]
+        # Se asegura de que frame_index_idle no exceda el tamaño de la lista de animaciones
+        if self.frame_index_idle < len(self.animacion_actual):
+            self.image = self.animacion_actual[self.frame_index_idle]
         else:
-            self.frame_index_run = 0
+            self.frame_index_idle = 0
 
     def dibujar(self, interfaz):
         # Flipear la imagen según la dirección del personaje
@@ -65,4 +56,4 @@ class Personaje():
         self.animacion_actual = self.animaciones_run
         if self.frame_index_run >= len(self.animacion_actual):
             self.frame_index_run = 0
-        self.update_run()
+        self.update()

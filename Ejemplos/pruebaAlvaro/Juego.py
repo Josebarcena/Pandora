@@ -86,9 +86,6 @@ while run:
     # Update de la imagen
     jugador.update()
 
-    # Update del movimiento
-    jugador.update_run()
-
     # Dibujar personaje
     jugador.dibujar(PANTALLA)
 
