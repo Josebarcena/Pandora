@@ -65,16 +65,16 @@ class Jugador(pygame.sprite.Sprite):
         self.on_ground = True
 
     def movimiento(self, dt):
-        self.rect.x += self.direccion.x * self.velocidad / dt
+        self.rect.x += round(self.direccion.x * self.velocidad / dt)
         if self.jumping :
-            self.rect.y -= self.velocidad_y / dt
+            self.rect.y -= round(self.velocidad_y / dt)
             self.velocidad_y -= GRAVITY * ESCALA_BASE
             self.fall_count += 1
             if self.velocidad_y < -JUMP_HEIGHT * ESCALA_BASE:
                 self.jumping = False
                 self.velocidad_y = JUMP_HEIGHT * ESCALA_BASE
         else:
-            self.rect.y +=  min(3 * ESCALA_BASE, (self.fall_count / dt) * GRAVITY * ESCALA_BASE)
+            self.rect.y +=  round(min(3 * ESCALA_BASE, (self.fall_count / dt) * GRAVITY / ESCALA_BASE))
         self.fall_count += 1
 
     def collisions(self, eje):
@@ -119,19 +119,19 @@ class Jugador(pygame.sprite.Sprite):
         if self.rect.x <= SCROLL_LIMIT_X:
             self.rect.x = SCROLL_LIMIT_X
             for sprite in self.cualquier_sprite:
-                sprite.rect.x += (PANDORA_SPEED * ESCALA_BASE) / dt
+                sprite.rect.x += PANDORA_SPEED
         elif self.rect.x >= ANCHO_VENTANA - SCROLL_LIMIT_X:
             self.rect.x = ANCHO_VENTANA - SCROLL_LIMIT_X
             for sprite in self.cualquier_sprite:
-                sprite.rect.x -= (PANDORA_SPEED * ESCALA_BASE) / dt 
+                sprite.rect.x -= PANDORA_SPEED 
         if self.rect.y <= SCROLL_LIMIT_Y:
             self.rect.y = SCROLL_LIMIT_Y
             for sprite in self.cualquier_sprite:
-                sprite.rect.y += (PANDORA_SPEED * ESCALA_BASE) / dt
+                sprite.rect.y += PANDORA_SPEED
         elif self.rect.y >= ALTO_VENTANA - SCROLL_LIMIT_Y:
             self.rect.y = ALTO_VENTANA - SCROLL_LIMIT_Y
             for sprite in self.cualquier_sprite:
-                sprite.rect.y -= (PANDORA_SPEED * ESCALA_BASE) / dt
+                sprite.rect.y -= PANDORA_SPEED
 
     def update(self, dt):
         self.x_change, self.y_change = self.control.movement()

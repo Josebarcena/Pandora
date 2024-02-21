@@ -1,5 +1,5 @@
 import pygame
-from config import *
+from Ajustes import *
 
 # Clase implementada para permitir el control del personaje
 class Control:
@@ -39,13 +39,13 @@ class Control:
     # positiva en caso de estar en un estado 'normal', lo que hará que el jugador "se pegue" al suelo, y negativa en
     # caso de que el jugador haya saltado, haciendo que "se despegue" del suelo
     def update_character(self, x_change, y_change):
-        if self.state == 'normal' and self.bool_air:
+        if self.state == 'normal':
             y_change += GRAVITY
         if self.state == 'jumping':
             if self.jump_frames > 0:
                 self.jump_frames -= 1
                 self.bool_air = True
-                y_change -= JUMPING_SPEED
+                y_change -= JUMP_HEIGHT
             else:
                 self.state = 'normal'
                 self.bool_air = True
@@ -57,10 +57,10 @@ class Control:
         x_change, y_change = 0, 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            x_change -= PLAYER_SPEED
+            x_change -= PANDORA_SPEED
             self.facing = 'left'
         if keys[pygame.K_RIGHT]:
-            x_change += PLAYER_SPEED
+            x_change += PANDORA_SPEED
             self.facing = 'right'
         if keys[pygame.K_SPACE]:
             self.change_state('jumping')
