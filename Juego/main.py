@@ -14,7 +14,7 @@ class Juego:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Pandora\'s Fate")
-        self.pantalla = pygame.display.set_mode((ANCHO, ALTO), 0, 32)
+        self.pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA), 0, 32)
         self.reloj = pygame.time.Clock()
         self.fase = 0
         self.nivel_1 = load_pygame(join(".","Fases","fase11.tmx"))

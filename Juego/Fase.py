@@ -12,16 +12,16 @@ class Fase:
 
     def dibujar(self, tmx_mapa):
         for x, y, superficie in tmx_mapa.get_layer_by_name('Fondo').tiles():
-            Sprite((x*TAMAÑO_TILE, y*TAMAÑO_TILE), superficie, (self.cualquier_sprite))
+            Sprite((x*TAMAÑO_TILE*ESCALA_BASE, y*TAMAÑO_TILE*ESCALA_BASE), superficie, (self.cualquier_sprite))
 
         for x, y, superficie in tmx_mapa.get_layer_by_name('Solido').tiles():
-            Sprite((x*TAMAÑO_TILE, y*TAMAÑO_TILE), superficie, (self.cualquier_sprite, self.colision_completa))
+            Sprite((x*TAMAÑO_TILE*ESCALA_BASE, y*TAMAÑO_TILE*ESCALA_BASE), superficie, (self.cualquier_sprite, self.colision_completa))
 
         for x, y, superficie in tmx_mapa.get_layer_by_name('Semi').tiles():
-            Sprite((x*TAMAÑO_TILE, y*TAMAÑO_TILE), superficie, (self.cualquier_sprite, self.colision_superior))
+            Sprite((x*TAMAÑO_TILE*ESCALA_BASE, y*TAMAÑO_TILE*ESCALA_BASE), superficie, (self.cualquier_sprite, self.colision_superior))
         
         for objeto in tmx_mapa.get_layer_by_name('Jugador'):
-            Jugador((objeto.x, objeto.y), self.cualquier_sprite, self.colision_completa, self.colision_superior)
+            Jugador((objeto.x*ESCALA_BASE, objeto.y*ESCALA_BASE), self.cualquier_sprite, self.colision_completa, self.colision_superior)
 
     def run(self, dt):
         self.cualquier_sprite.update(dt)

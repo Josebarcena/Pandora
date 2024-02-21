@@ -20,18 +20,19 @@ from Ajustes import *
 class Jugador(pygame.sprite.Sprite):
     def __init__(self, posicion, groups, colision_completa, colision_superior):
         super().__init__(groups)
-        self.image = pygame.Surface((16, 32))
+        self.image = pygame.Surface((16*ESCALA_BASE, 32*ESCALA_BASE))
+        
         self.image.fill('green')
 
         self.rect = self.image.get_rect(topleft = posicion)
         self.rect_anterior = self.rect.copy()
 
         self.direccion = vector(0,0)
-        self.velocidad = PANDORA_SPEED
+        self.velocidad = PANDORA_SPEED * ESCALA_BASE
         self.jumping = False
         self.on_ground = True
         self.fall_count = 0
-        self.velocidad_y = JUMP_HEIGHT
+        self.velocidad_y = JUMP_HEIGHT * ESCALA_BASE
 
         self.colision_completa = colision_completa
         self.colision_superior = colision_superior
@@ -53,6 +54,7 @@ class Jugador(pygame.sprite.Sprite):
             input_vector.y += 1
 
         self.direccion = input_vector.normalize() if input_vector else input_vector
+        
 
     def landed(self):
         self.fall_count = 0
@@ -63,14 +65,15 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.x += self.direccion.x * self.velocidad
         if self.jumping :
             self.rect.y -= self.velocidad_y
-            self.velocidad_y -= GRAVITY
+            self.velocidad_y -= GRAVITY * ESCALA_BASE
             self.fall_count += 1
-            if self.velocidad_y < -JUMP_HEIGHT:
+            if self.velocidad_y < -JUMP_HEIGHT * ESCALA_BASE:
                 self.jumping = False
-                self.velocidad_y = JUMP_HEIGHT
+                self.velocidad_y = JUMP_HEIGHT * ESCALA_BASE
         else:
-            self.rect.y +=  min(3, (self.fall_count / dt) * GRAVITY)
+            self.rect.y +=  min(3 * ESCALA_BASE, (self.fall_count / dt) * GRAVITY * ESCALA_BASE)
         self.fall_count += 1
+        print(self.on_ground)
 
     def colisiones(self, eje):
         objetos_chocados=[] #Añadimos los objetos con los que hay contacto en caso de gestionar unos pinchos u otra superficie.
@@ -92,6 +95,10 @@ class Jugador(pygame.sprite.Sprite):
                     if self.rect.bottom >= sprite.rect.top and self.rect_anterior.bottom <= sprite.rect_anterior.top :
                         self.rect.bottom = sprite.rect.top
                         self.landed()
+                    else:
+                        self.fall_count += 1
+                        self.jumping = True
+                        self.on_ground = False
 
             objetos_chocados.append(sprite)
 
@@ -119,6 +126,7 @@ class Sprite(pygame.sprite.Sprite):
         def __init__(self, posicion, superficie, groups):
             super().__init__(groups)
             self.image = superficie
+            self.image = pygame.transform.scale(self.image, (16*ESCALA_BASE, 16*ESCALA_BASE))
             self.rect = self.image.get_rect(topleft = posicion)
             self.group = groups
             self.rect_anterior = self.rect.copy()
