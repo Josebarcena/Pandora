@@ -59,7 +59,8 @@ class Juego:
                 sys.exit()
                 
             pygame.display.update()
-            self.tempo = self.reloj.tick(60) 
+            self.tempo = self.reloj.tick(60)
+            print(self.tempo)
     
 
 

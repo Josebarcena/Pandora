@@ -33,7 +33,7 @@ class Menu_principal:
     def dibujar_fondo(self): # dibujamos el fondo con el texto encima
 
         self.pantalla.blit(self.fondo, (0,0))
-        self.dibujar_texto("Pulsa ESPACIO para empezar", ANCHO/(2.75), ALTO/1.25)
+        self.dibujar_texto("Pulsa ENTER para empezar", ANCHO/(2.75), ALTO/1.25)
     
     def eventos(self,lista_eventos): # controlamos eventos por si el jugador sale o si inicia el juego
         for evento in lista_eventos:
@@ -42,6 +42,6 @@ class Menu_principal:
                 sys.exit()
 
         teclasPulsadas = pygame.key.get_pressed()
-        if teclasPulsadas[pygame.K_SPACE]:
+        if teclasPulsadas[pygame.K_RETURN]:
             mixer.music.stop()
             return True 

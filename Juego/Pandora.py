@@ -1,6 +1,7 @@
 import pygame
 from pygame.math import Vector2 as vector
 from Ajustes import *
+from control_pandora import Control
 
 """ class Pandora(pygame.sprite.sprite):
     def __init__(self):
@@ -27,6 +28,8 @@ class Jugador(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = posicion)
         self.rect_anterior = self.rect.copy()
 
+        self.control = Control()
+        self.cualquier_sprite = groups
         self.direccion = vector(0,0)
         self.velocidad = PANDORA_SPEED * ESCALA_BASE
         self.jumping = False
@@ -53,7 +56,7 @@ class Jugador(pygame.sprite.Sprite):
         if teclas[pygame.K_DOWN]:
             input_vector.y += 1
 
-        self.direccion = input_vector.normalize() if input_vector else input_vector
+        self.direccion = input_vector
         
 
     def landed(self):
@@ -62,9 +65,9 @@ class Jugador(pygame.sprite.Sprite):
         self.on_ground = True
 
     def movimiento(self, dt):
-        self.rect.x += self.direccion.x * self.velocidad
+        self.rect.x += self.direccion.x * self.velocidad / dt
         if self.jumping :
-            self.rect.y -= self.velocidad_y
+            self.rect.y -= self.velocidad_y / dt
             self.velocidad_y -= GRAVITY * ESCALA_BASE
             self.fall_count += 1
             if self.velocidad_y < -JUMP_HEIGHT * ESCALA_BASE:
@@ -73,9 +76,8 @@ class Jugador(pygame.sprite.Sprite):
         else:
             self.rect.y +=  min(3 * ESCALA_BASE, (self.fall_count / dt) * GRAVITY * ESCALA_BASE)
         self.fall_count += 1
-        print(self.on_ground)
 
-    def colisiones(self, eje):
+    def collisions(self, eje):
         objetos_chocados=[] #Añadimos los objetos con los que hay contacto en caso de gestionar unos pinchos u otra superficie.
 
         for sprite in self.colision_completa:
@@ -94,11 +96,9 @@ class Jugador(pygame.sprite.Sprite):
                     #abajo
                     if self.rect.bottom >= sprite.rect.top and self.rect_anterior.bottom <= sprite.rect_anterior.top :
                         self.rect.bottom = sprite.rect.top
-                        self.landed()
+                        self.control.change_state('ground')
                     else:
-                        self.fall_count += 1
-                        self.jumping = True
-                        self.on_ground = False
+                        self.control.change_state('air')
 
             objetos_chocados.append(sprite)
 
@@ -114,13 +114,40 @@ class Jugador(pygame.sprite.Sprite):
             objetos_chocados.append(sprite)
         
         return objetos_chocados
+    
+    def screen_check(self, dt):
+        if self.rect.x <= SCROLL_LIMIT_X:
+            self.rect.x = SCROLL_LIMIT_X
+            for sprite in self.cualquier_sprite:
+                sprite.rect.x += (PANDORA_SPEED * ESCALA_BASE) / dt
+        elif self.rect.x >= ANCHO_VENTANA - SCROLL_LIMIT_X:
+            self.rect.x = ANCHO_VENTANA - SCROLL_LIMIT_X
+            for sprite in self.cualquier_sprite:
+                sprite.rect.x -= (PANDORA_SPEED * ESCALA_BASE) / dt 
+        if self.rect.y <= SCROLL_LIMIT_Y:
+            self.rect.y = SCROLL_LIMIT_Y
+            for sprite in self.cualquier_sprite:
+                sprite.rect.y += (PANDORA_SPEED * ESCALA_BASE) / dt
+        elif self.rect.y >= ALTO_VENTANA - SCROLL_LIMIT_Y:
+            self.rect.y = ALTO_VENTANA - SCROLL_LIMIT_Y
+            for sprite in self.cualquier_sprite:
+                sprite.rect.y -= (PANDORA_SPEED * ESCALA_BASE) / dt
 
     def update(self, dt):
-        self.rect_anterior = self.rect.copy()
-        self.input()
-        self.movimiento(dt)
-        self.colisiones('horizontal')
-        self.colisiones('vertical')
+        self.x_change, self.y_change = self.control.movement()
+
+        self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
+        self.rect.x += (self.x_change * ESCALA_BASE) / dt
+        self.collisions('horizontal')
+
+        self.rect.y += (self.y_change * ESCALA_BASE) / dt
+        self.collisions('vertical')
+
+        self.screen_check(dt)
+
+        self.x_change = 0
+        self.y_change = 0
+        
 
 class Sprite(pygame.sprite.Sprite):
         def __init__(self, posicion, superficie, groups):
