@@ -1,7 +1,10 @@
+import sys
+import pygame
 #DECLARACIÓN DE VARIABLES
 # Tamaño de la ventana
-WIN_WIDTH = 640
-WIN_HEIGHT = 480
+WIN_WIDTH = 1280
+WIN_HEIGHT = 720
+FONT = "comicsans"
 # Tamaño de los cubos usados y FPS que usará el reloj del programa
 TILESIZE = 16
 FPS = 60

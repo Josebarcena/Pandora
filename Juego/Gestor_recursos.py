@@ -32,12 +32,11 @@ class GestorRecursos(object):
                 if transparent == -1:
                     transparent = resource.get_at((0,0))
                 resource.set_colorkey(transparent, RLEACCEL)
-           
             # Se almacena
             cls.resources[name] = resource
             # Se devuelve
             return resource
-
+'''
     @classmethod
     def CargarArchivoCoordenadas(cls, ruta, nombre):
         # Si el nombre de archivo está entre los recursos ya cargados
@@ -55,3 +54,4 @@ class GestorRecursos(object):
             cls.recursos[nombre] = datos
             # Se devuelve
             return datos
+'''

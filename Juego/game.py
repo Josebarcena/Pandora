@@ -1,9 +1,69 @@
 from player import *
 from config import *
 from blocks import *
-from pytmx.util_pygame import load_pygame
-from os.path import join
-# Objeto que simila el juego, en este se realiza la lógica principal de nuestro juego
+from Gestor_recursos import *
+from Main_menu import *
+from Fase1 import *
+
+# Objeto super de la clase state (fases o niveles del juego)
+
+
+
+
+#Clase director que mira los states por los que pasa el juego
+class Game(object):
+    def __init__(self,screen, states, start_state):
+        self.screen = screen
+        self.done = False
+        self.clock = pygame.time.Clock()
+        self.fps = 60
+        self.states = states
+        self.state_name = start_state
+        self.state = self.states[self.state_name]
+
+        mixer.init()
+        mixer.music.load(self.state.sound)
+        mixer.music.set_volume(0.2)
+        mixer.music.play()
+
+
+    def event_loop(self):
+        for event in pygame.event.get():
+            self.state.get_event(event)
+
+    def flip_state(self):
+        mixer.music.stop()
+        next_state = self.state.next_state
+        self.state.done = False
+        self.state_name = next_state
+        persistent = self.state.persist
+        self.state = self.states[self.state_name]
+        self.state.startup(persistent)
+        self.screen.fill((0, 0, 0))
+        mixer.music.load(self.state.sound)
+        mixer.music.set_volume(0.2)
+        mixer.music.play()
+
+    def update(self, tick):
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(tick)
+    
+    def draw(self):
+        self.state.draw(self.screen)
+    
+    def run(self):
+        while not self.done:
+            tick = self.clock.tick(self.fps)
+            self.event_loop()
+            self.update(tick)
+            self.draw()
+            pygame.display.update()
+
+
+'''
 class Game(object):
     # Iniciamos el juego, creando la pantalla, variables que se usarán y el reloj
     def __init__(self):
@@ -17,10 +77,12 @@ class Game(object):
         self.full_collision = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.attacks = pygame.sprite.Group()
-        self.level1 = load_pygame(join(".","Fases","fase11.tmx"))
+        
+        self.level1 = GestorRecursos.LoadImage("Fases","fase11.tmx")
         self.createTilemap(self.level1)
     # Mediante la matriz titlemap, definida en config.py, que representa el nivel, creamos los diferentes objetos de
     # bloques y el jugador.
+        
     def createTilemap(self, tmx_map):
         for x, y, surface in tmx_map.get_layer_by_name('Fondo').tiles():
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
@@ -65,3 +127,4 @@ class Game(object):
     # Por implementar
     def intro_screen(self):
         pass
+    '''
