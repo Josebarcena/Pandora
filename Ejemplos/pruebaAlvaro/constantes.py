@@ -14,3 +14,8 @@ TAMANHO = 100
 
 velocidad = 4
 nombre_juego = "Brawl Stars"
+
+# Constantes movimiento jugador
+IZQUIERDA = 'izquierda'
+DERECHA = 'derecha'
+QUIETO = 'quieto'

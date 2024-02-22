@@ -4,7 +4,8 @@ from control_pandora import *
 import math
 import random
 
-# Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
+# Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código,
+# debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
     # Método con el que iniciamos el objeto, partimos de las coordenadas iniciales del juego y el propio juego
     def __init__(self, game, x, y):
@@ -26,6 +27,17 @@ class Player(pygame.sprite.Sprite):
 
         # Para las animaciones, sin implementar
         self.facing = 'lef'
+        self.animaciones_idle = self.animaciones_idle()
+        self.animaciones_run = self.animaciones_run()
+        self.animaciones_jump = self.animaciones_jump()
+        self.animacion_actual = self.animaciones_idle  # Inicialmente, el personaje está en estado de reposo
+        # Actualizacion de IDLE
+        self.frame_index_idle = 0
+        self.update_time_idle = pygame.time.get_ticks()  # Temporizador para animaciones de IDLE
+        self.image = self.animaciones_idle[self.frame_index_idle]
+        # Actualizacion de RUN
+        self.frame_index_run = 0
+        self.update_time_run = pygame.time.get_ticks()  # Temporizador para animaciones de RUN
 
         # Control del personaje
         self.control = Control()
@@ -43,9 +55,11 @@ class Player(pygame.sprite.Sprite):
         self.x_change, self.y_change = self.control.movement()
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
+        # Colisiones con el eje x
         self.rect.x += self.x_change
         self.collide_blocks('x')
 
+        # Colisiones con el eje y
         self.rect.y += self.y_change
         self.collide_blocks('y')
 
@@ -97,3 +111,66 @@ class Player(pygame.sprite.Sprite):
             # debemos de aplicar la gravedad, el jugador se cayó de la plataforma
             else:
                 self.control.change_state('air')
+
+    # MODIFICACIONES CAINZOS LAS DE ABAJO
+
+    #    def escalar_img(image, scale):
+    #        w = image.get_width()
+    #        h = image.get_height()
+    #        new_image = pygame.transform.scale(image, (w * scale, h * scale))
+    #        return new_image
+
+    # Metodos para las animaciones IDLE
+    @staticmethod
+    def animaciones_idle():
+        animaciones_idle = []
+        for i in range(6):
+            img_idle = pygame.image.load(f"images//sprites//pandora//Individual Sprite//idle//Warrior_Idle_{i}.png")
+            # img_idle = escalar_img(img_idle, constantes.ESCALA_PERSONAJE)
+            animaciones_idle.append(img_idle)
+        return animaciones_idle
+
+    def set_animacion_idle(self):
+        self.animacion_actual = self.animaciones_idle
+        if self.frame_index_idle >= len(self.animacion_actual):
+            self.frame_index_idle = 0
+        self.update()
+
+    # Metodos para animaciones de RUN
+    @staticmethod
+    def animaciones_run():
+        animaciones_run = []
+        for i in range(8):
+            img_run = pygame.image.load(f"images//sprites//pandora//Individual Sprite//Run//Warrior_Run_{i}.png")
+            # img_run = escalar_img(img_run, constantes.ESCALA_PERSONAJE)
+            animaciones_run.append(img_run)
+        return animaciones_run
+
+    def set_animacion_run(self):
+        self.animacion_actual = self.animaciones_run
+        if self.frame_index_run >= len(self.animacion_actual):
+            self.frame_index_run = 0
+        self.update()
+
+    @staticmethod
+    def animaciones_jump():
+        animaciones_jump = []
+        for i in range(3):
+            img_jump = pygame.image.load(f"images//sprites//pandora//Individual Sprite//Jump//Warrior_Jump_{i}.png")
+            # img_run = escalar_img(img_jump, constantes.ESCALA_PERSONAJE)
+            animaciones_jump.append(img_jump)
+        return animaciones_jump
+
+    # Metodo de actualizacion de sprites
+    def update_animation(self):
+        cooldown_animacion = 100  # Cooldown para las animaciones
+        if pygame.time.get_ticks() - self.update_time_idle >= cooldown_animacion:
+            self.frame_index_idle += 1
+            self.update_time_idle = pygame.time.get_ticks()
+            if self.frame_index_idle >= len(self.animacion_actual):
+                self.frame_index_idle = 0
+        # Se asegura de que frame_index_idle no exceda el tamaño de la lista de animaciones
+        if self.frame_index_idle < len(self.animacion_actual):
+            self.image = self.animacion_actual[self.frame_index_idle]
+        else:
+            self.frame_index_idle = 0
