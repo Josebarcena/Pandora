@@ -1,3 +1,4 @@
+from pygame import mixer
 from player import *
 from config import *
 from blocks import *
