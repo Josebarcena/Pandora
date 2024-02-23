@@ -13,7 +13,7 @@ if __name__ == '__main__':
         "FASE1": Fase("fase12.tmx","fase1.mp3"),
     }
     #creas el objeto game
-    game = Game(screen, states, "Splash")
+    game = Game(screen, states, "FASE1")
     game.run()
 
     pygame.quit()

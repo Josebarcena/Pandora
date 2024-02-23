@@ -2,7 +2,8 @@ import sys
 import pygame
 from pygame import mixer
 #DECLARACIÓN DE VARIABLES
-
+CHUNK_LOAD_RADIUS = 1
+CHUNK_SIZE = 26
 SCALE = 3
 
 # Tamaño de la ventana
@@ -12,8 +13,8 @@ WIN_HEIGHT = 720
 TILESIZE = 16
 FPS = 60
 # Limites en el eje x e y (el limite de la izq es SCROLL_LIMIT_X y el de la derecha será WIN_WIDTH - SCROLL_LIMIT_X)
-SCROLL_LIMIT_X = 106
-SCROLL_LIMIT_Y = 80
+SCROLL_LIMIT_X = 106 * SCALE
+SCROLL_LIMIT_Y = 80 * SCALE
 
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
 GRAVITY = 3 * SCALE
