@@ -51,6 +51,7 @@ class Player(pygame.sprite.Sprite):
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
+        
 
     # Comprobamos la posición del jugador al final de la actualización de pantalla, si se sale de los márgenes
     # establecidos, moveremos la lista de sprites que conforman el nivel en dirección contraria a la que va el jugador
@@ -94,3 +95,7 @@ class Player(pygame.sprite.Sprite):
             if self.y_change > 0 and self.previous_rect.y < blocks[0].rect.top:
                         self.rect.y = blocks[0].rect.top - self.rect.height
                         self.control.change_state('ground')
+
+
+    def draw(self, surface):
+        pygame.Surface.blit(surface, self.image, self.rect)

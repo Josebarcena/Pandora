@@ -100,7 +100,15 @@ class Fase(Base_state):
 
     def draw(self, surface): #pintar la fase
         surface.fill((123,211,247))
-        self.all_sprites.draw(surface)
+        for sprite in self.all_sprites:
+            Blit = True
+            if sprite.rect.right < 0: Blit = False
+            if sprite.rect.left > WIN_WIDTH: Blit = False
+            if sprite.rect.bottom < 0: Blit = False
+            if sprite.rect.top > WIN_HEIGHT: Blit = False
+
+            if Blit:
+                sprite.draw(surface)
         pygame.display.update()
 
 

@@ -16,3 +16,7 @@ class Sprite(pygame.sprite.Sprite):
 
         self.game = game
         self._layer = BLOCK_LAYER
+
+
+    def draw(self, surface):
+        pygame.Surface.blit(surface, self.image, self.rect)
