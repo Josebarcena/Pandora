@@ -17,8 +17,8 @@ class Player(pygame.sprite.Sprite):
         # Posiciones iniciales del cubo y tamaño
         self.x = x * TILESIZE
         self.y = y * TILESIZE
-        self.width = TILESIZE
-        self.heigh = TILESIZE * 2
+        self.width = TILESIZE * SCALE
+        self.heigh = TILESIZE * 2 * SCALE
 
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
         self.x_change = 0

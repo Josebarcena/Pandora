@@ -24,37 +24,37 @@ class Fase(Base_state):
     def createTilemap(self, tmx_map): #crea el mapa desde tiled
         
         for x, y, surface in tmx_map.get_layer_by_name('Montanas').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
 
         for x, y, surface in tmx_map.get_layer_by_name('Fondo').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
 
         for x, y, surface in tmx_map.get_layer_by_name('Decoracion').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
 
         for x, y, surface in tmx_map.get_layer_by_name('Solido').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
 
         for x, y, surface in tmx_map.get_layer_by_name('Semi').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.upper_collision))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.upper_collision))
 
         for x, y, surface in tmx_map.get_layer_by_name('Pincho').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.damage_collision))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.damage_collision))
         
         for x, y, surface in tmx_map.get_layer_by_name('Escalera').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
 
         for x, y, surface in tmx_map.get_layer_by_name('Falso').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
         
         for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
 
         for objeto in tmx_map.get_layer_by_name('Meta'):
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
         
         for objeto in tmx_map.get_layer_by_name('Jugador'):
-            Player(self, objeto.x, objeto.y)
+            Player(self, objeto.x *SCALE, objeto.y*SCALE)
 
     def get_event(self, event):
             if event.type == pygame.QUIT:

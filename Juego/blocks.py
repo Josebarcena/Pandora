@@ -9,6 +9,7 @@ class Sprite(pygame.sprite.Sprite):
         super().__init__(groups)
         # Añadimos textura al bloque
         self.image = surface
+        self.image = pygame.transform.scale(self.image, (16*SCALE, 16*SCALE))
         self.rect = self.image.get_rect(topleft = (x,y))
         self.group = groups
         self.rect_anterior = self.rect.copy()

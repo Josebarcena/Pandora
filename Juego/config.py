@@ -2,6 +2,9 @@ import sys
 import pygame
 from pygame import mixer
 #DECLARACIÓN DE VARIABLES
+
+SCALE = 3
+
 # Tamaño de la ventana
 WIN_WIDTH = 1280
 WIN_HEIGHT = 720
@@ -13,16 +16,16 @@ SCROLL_LIMIT_X = 106
 SCROLL_LIMIT_Y = 80
 
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
-GRAVITY = 3
-JUMPING_SPEED = 3
-DASH_SPEED = 8
+GRAVITY = 3 * SCALE
+JUMPING_SPEED = 3 * SCALE
+DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
 
 # Diferentes capas para el juego
 PLAYER_LAYER = 2
 BLOCK_LAYER = 1
-PLAYER_SPEED = 3
+PLAYER_SPEED = 3 * SCALE
 
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
