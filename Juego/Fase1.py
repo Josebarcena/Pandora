@@ -19,7 +19,13 @@ class Fase1(Base_state):
         self.createTilemap(self.level1)
 
     def createTilemap(self, tmx_map):
+        for x, y, surface in tmx_map.get_layer_by_name('Pintado').tiles():
+            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+
         for x, y, surface in tmx_map.get_layer_by_name('Fondo').tiles():
+            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+
+        for x, y, surface in tmx_map.get_layer_by_name('Decoracion').tiles():
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
 
         for x, y, surface in tmx_map.get_layer_by_name('Solido').tiles():
