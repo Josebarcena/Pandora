@@ -1,6 +1,7 @@
 import pygame, sys, os
 from pygame.locals import *
 from pytmx.util_pygame import load_pygame
+from config import *
 
 # -------------------------------------------------
 # Clase GestorRecursos
@@ -26,8 +27,21 @@ class GestorRecursos(object):
                     print('Cannot load image:', fullname)
                     raise SystemExit(message)
                 resource = resource.convert()
+
             elif(path == "Fases"):
-                resource = load_pygame(fullname)
+                try:
+                    resource = load_pygame(fullname)
+                except pygame.error as message:
+                    print('Cannot load Fase:', fullname)
+                    raise SystemExit(message)
+            
+            elif(path == "Sonidos"):
+                try:
+                    resource = mixer.music.load(fullname)
+                except pygame.error as message:
+                    print('Cannot load Sonido:', fullname)
+                    raise SystemExit(message)
+                
             if transparent is not None and path == "Imagenes":
                 if transparent == -1:
                     transparent = resource.get_at((0,0))

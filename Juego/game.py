@@ -1,4 +1,4 @@
-from pygame import mixer
+
 from player import *
 from config import *
 from blocks import *
@@ -23,7 +23,7 @@ class Game(object):
         self.state = self.states[self.state_name]
 
         mixer.init()
-        mixer.music.load(self.state.sound)
+        GestorRecursos.LoadImage("Sonidos",self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
 
@@ -41,7 +41,7 @@ class Game(object):
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
         self.screen.fill((0, 0, 0))
-        mixer.music.load(self.state.sound)
+        GestorRecursos.LoadImage("Sonidos",self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
 

@@ -30,7 +30,7 @@ class Splash(Base_state):
         self.title_rect = self.title.get_rect(center = self.screen_rect.center)
         self.next_state = "MENU"
         self.time = 0
-        self.sound = "Sonidos\\splash.mp3"
+        self.sound = "splash.mp3"
 
     def update(self, tick):
         self.time += tick
@@ -51,7 +51,7 @@ class Main_menu(Base_state):
         self.next_state = "FASE1"
         self.background = GestorRecursos.LoadImage("Imagenes","bg.png")
         self.font = pygame.font.SysFont("arialblack", 42)
-        self.sound = "Sonidos\\main_menu.mp3"
+        self.sound = "main_menu.mp3"
         self.alpha = 250
 
     def render_text(self, index):
