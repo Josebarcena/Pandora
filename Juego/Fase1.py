@@ -40,7 +40,7 @@ class Fase1(Base_state):
         for objeto in tmx_map.get_layer_by_name('Jugador'):
             Player(self, objeto.x, objeto.y)
 
-    def collide_Blocks(self, player):
+    def collide_Fase(self, player): # Crear 
         if ((hits := pygame.sprite.spritecollide(player, self.full_collision, False))):
             return ("Solid", hits)
         elif((hits := pygame.sprite.spritecollide(player, self.upper_collision, False))):
@@ -49,7 +49,6 @@ class Fase1(Base_state):
             return ("Damage", hits)
         else:
             return (None,None)
-
 
 
     def get_event(self, event):

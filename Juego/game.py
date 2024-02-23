@@ -11,7 +11,7 @@ from Fase1 import *
 
 
 
-#Clase director que mira los states por los que pasa el juego
+#Clase director que mira los states por los que pasa el juego, administra los states
 class Game(object):
     def __init__(self,screen, states, start_state):
         self.screen = screen
@@ -32,7 +32,7 @@ class Game(object):
         for event in pygame.event.get():
             self.state.get_event(event)
 
-    def flip_state(self):
+    def flip_state(self): #Cambiar de estado
         mixer.music.stop()
         next_state = self.state.next_state
         self.state.done = False
@@ -40,7 +40,7 @@ class Game(object):
         persistent = self.state.persist
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         GestorRecursos.LoadImage("Sonidos",self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()

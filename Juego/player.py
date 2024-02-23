@@ -43,10 +43,10 @@ class Player(pygame.sprite.Sprite):
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
         self.rect.x += self.x_change
-        self.collide_blocks(self.game.collide_Blocks(self),"x")
+        self.collide_blocks(self.game.collide_Fase(self),"x")
 
         self.rect.y += self.y_change
-        self.collide_blocks(self.game.collide_Blocks(self),"y")
+        self.collide_blocks(self.game.collide_Fase(self),"y")
 
         self.screen_check()
         self.previous_rect = self.rect
@@ -77,26 +77,24 @@ class Player(pygame.sprite.Sprite):
     # Se estudian las colisiones del jugador con los sprites almacenados en game.blocks, que son los distintos bloques
     # con los que se crea el nivel
     def collide_blocks(self, collision, direction):
-        '''
+        
         #Comprobamos con que choca
         if collision[0] == "Solid":
             self.solid_Collision(collision[1],direction)
-        elif(direction == "y"):
+
+        elif(collision[0] == "Platform"):
+            self.platform_Collision(collision[1], direction)
+
+        elif(collision[0] == "Damage"):
+            print("DAMAGE")
+            self.solid_Collision(collision[1], direction)
+
+        else:
             self.control.change_state('air')
-
-            if(collision[0] == "Platform"):
-                self.platform_Collision(collision[1])
-        
-            elif(collision[0] == "Damage"):
-                print("DAMAGE",direction)
-                self.solid_Collision(collision[1],direction)
-
-        if (collision != "Solid" and collision != "Platform"): 
-                self.control.change_state('air')
-
         '''
+        
+        hits = pygame.sprite.spritecollide(self, self.game.full_collision, False)
         if direction == "x":
-            hits = pygame.sprite.spritecollide(self, self.game.full_collision, False)
 
             if hits:
                 if self.x_change > 0:
@@ -105,49 +103,48 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x = hits[0].rect.right
 
         if direction == "y":
-            hits_full = pygame.sprite.spritecollide(self, self.game.full_collision, False)
             hits_damage = pygame.sprite.spritecollide(self, self.game.damage_collision, False)
-            if hits_full or hits_damage:
-                if hits_damage: 
-                    print("DAMAGE")
-                    hits_full = hits_damage 
-                if self.y_change > 0:
-                    self.rect.y = hits_full[0].rect.top - self.rect.height
-                    self.control.change_state('ground')
-                if self.y_change < 0:
-                    self.rect.y = hits_full[0].rect.bottom
-            else:
-                self.control.change_state('air')
             hits_upper = pygame.sprite.spritecollide(self, self.game.upper_collision, False)
 
-            if hits_upper:
+            if hits or hits_damage:
+                if hits_damage: 
+                    print("DAMAGE")
+                    hits = hits_damage 
+                if self.y_change > 0:
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                    self.control.change_state('ground')
+                if self.y_change < 0:
+                    self.rect.y = hits[0].rect.bottom
+            
+            elif hits_upper:
                 if self.y_change > 0 and self.previous_rect.y < hits_upper[0].rect.top:
                     self.rect.y = hits_upper[0].rect.top - self.rect.height
                     self.control.change_state('ground')
             # En caso de que no se haya colisiones verticalmente y bool_air era falso en el anterior frame significa que
             # debemos de aplicar la gravedad, el jugador se cayó de la plataforma
-            if (hits_upper == 0) and (hits_full == 0): 
+            else: 
                 self.control.change_state('air')
             
 
-            print(hits_full, hits_upper, self.control.state)
-            
+            print(hits, hits_upper, self.control.state)
+           ''' 
 
 
-    def solid_Collision(self,blocks,direction):
-        if direction == "x":
-                if self.x_change > 0:
-                    self.rect.x = blocks[0].rect.left - self.rect.width
-                if self.x_change < 0:
-                    self.rect.x = blocks[0].rect.right
-        if direction == "y":
-                if self.y_change > 0:
-                    self.rect.y = blocks[0].rect.top - self.rect.height
-                    self.control.change_state('ground')
-                if self.y_change < 0:
-                    self.rect.y = blocks[0].rect.bottom
+    def solid_Collision(self,blocks, direction):
+        if  direction == "x":
+            if self.x_change > 0:
+                self.rect.x = blocks[0].rect.left - self.rect.width
+            if self.x_change < 0:
+                self.rect.x = blocks[0].rect.right
+        if  direction == "y":
+            if self.y_change > 0:
+                self.rect.y = blocks[0].rect.top - self.rect.height
+                self.control.change_state('ground')
+            if self.y_change < 0:
+                self.rect.y = blocks[0].rect.bottom
 
-    def platform_Collision(self,blocks):
-        if self.y_change > 0 and self.previous_rect.y < blocks[0].rect.top:
-                    self.rect.y = blocks[0].rect.top - self.rect.height
-                    self.control.change_state('ground')
+    def platform_Collision(self,blocks, direction):
+        if  direction == "y":
+            if self.y_change > 0 and self.previous_rect.y < blocks[0].rect.top:
+                        self.rect.y = blocks[0].rect.top - self.rect.height
+                        self.control.change_state('ground')

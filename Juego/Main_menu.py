@@ -3,13 +3,14 @@ from Gestor_recursos import *
 
 class Base_state(object):
     def __init__(self):
-        self.done = False
-        self.quit = False
-        self.next_state = None
-        self.screen_rect = pygame.display.get_surface().get_rect()
+        self.done = False # Condicion final
+        self.quit = False # Condicion cierre juego
+        self.next_state = None #Siguiente fase
+
+        self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
         self.persist = {}
         self.font = pygame.font.Font("Fuente\\FetteClassicUNZFraktur.ttf", 72)
-        self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg")
+        
     
     def startup(self,persistent):
         self.persist = persistent
@@ -30,11 +31,12 @@ class Splash(Base_state):
         self.title_rect = self.title.get_rect(center = self.screen_rect.center)
         self.next_state = "MENU"
         self.time = 0
+        self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg")
         self.sound = "splash.mp3"
 
     def update(self, tick):
         self.time += tick
-        if self.time  >= 500:
+        if self.time  >= 2500:
             self.done = True
 
     def draw(self, surface):
