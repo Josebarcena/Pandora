@@ -10,7 +10,7 @@ if __name__ == '__main__':
     states = { #Fases del juego
         "Splash": Splash(),
         "MENU": Main_menu(),
-        "FASE1": Fase1(),
+        "FASE1": Fase("fase12.tmx","fase1.mp3"),
     }
     #creas el objeto game
     game = Game(screen, states, "Splash")

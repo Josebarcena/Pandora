@@ -82,10 +82,10 @@ class Player(pygame.sprite.Sprite):
         if collision[0] == "Solid":
             self.solid_Collision(collision[1],direction)
 
-        elif(collision[0] == "Platform"):
+        elif collision[0] == "Platform":
             self.platform_Collision(collision[1], direction)
 
-        elif(collision[0] == "Damage"):
+        elif collision[0] == "Damage":
             print("DAMAGE")
             self.solid_Collision(collision[1], direction)
 
@@ -142,6 +142,7 @@ class Player(pygame.sprite.Sprite):
                 self.control.change_state('ground')
             if self.y_change < 0:
                 self.rect.y = blocks[0].rect.bottom
+
 
     def platform_Collision(self,blocks, direction):
         if  direction == "y":
