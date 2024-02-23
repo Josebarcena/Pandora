@@ -4,7 +4,7 @@
   <image source="prueba.png" width="1920" height="1080"/>
  </tileset>
  <objectgroup id="8" name="Jugador">
-  <object id="1" gid="122" x="364.525" y="464.845" width="16" height="32"/>
+  <object id="1" gid="122" x="365.873" y="458.103" width="16" height="32"/>
  </objectgroup>
  <layer id="11" name="Fondo" width="200" height="100">
   <data encoding="csv">

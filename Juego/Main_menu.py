@@ -34,7 +34,7 @@ class Splash(Base_state):
 
     def update(self, tick):
         self.time += tick
-        if self.time  >= 5000:
+        if self.time  >= 500:
             self.done = True
 
     def draw(self, surface):

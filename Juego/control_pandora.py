@@ -31,8 +31,9 @@ class Control:
             # los bloques del nivel
             self.bool_air = False
             self.bool_dash = True
+        
+        # Se llama a este estado cuando no se ha detectado ninguna colisión vertical
         if newstate == 'air':
-            # Se llama a este estado cuando no se ha detectado ninguna colisión vertical
             self.bool_air = True
 
     # Según el estado en el que nos encontremos debemos de añadir a las variables auxiliares la fuerza de gravedad,
