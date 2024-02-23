@@ -11,6 +11,7 @@ class Fase1(Base_state):
         self.all_sprites = pygame.sprite.Group()
         self.upper_collision = pygame.sprite.Group()
         self.full_collision = pygame.sprite.Group()
+        self.damage_collision = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.attacks = pygame.sprite.Group()
         
@@ -28,7 +29,7 @@ class Fase1(Base_state):
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.upper_collision))
 
         for x, y, surface in tmx_map.get_layer_by_name('Pincho').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))
+            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.damage_collision))
         
         for x, y, surface in tmx_map.get_layer_by_name('Escalera').tiles():
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))

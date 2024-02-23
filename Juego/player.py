@@ -94,6 +94,20 @@ class Player(pygame.sprite.Sprite):
                     self.rect.y = hits_full[0].rect.bottom
             else:
                 self.control.change_state('air')
+            
+            #(Jose) segui el ejemplo de full colision para bloques de daño
+            hits_damage = pygame.sprite.spritecollide(self, self.game.damage_collision, False)
+            
+            if hits_damage:
+                print("DAMAGE")
+                if self.y_change > 0:
+                    self.rect.y = hits_damage[0].rect.top - self.rect.height
+                    self.control.change_state('ground')
+                if self.y_change < 0:
+                    self.rect.y = hits_damage[0].rect.bottom
+            else:
+                self.control.change_state('air')
+            
             hits_upper = pygame.sprite.spritecollide(self, self.game.upper_collision, False)
             if hits_upper:
                 if self.y_change > 0 and self.previous_rect.y < hits_upper[0].rect.top:
@@ -103,6 +117,7 @@ class Player(pygame.sprite.Sprite):
             # debemos de aplicar la gravedad, el jugador se cayó de la plataforma
             if (hits_upper == 0) and (hits_full == 0): 
                 self.control.change_state('air')
+            
             
 
             print(hits_full, hits_upper, self.control.state)
