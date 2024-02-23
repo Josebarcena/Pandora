@@ -8,22 +8,21 @@ from blocks import *
 class Fase(Base_state):
     def __init__(self, mapa, sonido, next_state = None):
         super(Fase,self).__init__()
-        self.sound = (sonido)
         self.all_sprites = pygame.sprite.Group()
         self.upper_collision = pygame.sprite.Group()
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.attacks = pygame.sprite.Group()
+
         self.next_state = next_state
 
+        self.sound = (sonido)
         self.level = GestorRecursos.LoadImage("Fases",mapa)
         self.createTilemap(self.level)
 
-    def createTilemap(self, tmx_map):
-        for x, y, surface in tmx_map.get_layer_by_name('Cielo').tiles():
-            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
-
+    def createTilemap(self, tmx_map): #crea el mapa desde tiled
+        
         for x, y, surface in tmx_map.get_layer_by_name('Montanas').tiles():
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
 
@@ -48,6 +47,12 @@ class Fase(Base_state):
         for x, y, surface in tmx_map.get_layer_by_name('Falso').tiles():
             Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites, self.full_collision))
         
+        for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
+            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+
+        for objeto in tmx_map.get_layer_by_name('Meta'):
+            Sprite(self, x*TILESIZE, y*TILESIZE, surface, (self.all_sprites))
+        
         for objeto in tmx_map.get_layer_by_name('Jugador'):
             Player(self, objeto.x, objeto.y)
 
@@ -55,15 +60,16 @@ class Fase(Base_state):
             if event.type == pygame.QUIT:
                 self.quit = True
 
-    def update(self, tick):
+    def update(self, tick): #hace update acorde a los fps
         self.all_sprites.update()
 
-    def draw(self, surface):
+    def draw(self, surface): #pintar la fase
+        surface.fill((123,211,247))
         self.all_sprites.draw(surface)
         pygame.display.update()
 
 
-    def collide_Fase(self, player): # Crear 
+    def collide_Fase(self, player): # chequea las colisiones con los bloques de las fases
         if ((hits := pygame.sprite.spritecollide(player, self.full_collision, False))):
             return ("Solid", hits)
         elif((hits := pygame.sprite.spritecollide(player, self.upper_collision, False))):

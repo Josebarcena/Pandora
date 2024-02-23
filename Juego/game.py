@@ -28,7 +28,7 @@ class Game(object):
         mixer.music.play()
 
 
-    def event_loop(self):
+    def event_loop(self): #el state es el que recibe los eventos y actua acorde a ellos
         for event in pygame.event.get():
             self.state.get_event(event)
 
@@ -45,18 +45,19 @@ class Game(object):
         mixer.music.set_volume(0.2)
         mixer.music.play()
 
-    def update(self, tick):
+    def update(self, tick): #actualiza el state de acuerdo a su funcion mirando si se dio la condicion de salir
         if self.state.quit:
             self.done = True
         elif self.state.done:
             self.flip_state()
         self.state.update(tick)
     
-    def draw(self):
+    def draw(self): # se pinta el state con su funcion
         self.state.draw(self.screen)
     
-    def run(self):
+    def run(self): # el bucle clasico de pygame con los fps
         while not self.done:
+            print(self.clock.get_fps())
             tick = self.clock.tick(self.fps)
             self.event_loop()
             self.update(tick)
