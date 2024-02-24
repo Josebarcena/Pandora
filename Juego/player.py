@@ -72,6 +72,9 @@ class Player(pygame.sprite.Sprite):
         elif collision[0] == "Damage":
             print("DAMAGE")
             self.solid_Collision(collision[1], direction)
+        
+        elif collision[0] == "Stairs":
+            self.stairs_Collision(collision[1], direction)
 
         else:
             self.control.change_state('air')
@@ -90,12 +93,29 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y = blocks[0].rect.bottom
 
 
-    def platform_Collision(self,blocks, direction):
-        if  direction == "y":
-            if self.y_change > 0 and self.previous_rect.y < blocks[0].rect.top:
-                        self.rect.y = blocks[0].rect.top - self.rect.height
+    def platform_Collision(self, platforms, direction):
+        if direction == "y":
+                player_necessary_y = self.rect.bottom
+                platform_necessary_y = platforms[0].rect.top + 0.75 * platforms[0].rect.height
+            
+                # Verificar si el jugador está por encima del 75% de la plataforma
+                if player_necessary_y < (platform_necessary_y):
+                    if self.y_change > 0 and self.previous_rect.y < platforms[0].rect.top:
+                        self.rect.y = platforms[0].rect.top - self.rect.height
                         self.control.change_state('ground')
 
+
+
+    def stairs_Collision(self, ramps, direction):
+                for ramp in ramps:
+                    # Si el jugador está sobre la rampa y su centro vertical está por encima del borde superior de la rampa
+                    if self.rect.colliderect(ramp.rect) and self.rect.centery < ramp.rect.centery:
+                        # Calcular la nueva posición vertical del jugador para subir la rampa
+                        new_y = ramp.rect.top - self.rect.height + (self.rect.centerx - ramp.rect.left) * 0.5  # Pendiente del 45%
+
+                        # Mover al jugador a la nueva posición
+                        self.rect.y = new_y
+                    self.control.change_state('ground')
 
     def draw(self, surface):
         pygame.Surface.blit(surface, self.image, self.rect)

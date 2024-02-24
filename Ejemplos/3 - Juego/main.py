@@ -25,9 +25,9 @@ if __name__ == '__main__':
 
     # El bucle de eventos
     while True:
-
+        print(reloj.get_fps())
         # Sincronizar el juego a 60 fps
-        tiempo_pasado = reloj.tick(60)
+        tiempo_pasado = reloj.tick(200)
 
         # Coge la lista de eventos y se la pasa a la escena
         # Devuelve si se debe parar o no el juego
