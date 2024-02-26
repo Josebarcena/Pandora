@@ -84,12 +84,12 @@ class Fase(Base_state):
 
 
 
-    def draw(self, surface): #pintar la fase
+    def draw(self, surface, debug): #pintar la fase
         surface.fill((123,211,247))
         sprites = self.all_sprites
         sprites.update()
         self.screen_check(sprites)
-        sprites.draw(surface)
+        sprites.draw(surface, debug)
         
         pygame.display.update()
 

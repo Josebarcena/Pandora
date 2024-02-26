@@ -53,11 +53,12 @@ class Game(object):
         self.state.update(tick)
     
     def draw(self): # se pinta el state con su funcion
-        self.state.draw(self.screen)
+        self.state.draw(self.screen, False)
     
     def run(self): # el bucle clasico de pygame con los fps
         while not self.done:
             tick = self.clock.tick(self.fps)
+            print(self.clock.get_fps())
             self.event_loop()
             self.update(tick)
             self.draw()

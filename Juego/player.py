@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         # Inicializamos el rect del Sprite, ya que es un objeto importado de la libreria debemos de inicializar el rect
         # para poder usar estas librerias correctamente, véase en las colisiones
         self.image = pygame.Surface([self.width, self.heigh])
-        self.image.fill(RED)
+        self.image.fill(WHITE)
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
 
