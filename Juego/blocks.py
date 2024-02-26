@@ -30,18 +30,8 @@ class Sprite(pygame.sprite.Sprite):
                 self.image.fill(GREEN)
 
 
-
-
-                
-        
-        
-
-
-    def draw(self, surface, debug):
-        if(debug):
-            pygame.Surface.blit(surface, self.image, self.rect)
-        else:
-            pass
+    def draw(self, surface):        
+        pass
 
 
 

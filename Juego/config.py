@@ -5,7 +5,7 @@ from pygame import mixer
 CHUNK_LOAD_RADIUS = 1
 CHUNK_SIZE = 26
 SCALE = 3
-
+DEBUG = False
 # Tamaño de la ventana
 WIN_WIDTH = 1280
 WIN_HEIGHT = 720

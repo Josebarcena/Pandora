@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         # Iniciamos las variables del jugador para poder acceder a ellas más adelante
         self.game = game
         self._layer = PLAYER_LAYER
-        self.groups = (self.game.all_sprites,group)
+        self.groups = (self.game.all_sprites,self.game.visible_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         # Posiciones iniciales del cubo y tamaño
