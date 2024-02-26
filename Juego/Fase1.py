@@ -14,6 +14,7 @@ class Fase(Base_state):
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
+        self.meta = pygame.sprite.Group()
 
         self.player_layer = pygame.sprite.Group()
         self.player = None
@@ -47,16 +48,18 @@ class Fase(Base_state):
         for x, y, surface in tmx_map.get_layer_by_name('Escalera').tiles():
             Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.stairs_collision))
 
-        for x, y, surface in tmx_map.get_layer_by_name('Falso').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
+        #for x, y, surface in tmx_map.get_layer_by_name('Falso').tiles():
+           # Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
         
-        for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
+       # for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
+            #Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
+
+
+        for x, y, surface in tmx_map.get_layer_by_name('Meta').tiles():
+            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.meta))
 
         Stage(self, 0, 0, self.stage_image, self.all_sprites)
-
-        for objeto in tmx_map.get_layer_by_name('Meta'):
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
+        
         
         for objeto in tmx_map.get_layer_by_name('Jugador'):
             Player(self, objeto.x *SCALE, objeto.y*SCALE,self.player_layer)
@@ -105,6 +108,9 @@ class Fase(Base_state):
             return ("Damage", hits)
         elif((hits := pygame.sprite.spritecollide(player, self.stairs_collision, False))):
             return ("Stairs", hits)
+        elif((hits := pygame.sprite.spritecollide(player, self.meta, False))):
+            self.gameover()
+            return (None,None)
         else:
             return (None,None)
 

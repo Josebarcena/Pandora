@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         if self.invul != 0: #timer invul
             self.invul += 1
-            if self.invul >= 600:
+            if self.invul >= 300:
                 self.invul = 0
 
         self.x_change, self.y_change = self.control.movement()
@@ -94,8 +94,7 @@ class Player(pygame.sprite.Sprite):
                 self.viewers_update()
                 self.message[0] = False
             self.invul += 1
-            
-
+        
         elif collision[0] == "Stairs":
             self.stairs_Collision(collision[1], direction)
 
@@ -128,7 +127,6 @@ class Player(pygame.sprite.Sprite):
                         self.control.change_state('ground')
 
 
-
     def stairs_Collision(self, ramps, direction):
                 self.control.change_state('ground')
                     # Si el jugador está sobre la rampa y su centro vertical está por encima del borde superior de la rampa
@@ -144,7 +142,7 @@ class Player(pygame.sprite.Sprite):
 
 class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
     def __init__(self, player):
-        self.hp = 1
+        self.hp = 5
         self.player = player
     
     def update(self, message):
