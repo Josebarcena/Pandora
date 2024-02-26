@@ -34,13 +34,6 @@ class GestorRecursos(object):
                 except pygame.error as message:
                     print('Cannot load Fase:', fullname)
                     raise SystemExit(message)
-            
-            elif(path == "Sonidos"):
-                try:
-                    resource = mixer.music.load(fullname)
-                except pygame.error as message:
-                    print('Cannot load Sonido:', fullname)
-                    raise SystemExit(message)
                 
             if transparent is not None and path == "Imagenes":
                 if transparent == -1:

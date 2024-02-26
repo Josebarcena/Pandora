@@ -104,3 +104,68 @@ class Main_menu(Base_state):
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
+
+
+class Game_Over(Base_state):
+    def __init__(self):
+            super(Game_Over, self).__init__()
+            self.index = 0
+            self.options = ["Menu", "Quit"]
+            self.next_state = "MENU"
+            self.background = GestorRecursos.LoadImage("Imagenes","game_over.jpg")
+            self.font = pygame.font.SysFont("trajan", 42)
+            self.sound = "game_over.mp3"
+            self.alpha = 250
+            self.time = 0
+
+    def render_text(self, index):
+        if index == self.index:
+            color = pygame.Color("red")
+            text = self.font.render(self.options[index], True, color)
+            text.set_alpha(self.alpha)
+        else:
+            color = pygame.Color(115, 115, 115)
+            text = self.font.render(self.options[index], True, color)
+        return text
+    
+    def get_text_position(self, text, index):
+        center = (self.screen_rect.center[0]- 100 + (index * (WIN_WIDTH/10)), self.screen_rect.center[1])
+        return text.get_rect(center = center)
+
+    def handle_action(self):
+        if self.index == 0:
+            self.done = True
+        elif self.index == 1:
+            self.quit = True
+
+    def update(self, tick):
+        self.time += tick
+        if self.time  >= 12500:
+            self.done = True
+        elif self.alpha <= 120:
+            self.alpha = 255
+        else:
+            self.alpha -= (tick * 0.1)
+
+    def get_event(self, event):
+        if event.type == pygame.QUIT:
+            self.quit = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                if self.index == 0:
+                    self.index = 1
+                else:
+                    self.index = 0
+            if event.key == pygame.K_RIGHT:
+                if self.index == 0:
+                    self.index = 1
+                else:
+                    self.index = 0
+            elif event.key == pygame.K_RETURN:
+                self.handle_action()
+
+    def draw(self, surface):
+        surface.blit(self.background, (0,0))
+        for index, option in enumerate(self.options):
+            text_render = self.render_text(index)
+            surface.blit(text_render, self.get_text_position(text_render, index))

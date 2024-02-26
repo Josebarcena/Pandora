@@ -33,7 +33,7 @@ class Fase(Base_state):
 
 
     def createTilemap(self, tmx_map): #crea el mapa desde tiled
-        Stage(self, 0, 0, self.stage_image, self.all_sprites)
+        
         
         for x, y, surface in tmx_map.get_layer_by_name('Solido').tiles():
             Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
@@ -52,6 +52,8 @@ class Fase(Base_state):
         
         for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
             Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
+
+        Stage(self, 0, 0, self.stage_image, self.all_sprites)
 
         for objeto in tmx_map.get_layer_by_name('Meta'):
             Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
@@ -105,3 +107,7 @@ class Fase(Base_state):
             return ("Stairs", hits)
         else:
             return (None,None)
+
+    def gameover(self):
+        self.next_state = "GAME_OVER"
+        self.done = True

@@ -23,7 +23,7 @@ class Game(object):
         self.state = self.states[self.state_name]
 
         mixer.init()
-        GestorRecursos.LoadImage("Sonidos",self.state.sound)
+        mixer.music.load("Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
 
@@ -41,7 +41,7 @@ class Game(object):
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
-        GestorRecursos.LoadImage("Sonidos",self.state.sound)
+        mixer.music.load("Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
 

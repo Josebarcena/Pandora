@@ -30,6 +30,12 @@ class Player(pygame.sprite.Sprite):
         # Control del personaje
         self.control = Control()
 
+        #OBSERVADORES
+        self.viewers = [Life_Bar(self)]
+        self.message = [False]
+
+        #TIMER DONDE NO RECIBE DAÑO
+        self.invul = 0
         # Inicializamos el rect del Sprite, ya que es un objeto importado de la libreria debemos de inicializar el rect
         # para poder usar estas librerias correctamente, véase en las colisiones
         self.image = pygame.Surface([self.width, self.heigh])
@@ -39,6 +45,11 @@ class Player(pygame.sprite.Sprite):
 
     # Método en el que se actualiza el cubo
     def update(self):
+        if self.invul != 0: #timer invul
+            self.invul += 1
+            if self.invul >= 600:
+                self.invul = 0
+
         self.x_change, self.y_change = self.control.movement()
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
@@ -51,7 +62,15 @@ class Player(pygame.sprite.Sprite):
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
-        
+    
+
+    def viewers_update(self):
+        for viewer in self.viewers:
+            viewer.update(self.message)
+
+    def recieve_update(self, message):
+        if message == "DEATH":
+            self.game.gameover()
 
     # Comprobamos la posición del jugador al final de la actualización de pantalla, si se sale de los márgenes
     # establecidos, moveremos la lista de sprites que conforman el nivel en dirección contraria a la que va el jugador
@@ -70,9 +89,13 @@ class Player(pygame.sprite.Sprite):
             self.platform_Collision(collision[1], direction)
 
         elif collision[0] == "Damage":
-            print("DAMAGE")
-            self.solid_Collision(collision[1], direction)
-        
+            if self.invul == 0:
+                self.message[0] = True
+                self.viewers_update()
+                self.message[0] = False
+            self.invul += 1
+            
+
         elif collision[0] == "Stairs":
             self.stairs_Collision(collision[1], direction)
 
@@ -107,15 +130,29 @@ class Player(pygame.sprite.Sprite):
 
 
     def stairs_Collision(self, ramps, direction):
-                for ramp in ramps:
+                self.control.change_state('ground')
                     # Si el jugador está sobre la rampa y su centro vertical está por encima del borde superior de la rampa
-                    if self.rect.colliderect(ramp.rect) and self.rect.centery < ramp.rect.centery:
-                        # Calcular la nueva posición vertical del jugador para subir la rampa
-                        new_y = ramp.rect.top - self.rect.height + (self.rect.centerx - ramp.rect.left) * 0.5  # Pendiente del 45%
+                if self.rect.colliderect(ramps[0].rect) and self.rect.centery < ramps[0].rect.centery:
+                    # Calcular la nueva posición vertical del jugador para subir la rampa
+                    new_y = ramps[0].rect.top - self.rect.height + (self.rect.centerx - ramps[0].rect.left) * 0.5  # Pendiente del 45%
 
-                        # Mover al jugador a la nueva posición
-                        self.rect.y = new_y
-                    self.control.change_state('ground')
+                    # Mover al jugador a la nueva posición
+                    self.rect.y = new_y
 
     def draw(self, surface):
         pygame.Surface.blit(surface, self.image, self.rect)
+
+class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
+    def __init__(self, player):
+        self.hp = 1
+        self.player = player
+    
+    def update(self, message):
+        if message[0]:
+            self.hp -= 1
+            print(self.hp)
+            if self.hp <= 0:
+                self.game_over()
+    
+    def game_over(self):
+        self.player.recieve_update("DEATH")
