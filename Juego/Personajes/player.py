@@ -19,6 +19,9 @@ class Player(pygame.sprite.Sprite):
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
 
+
+        # Viewers
+        self.viewers = [Life_Bar()]
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
         self.x_change = 0
         self.y_change = 0
@@ -29,12 +32,9 @@ class Player(pygame.sprite.Sprite):
         # Control del personaje
         self.control = Control()
 
-        #OBSERVADORES
-        self.viewers = [Life_Bar(self)]
-        self.message = [False]
-
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
+        self.hp = 5
         # Inicializamos el rect del Sprite, ya que es un objeto importado de la libreria debemos de inicializar el rect
         # para poder usar estas librerias correctamente, véase en las colisiones
         self.image = pygame.Surface([self.width, self.heigh])
@@ -66,11 +66,7 @@ class Player(pygame.sprite.Sprite):
 
     def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:
-            viewer.update(self.message)
-
-    def recieve_update(self, message): #Si ocurre algo a tener en cuenta el observador nos avisa de vuelta
-        if message == "DEATH":
-            self.game.gameover()
+            viewer.update(self)
 
     # Comprobamos la posición del jugador al final de la actualización de pantalla, si se sale de los márgenes
     # establecidos, moveremos la lista de sprites que conforman el nivel en dirección contraria a la que va el jugador
@@ -90,9 +86,8 @@ class Player(pygame.sprite.Sprite):
 
         elif collision[0] == "Damage":
             if self.invul == 0:
-                self.message[0] = True
+                self.hp -= 1
                 self.viewers_update()
-                self.message[0] = False
             self.invul += 1
         
         elif collision[0] == "Stairs":

@@ -1,14 +1,7 @@
 class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
-    def __init__(self, player):
-        self.hp = 5
-        self.player = player
+    def __init__(self):
+        self.hp = 0
     
-    def update(self, message):
-        if message[0]:
-            self.hp -= 1
-            print("VIDA = ", self.hp)
-            if self.hp <= 0:
-                self.game_over()
-    
-    def game_over(self):
-        self.player.recieve_update("DEATH")
+    def update(self, player):
+        print("VIDA = ",self.hp)
+        self.hp = player.hp

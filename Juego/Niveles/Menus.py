@@ -3,11 +3,11 @@ from Recursos.Gestor_recursos import *
 from Niveles.Fase import *
 
 class Splash(Base_state): #Clase splash para el principio del juego
-    def __init__(self):
+    def __init__(self, next_state):
         super(Splash,self).__init__()
         self.title  = self.font.render("Pandora's Game", True, pygame.Color(160, 192, 222)) #Titulo y color del titulo
         self.title_rect = self.title.get_rect(center = self.screen_rect.center) #Posicion del titulo
-        self.next_state = "MENU"
+        self.next_state = next_state
         self.time = 0 #Timer para finalizar el splash
         self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg") #fondo del Splash
         self.sound = "splash.mp3" # Sonido de nintendo de fondo
@@ -24,11 +24,11 @@ class Splash(Base_state): #Clase splash para el principio del juego
         surface.blit(self.title,self.title_rect)
 
 class Main_menu(Base_state):# Menu principal del juego
-    def __init__(self):
+    def __init__(self, next_state):
         super(Main_menu, self).__init__()
         self.index = 0 #indice para la opcion marcada
         self.options = ["START", "QUIT"] #opciones
-        self.next_state = "FASE1" #siguiente estado
+        self.next_state = next_state #siguiente estado
         self.background = GestorRecursos.LoadImage("Imagenes","bg.png")
         self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
         self.sound = "main_menu.mp3" 
@@ -85,11 +85,11 @@ class Main_menu(Base_state):# Menu principal del juego
 
 
 class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
-    def __init__(self):
+    def __init__(self, next_state):
             super(Game_Over, self).__init__()
             self.index = 0
             self.options = ["Menu", "Quit"]
-            self.next_state = "MENU"
+            self.next_state = next_state
             self.background = GestorRecursos.LoadImage("Imagenes","game_over.jpg")
             self.font = pygame.font.SysFont("trajan", 42)
             self.sound = "game_over.mp3"

@@ -10,14 +10,12 @@ from Personajes.player import *
 
 #Clase director que mira los states por los que pasa el juego, administra los states
 class Game(object):
-    def __init__(self,screen, states, start_state):
+    def __init__(self,screen, start_state):
         self.screen = screen
         self.done = False #condicion para el siguiente nivel del juego
         self.clock = pygame.time.Clock() #reloj 
         self.fps = FPS #los fps para el reloj
-        self.states = states #los estados que existen en los juegos
-        self.state_name = start_state #primer nivel
-        self.state = self.states[self.state_name] #se selecciona ese nivel de los estados que se pasaron
+        self.state = start_state #se selecciona ese nivel de los estados que se pasaron
 
         mixer.init()
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
@@ -31,12 +29,11 @@ class Game(object):
 
     def flip_state(self): #Cambiar de estado
         mixer.music.stop() #se para la musica
-        next_state = self.state.next_state #se marca el siguiente estado a usar despues del cambio
         self.state.done = False #se resetea la condicion
-        self.state_name = next_state #el estado al que vamos
-        persistent = self.state.persist
-        self.state = self.states[self.state_name] #igual que arriba
-        self.state.startup(persistent)
+        self.state = self.state.next_state
+
+
+        #Preparamos el siguiente nivel
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
         mixer.music.set_volume(0.2) #el volumen

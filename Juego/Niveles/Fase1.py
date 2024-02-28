@@ -1,7 +1,9 @@
 from Niveles.Fase import *
 from Recursos.Gestor_recursos import *
 from Niveles.blocks import *
+from Niveles.Menus import *
 from Personajes.player import *
+
 
 class Fase1(Fase): #Clase para el primer nivel del juego
     def __init__(self, mapa, fondo, sonido, next_state = None):
@@ -29,6 +31,10 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
         self.createTilemap(self.level) #se llama para dibujar el mapa desde tiled
 
+
+    def update(self, tick):
+        if(self.player.hp <= 0):
+            self.gameover()
 
     def createTilemap(self, tmx_map): #crea el mapa desde tiled
         collision_layers = { #las capas de los tiles segun sus fisicas
@@ -79,5 +85,5 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             return (None,None)
 
     def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
-        self.next_state = "GAME_OVER"
+        self.next_state = Game_Over(Main_menu(Fase1("fase13.tmx","fase12.png","fase1.mp3")))
         self.done = True
