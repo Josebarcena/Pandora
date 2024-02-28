@@ -19,7 +19,8 @@ class GestorRecursos(object):
         # Si no ha sido cargado anteriormente
         else:
             # Se carga la imagen indicando la carpeta en la que está
-            fullname = os.path.join(path, name)
+            fullname = os.path.join("Recursos\\",path, name)
+            print(fullname)
             if(path == "Imagenes"):
                 try:
                     resource = pygame.image.load(fullname)

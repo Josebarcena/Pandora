@@ -20,7 +20,7 @@ class Game(object):
         self.state = self.states[self.state_name] #se selecciona ese nivel de los estados que se pasaron
 
         mixer.init()
-        mixer.music.load("Sonidos\\"+ self.state.sound)
+        mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
 
@@ -38,7 +38,7 @@ class Game(object):
         self.state = self.states[self.state_name] #igual que arriba
         self.state.startup(persistent)
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
-        mixer.music.load("Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
+        mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
         mixer.music.set_volume(0.2) #el volumen
         mixer.music.play()
 

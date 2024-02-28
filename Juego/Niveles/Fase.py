@@ -9,7 +9,7 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
 
         self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
         self.persist = {}
-        self.font = pygame.font.Font("Fuente\\FetteClassicUNZFraktur.ttf", 72)
+        self.font = pygame.font.Font("Recursos\\Fuente\\FetteClassicUNZFraktur.ttf", 72)
         
     
     def startup(self,persistent):
