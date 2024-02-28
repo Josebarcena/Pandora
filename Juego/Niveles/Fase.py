@@ -1,4 +1,4 @@
-from config import *
+from Recursos.config import *
 
 class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o niveles del juego)
 
@@ -36,9 +36,6 @@ class Fase(Base_state):
         self.sound = None
         self.level = None
     
-
-        self.createTilemap(self.level)
-
 
     def createTilemap(self, tmx_map):
        pass

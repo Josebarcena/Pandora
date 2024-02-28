@@ -1,11 +1,11 @@
-from blocks import *
-from config import *
-from control_pandora import *
-from Fase import *
-from Fase1 import *
-from Gestor_recursos import *
-from Menus import *
-from player import *
+from Niveles.blocks import *
+from Recursos.config import *
+from Personajes.control_pandora import *
+from Niveles.Fase import *
+from Niveles.Fase1 import *
+from Recursos.Gestor_recursos import *
+from Niveles.Menus import *
+from Personajes.player import *
 
 
 #Clase director que mira los states por los que pasa el juego, administra los states
@@ -36,7 +36,7 @@ class Game(object):
         self.state_name = next_state #el estado al que vamos
         persistent = self.state.persist
         self.state = self.states[self.state_name] #igual que arriba
-        self.state.startup()
+        self.state.startup(persistent)
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
         mixer.music.set_volume(0.2) #el volumen

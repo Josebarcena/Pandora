@@ -1,4 +1,4 @@
-from config import *
+from Recursos.config import *
 import pygame
 
 # Defino los diferentes bloques que formarán parte del nivel

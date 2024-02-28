@@ -1,7 +1,7 @@
 import pygame
-from config import *
-from control_pandora import *
-from Viewers import *
+from Recursos.config import *
+from Personajes.control_pandora import *
+from Personajes.Viewers import *
 
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):

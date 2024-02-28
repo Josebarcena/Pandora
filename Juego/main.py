@@ -1,4 +1,4 @@
-from game import *
+from Recursos.game import *
 
 # Creamos nuestra instancia juego y comenzamos el juego
 if __name__ == '__main__':
@@ -14,7 +14,7 @@ if __name__ == '__main__':
         "GAME_OVER": Game_Over(),
     }
     #creas el objeto game
-    game = Game(screen, states, "FASE1")
+    game = Game(screen, states, "Splash")
     game.run()
 
     pygame.quit()

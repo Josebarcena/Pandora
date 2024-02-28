@@ -1,6 +1,6 @@
-from config import *
-from Gestor_recursos import *
-from Fase import *
+from Recursos.config import *
+from Recursos.Gestor_recursos import *
+from Niveles.Fase import *
 
 class Splash(Base_state): #Clase splash para el principio del juego
     def __init__(self):

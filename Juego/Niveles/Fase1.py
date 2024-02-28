@@ -1,8 +1,7 @@
-import config
-from Fase import *
-from Gestor_recursos import *
-from blocks import *
-from player import *
+from Niveles.Fase import *
+from Recursos.Gestor_recursos import *
+from Niveles.blocks import *
+from Personajes.player import *
 
 class Fase1(Fase): #Clase para el primer nivel del juego
     def __init__(self, mapa, fondo, sonido, next_state = None):
