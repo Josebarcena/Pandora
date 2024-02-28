@@ -1,95 +1,60 @@
 import config
-from Main_menu import *
-from player import *
-from config import *
+from Fase import *
+from Gestor_recursos import *
 from blocks import *
-import math
+from player import *
 
-
-class Fase(Base_state):
-    def __init__(self, mapa, sonido, next_state = None):
-        super(Fase,self).__init__()
-        self.all_sprites = pygame.sprite.Group()
+class Fase1(Fase): #Clase para el primer nivel del juego
+    def __init__(self, mapa, fondo, sonido, next_state = None):
+        super(Fase1,self).__init__()
+        self.all_sprites = pygame.sprite.Group() #Los grupos de sprites dependiendo de su fisica de colision
         self.upper_collision = pygame.sprite.Group()
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
-        self.meta = pygame.sprite.Group()
+        self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
 
-        self.player_layer = pygame.sprite.Group()
+        self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador
         self.player = None
         self.enemies = pygame.sprite.Group()
         self.attacks = pygame.sprite.Group()
 
-        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase12.png")
+
+        self.stage_image = GestorRecursos.LoadImage("Imagenes", fondo) #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
+        self.next_state = next_state # se define que nivel va despues si todo va bien
 
-        self.next_state = next_state
-
-        self.sound = (sonido)
-        self.level = GestorRecursos.LoadImage("Fases",mapa)
+        self.sound = (sonido) # el mp3 que sonara en la fase
+        self.level = GestorRecursos.LoadImage("Fases",mapa) #El esqueleto del nivel
     
 
-        self.createTilemap(self.level)
+        self.createTilemap(self.level) #se llama para dibujar el mapa desde tiled
 
 
     def createTilemap(self, tmx_map): #crea el mapa desde tiled
-        
-        
-        for x, y, surface in tmx_map.get_layer_by_name('Solido').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.full_collision))
+        collision_layers = { #las capas de los tiles segun sus fisicas
+        'Solido': self.full_collision,
+        'Semi': self.upper_collision,
+        'Pincho': self.damage_collision,
+        'Escalera': self.stairs_collision,
+        'Meta': self.meta
+        }
 
-        for x, y, surface in tmx_map.get_layer_by_name('Semi').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.upper_collision))
+        for layer_name, collision_func in collision_layers.items(): #bucle para agregarlo en sus grupos
+            for x, y, surface in tmx_map.get_layer_by_name(layer_name).tiles():
+                Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, collision_func))
 
-        for x, y, surface in tmx_map.get_layer_by_name('Pincho').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.damage_collision))
+        Stage(self, 0, 0, self.stage_image, self.all_sprites) #una vez cargado el esqueleto se pinta el png por encima
         
-        for x, y, surface in tmx_map.get_layer_by_name('Escalera').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.stairs_collision))
-
-        #for x, y, surface in tmx_map.get_layer_by_name('Falso').tiles():
-           # Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
-        
-       # for x, y, surface in tmx_map.get_layer_by_name('Rompible').tiles():
-            #Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites))
-
-
-        for x, y, surface in tmx_map.get_layer_by_name('Meta').tiles():
-            Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, self.meta))
-
-        Stage(self, 0, 0, self.stage_image, self.all_sprites)
-        
-        
-        for objeto in tmx_map.get_layer_by_name('Jugador'):
+        for objeto in tmx_map.get_layer_by_name('Jugador'): #se carga el jugador por encima
             Player(self, objeto.x *SCALE, objeto.y*SCALE,self.player_layer)
             self.player = self.player_layer.sprites()[0]
 
-    def get_event(self, event):
+    def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
                 self.quit = True     
 
-    def screen_check(self, sprites):
-        if self.player.rect.x <= SCROLL_LIMIT_X:
-            self.player.rect.x = SCROLL_LIMIT_X
-            for sprite in sprites:
-                sprite.rect.x += PLAYER_SPEED
-        elif self.player.rect.x >= WIN_WIDTH - SCROLL_LIMIT_X:
-            self.player.rect.x = WIN_WIDTH - SCROLL_LIMIT_X
-            for sprite in sprites:
-                sprite.rect.x -= PLAYER_SPEED
-        if self.player.rect.y <= SCROLL_LIMIT_Y:
-            self.player.rect.y = SCROLL_LIMIT_Y
-            for sprite in sprites:
-                sprite.rect.y += PLAYER_SPEED
-        elif self.player.rect.y >= WIN_HEIGHT - SCROLL_LIMIT_Y:
-            self.player.rect.y = WIN_HEIGHT - SCROLL_LIMIT_Y
-            for sprite in sprites:
-                sprite.rect.y -= PLAYER_SPEED
-
-
-
-    def draw(self, surface): #pintar la fase
+    def draw(self, surface): #la funcion que llama en bucle game para pintar cada frame la fase
         surface.fill((123,211,247))
         sprites = self.all_sprites
         sprites.update()
@@ -109,11 +74,11 @@ class Fase(Base_state):
         elif((hits := pygame.sprite.spritecollide(player, self.stairs_collision, False))):
             return ("Stairs", hits)
         elif((hits := pygame.sprite.spritecollide(player, self.meta, False))):
-            self.gameover()
+            self.done = True
             return (None,None)
         else:
             return (None,None)
 
-    def gameover(self):
+    def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
         self.next_state = "GAME_OVER"
         self.done = True

@@ -1,6 +1,7 @@
 import sys
 import pygame
 from pygame import mixer
+
 #DECLARACIÓN DE VARIABLES
 CHUNK_LOAD_RADIUS = 1
 CHUNK_SIZE = 26

@@ -1,62 +1,40 @@
 from config import *
 from Gestor_recursos import *
+from Fase import *
 
-class Base_state(object):
-    def __init__(self):
-        self.done = False # Condicion final
-        self.quit = False # Condicion cierre juego
-        self.next_state = None #Siguiente fase
-
-        self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
-        self.persist = {}
-        self.font = pygame.font.Font("Fuente\\FetteClassicUNZFraktur.ttf", 72)
-        
-    
-    def startup(self,persistent):
-        self.persist = persistent
-    
-    def get_event(self,event):
-        pass
-    
-    def update(self, tick):
-        pass
-
-    def draw(self, surface):
-        pass
-
-class Splash(Base_state):
+class Splash(Base_state): #Clase splash para el principio del juego
     def __init__(self):
         super(Splash,self).__init__()
-        self.title  = self.font.render("Pandora's Game", True, pygame.Color(160, 192, 222))
-        self.title_rect = self.title.get_rect(center = self.screen_rect.center)
+        self.title  = self.font.render("Pandora's Game", True, pygame.Color(160, 192, 222)) #Titulo y color del titulo
+        self.title_rect = self.title.get_rect(center = self.screen_rect.center) #Posicion del titulo
         self.next_state = "MENU"
-        self.time = 0
-        self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg")
-        self.sound = "splash.mp3"
+        self.time = 0 #Timer para finalizar el splash
+        self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg") #fondo del Splash
+        self.sound = "splash.mp3" # Sonido de nintendo de fondo
 
-    def update(self, tick):
+    def update(self, tick): #se actualiza el timer con el tick
         self.time += tick
         if self.time  >= 2500:
             self.done = True
 
-    def draw(self, surface):
+    def draw(self, surface): # se dibuja el splash por pantalla
         surface.blit(self.background, (0,0))
         title_background_rect = pygame.Rect(self.title_rect.left - 10, self.title_rect.top - 10, self.title_rect.width + 20, self.title_rect.height + 20)
         pygame.draw.rect(surface, pygame.Color(25, 51, 77), title_background_rect)
         surface.blit(self.title,self.title_rect)
 
-class Main_menu(Base_state):
+class Main_menu(Base_state):# Menu principal del juego
     def __init__(self):
         super(Main_menu, self).__init__()
-        self.index = 0
-        self.options = ["START", "QUIT"]
-        self.next_state = "FASE1"
+        self.index = 0 #indice para la opcion marcada
+        self.options = ["START", "QUIT"] #opciones
+        self.next_state = "FASE1" #siguiente estado
         self.background = GestorRecursos.LoadImage("Imagenes","bg.png")
-        self.font = pygame.font.SysFont("arialblack", 42)
-        self.sound = "main_menu.mp3"
-        self.alpha = 250
+        self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
+        self.sound = "main_menu.mp3" 
+        self.alpha = 250 # alpha para el efecto parpadeo
 
-    def render_text(self, index):
+    def render_text(self, index): # efecto parpadeo y marcado
         if index == self.index:
             color = pygame.Color("white")
             text = self.font.render(self.options[index], True, color)
@@ -66,23 +44,23 @@ class Main_menu(Base_state):
             text = self.font.render(self.options[index], True, color)
         return text
     
-    def get_text_position(self, text, index):
+    def get_text_position(self, text, index): # se coloca la posicion del texto
         center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * (WIN_HEIGHT/10)))
         return text.get_rect(center = center)
 
-    def handle_action(self):
+    def handle_action(self): # dependiendo de la opcion elegida
         if self.index == 0:
             self.done = True
         elif self.index == 1:
             self.quit = True
 
-    def update(self, tick):
+    def update(self, tick): # se cambia el alpha con los frames
         if self.alpha <= 120:
             self.alpha = 255
         else:
             self.alpha -= (tick * 0.1)
 
-    def get_event(self, event):
+    def get_event(self, event): #dependiendo del evento de salir o si se pulso alguna tecla, se actualiza la fase
         if event.type == pygame.QUIT:
             self.quit = True
         elif event.type == pygame.KEYUP:
@@ -96,17 +74,17 @@ class Main_menu(Base_state):
                     self.index = 1
                 else:
                     self.index = 0
-            elif event.key == pygame.K_RETURN:
+            elif event.key == pygame.K_RETURN: #si se pulsa enter se toma la opcion marcada
                 self.handle_action()
 
-    def draw(self, surface):
+    def draw(self, surface): #pintar el menu por pantalla cada frame
         surface.blit(self.background, (0,0))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
 
 
-class Game_Over(Base_state):
+class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
     def __init__(self):
             super(Game_Over, self).__init__()
             self.index = 0
@@ -128,7 +106,7 @@ class Game_Over(Base_state):
             text = self.font.render(self.options[index], True, color)
         return text
     
-    def get_text_position(self, text, index):
+    def get_text_position(self, text, index): #SE CAMBIA AQUI PARA QUE ESTE LADEADO NO ENCIMA Y DEBAJO
         center = (self.screen_rect.center[0]- 100 + (index * (WIN_WIDTH/10)), self.screen_rect.center[1])
         return text.get_rect(center = center)
 
@@ -138,10 +116,10 @@ class Game_Over(Base_state):
         elif self.index == 1:
             self.quit = True
 
-    def update(self, tick):
+    def update(self, tick): #Se pone un timer por si no se pulsa nada en un rato largo
         self.time += tick
         if self.time  >= 12500:
-            self.done = True
+            self.quit = True
         elif self.alpha <= 120:
             self.alpha = 255
         else:
