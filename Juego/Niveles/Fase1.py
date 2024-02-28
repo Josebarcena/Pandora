@@ -6,7 +6,7 @@ from Personajes.player import *
 
 
 class Fase1(Fase): #Clase para el primer nivel del juego
-    def __init__(self, mapa, fondo, sonido, next_state = None):
+    def __init__(self, next_state = None):
         super(Fase1,self).__init__()
         self.all_sprites = pygame.sprite.Group() #Los grupos de sprites dependiendo de su fisica de colision
         self.upper_collision = pygame.sprite.Group()
@@ -21,12 +21,12 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.attacks = pygame.sprite.Group()
 
 
-        self.stage_image = GestorRecursos.LoadImage("Imagenes", fondo) #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
+        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase12.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
         self.next_state = next_state # se define que nivel va despues si todo va bien
 
-        self.sound = (sonido) # el mp3 que sonara en la fase
-        self.level = GestorRecursos.LoadImage("Fases",mapa) #El esqueleto del nivel
+        self.sound = ("fase1.mp3") # el mp3 que sonara en la fase
+        self.level = GestorRecursos.LoadImage("Fases","fase13.tmx") #El esqueleto del nivel
     
 
         self.createTilemap(self.level) #se llama para dibujar el mapa desde tiled
@@ -85,5 +85,5 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             return (None,None)
 
     def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
-        self.next_state = Game_Over(Main_menu(Fase1("fase13.tmx","fase12.png","fase1.mp3")))
+        self.next_state = Game_Over(Main_menu(Fase1()))
         self.done = True
