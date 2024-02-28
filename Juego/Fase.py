@@ -28,9 +28,6 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
 class Fase(Base_state):
     def __init__(self): # Definimos la superclase de las fases jugables
         super(Fase,self).__init__()
-        self.all_sprites = pygame.sprite.Group()
-
-        self.player_layer = pygame.sprite.Group()
 
         self.stage_image = None
         

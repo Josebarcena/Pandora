@@ -1,8 +1,7 @@
 import pygame
 from config import *
 from control_pandora import *
-import math
-import random
+from Viewers import *
 
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
@@ -45,15 +44,16 @@ class Player(pygame.sprite.Sprite):
 
     # Método en el que se actualiza el cubo
     def update(self):
-        if self.invul != 0: #timer invul
+        if self.invul != 0: #Durante este tiempo no se puede recibir daño de nuevo
             self.invul += 1
-            if self.invul >= 300:
+            if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
                 self.invul = 0
 
         self.x_change, self.y_change = self.control.movement()
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
         self.rect.x += self.x_change
+        #Se pregunta al nivel si chocamos con algo y con que
         self.collide_blocks(self.game.collide_Fase(self),"x")
 
         self.rect.y += self.y_change
@@ -64,11 +64,11 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
     
 
-    def viewers_update(self):
+    def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:
             viewer.update(self.message)
 
-    def recieve_update(self, message):
+    def recieve_update(self, message): #Si ocurre algo a tener en cuenta el observador nos avisa de vuelta
         if message == "DEATH":
             self.game.gameover()
 
@@ -139,18 +139,3 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, surface):
         pygame.Surface.blit(surface, self.image, self.rect)
-
-class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
-    def __init__(self, player):
-        self.hp = 5
-        self.player = player
-    
-    def update(self, message):
-        if message[0]:
-            self.hp -= 1
-            print(self.hp)
-            if self.hp <= 0:
-                self.game_over()
-    
-    def game_over(self):
-        self.player.recieve_update("DEATH")
