@@ -6,7 +6,7 @@ from Personajes.Viewers import *
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
     # Método con el que iniciamos el objeto, partimos de las coordenadas iniciales del juego y el propio juego
-    def __init__(self, game, x, y,group):
+    def __init__(self, game, x, y, group):
         # Iniciamos las variables del jugador para poder acceder a ellas más adelante
         self.game = game
         self._layer = PLAYER_LAYER
@@ -128,7 +128,7 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(ramps[0].rect) and self.rect.centery < ramps[0].rect.centery:
                     # Calcular la nueva posición vertical del jugador para subir la rampa
                     new_y = ramps[0].rect.top - self.rect.height + (self.rect.centerx - ramps[0].rect.left) * 0.5  # Pendiente del 45%
-
+                    self.control.change_state('ground')
                     # Mover al jugador a la nueva posición
                     self.rect.y = new_y
 

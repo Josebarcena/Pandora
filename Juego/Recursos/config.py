@@ -25,9 +25,20 @@ FRAMES_JUMP = 25
 FRAMES_DASH = 10
 
 # Diferentes capas para el juego
-PLAYER_LAYER = 2
+ENEMY_LAYER = 2
+PLAYER_LAYER = 3
 BLOCK_LAYER = 1
 PLAYER_SPEED = 3 * SCALE
+
+# Cantidad de pixeles para que los enemigos cambien al estado agro
+PIXELS_ENEMIES_AGRO_X = 400
+PIXELS_ENEMIES_AGRO_Y = 150
+
+# Variables para controlar la cantidad de frames que dura el salto de los enemigos, velocidades de salto y velocidad
+ENEMIES_JUMP_FRAMES = 10
+ENEMIES_JUMP_SPEED = 2
+ENEMIES_SPEED_AGRO = 2 * SCALE
+ENEMY_SPEED = 1 * SCALE
 
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)

@@ -3,6 +3,7 @@ from Recursos.Gestor_recursos import *
 from Niveles.blocks import *
 from Niveles.Menus import *
 from Personajes.player import *
+from Personajes.enemy import *
 
 
 class Fase1(Fase): #Clase para el primer nivel del juego
@@ -52,9 +53,10 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         Stage(self, 0, 0, self.stage_image, self.all_sprites) #una vez cargado el esqueleto se pinta el png por encima
         
         for objeto in tmx_map.get_layer_by_name('Jugador'): #se carga el jugador por encima
-            Player(self, objeto.x *SCALE, objeto.y*SCALE,self.player_layer)
+            Player(self, objeto.x *SCALE, objeto.y*SCALE, self.player_layer)
             self.player = self.player_layer.sprites()[0]
 
+            #Enemy(self, objeto.x * SCALE + TILESIZE, objeto.y*SCALE + TILESIZE * 4 , self.enemies)
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
                 self.quit = True     
