@@ -40,25 +40,25 @@ class Fase(Base_state):
     def get_event(self, event):
         pass    
 
-    def screen_check(self, sprites): #Movimiento de camara que mueve todos los pixeles con el jugador, se define aqui porque es comun a todos los niveles
+    # Actualización del scoll de pantalla, antes se movían todos los sprites del mapa a la velocidad del jugador, ahora
+    # se mueve a la velocidad a la que vaya el personaje
+    def screen_check(self, sprites):
         if self.player.rect.x <= SCROLL_LIMIT_X:
+            for sprite in sprites:
+                sprite.rect.x += SCROLL_LIMIT_X - self.player.rect.x
             self.player.rect.x = SCROLL_LIMIT_X
-            for sprite in sprites:
-                sprite.rect.x += PLAYER_SPEED
         elif self.player.rect.x >= WIN_WIDTH - SCROLL_LIMIT_X:
+            for sprite in sprites:
+                sprite.rect.x -= self.player.rect.x - (WIN_WIDTH - SCROLL_LIMIT_X)
             self.player.rect.x = WIN_WIDTH - SCROLL_LIMIT_X
-            for sprite in sprites:
-                sprite.rect.x -= PLAYER_SPEED
         if self.player.rect.y <= SCROLL_LIMIT_Y:
+            for sprite in sprites:
+                sprite.rect.y += SCROLL_LIMIT_Y - self.player.rect.y
             self.player.rect.y = SCROLL_LIMIT_Y
-            for sprite in sprites:
-                sprite.rect.y += PLAYER_SPEED
         elif self.player.rect.y >= WIN_HEIGHT - SCROLL_LIMIT_Y:
-            self.player.rect.y = WIN_HEIGHT - SCROLL_LIMIT_Y
             for sprite in sprites:
-                sprite.rect.y -= PLAYER_SPEED
-
-
+                sprite.rect.y -= self.player.rect.y - (WIN_HEIGHT - SCROLL_LIMIT_Y)
+            self.player.rect.y = WIN_HEIGHT - SCROLL_LIMIT_Y
     def draw(self, surface): #pintar la fase
         pass
 
