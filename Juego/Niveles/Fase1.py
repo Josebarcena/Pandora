@@ -3,13 +3,13 @@ from Recursos.Gestor_recursos import *
 from Niveles.blocks import *
 from Niveles.Menus import *
 from Personajes.player import *
-from Personajes.enemy import *
 
 
 class Fase1(Fase): #Clase para el primer nivel del juego
     def __init__(self, next_state = None):
         super(Fase1,self).__init__()
         self.all_sprites = pygame.sprite.Group() #Los grupos de sprites dependiendo de su fisica de colision
+        self.visible_sprites = pygame.sprite.Group() #sprites que se pintaran
         self.upper_collision = pygame.sprite.Group()
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
@@ -50,13 +50,12 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             for x, y, surface in tmx_map.get_layer_by_name(layer_name).tiles():
                 Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, collision_func))
 
-        Stage(self, 0, 0, self.stage_image, self.all_sprites) #una vez cargado el esqueleto se pinta el png por encima
+        Stage(self, 0, 0, self.stage_image, (self.visible_sprites,self.all_sprites)) #una vez cargado el esqueleto se pinta el png por encima
         
         for objeto in tmx_map.get_layer_by_name('Jugador'): #se carga el jugador por encima
-            Player(self, objeto.x *SCALE, objeto.y*SCALE, self.player_layer)
+            Player(self, objeto.x *SCALE, objeto.y*SCALE,(self.player_layer, self.visible_sprites))
             self.player = self.player_layer.sprites()[0]
 
-            #Enemy(self, objeto.x * SCALE + TILESIZE, objeto.y*SCALE + TILESIZE * 4 , self.enemies)
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
                 self.quit = True     
@@ -66,7 +65,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         sprites = self.all_sprites
         sprites.update()
         self.screen_check(sprites)
-        sprites.draw(surface)
+        self.visible_sprites.draw(surface)
         
         pygame.display.update()
 

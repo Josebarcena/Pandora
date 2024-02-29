@@ -44,6 +44,8 @@ class Player(pygame.sprite.Sprite):
 
     # Método en el que se actualiza el cubo
     def update(self):
+        self.control.update_cd()
+
         if self.invul != 0: #Durante este tiempo no se puede recibir daño de nuevo
             self.invul += 1
             if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
@@ -123,7 +125,6 @@ class Player(pygame.sprite.Sprite):
 
 
     def stairs_Collision(self, ramps, direction):
-                self.control.change_state('ground')
                     # Si el jugador está sobre la rampa y su centro vertical está por encima del borde superior de la rampa
                 if self.rect.colliderect(ramps[0].rect) and self.rect.centery < ramps[0].rect.centery:
                     # Calcular la nueva posición vertical del jugador para subir la rampa
