@@ -478,6 +478,6 @@
   <object id="1" gid="122" x="95.9567" y="303.103" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="35" name="Enemigos">
-  <object id="34" gid="122" x="176" y="303.5" width="16" height="32"/>
+  <object id="34" gid="122" x="180.667" y="301.933" width="16" height="32"/>
  </objectgroup>
 </map>

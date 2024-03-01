@@ -40,6 +40,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
+        print(self.rect.x, self.rect.y)
 
     # Método en el que se actualiza el cubo
     def update(self):
@@ -131,7 +132,3 @@ class Player(pygame.sprite.Sprite):
                     self.control.change_state('ground')
                     # Mover al jugador a la nueva posición
                     self.rect.y = new_y
-
-    def draw(self, surface):
-        print("S")
-        pygame.Surface.blit(surface, self.image, self.rect)

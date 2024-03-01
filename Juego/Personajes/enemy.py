@@ -9,8 +9,8 @@ class Enemy(pygame.sprite.Sprite):
         self.groups = (self.game.all_sprites, group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.x = x * TILESIZE -3840
-        self.y = y * TILESIZE - 16
+        self.x = x * TILESIZE 
+        self.y = y * TILESIZE
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
 
@@ -18,7 +18,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y_change = 0
         self.frames_jump = 0
         self.jump = 0
-        print(self.x, self.y, "ENEMIGO")
+        
 
         self.facing = 'left'
         self.state = 'normal'
@@ -26,12 +26,12 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
-
+        print(self.rect.x, self.rect.y, "ENEMIGO")
 
     def draw(self, surface):
         print("H")
         pygame.Surface.blit(surface, self.image, self.rect)
-'''
+
     def update(self):
         self.movement()
 
@@ -107,4 +107,3 @@ class Enemy(pygame.sprite.Sprite):
 
 
 
-        '''

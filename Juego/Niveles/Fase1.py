@@ -47,6 +47,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         'Escalera': self.stairs_collision,
         'Meta': self.meta
         }
+
         object_layers = {
             'Jugador': (self.player_layer, self.visible_sprites),
             'Enemigos': (self.enemies_layer, self.visible_sprites)
@@ -61,11 +62,10 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         for object_name, group in object_layers.items(): 
             for objeto in tmx_map.get_layer_by_name(object_name): #se carga el jugador por encima
                 if object_name == "Jugador":
-                    Player(self, objeto.x *SCALE, objeto.y*SCALE,group)
+                    Player(self, objeto.x * SCALE, objeto.y * SCALE, group)
                     self.player = self.player_layer.sprites()[0]
                 elif object_name == "Enemigos":
-                    print("H")
-                    Enemy(self, objeto.x *SCALE, objeto.y *SCALE, group)
+                    Enemy(self, objeto.x , objeto.y, group)
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
@@ -93,6 +93,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             self.done = True
             return (None,None)
         elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
+            print("ENEMY")
             return ("Damage", hits)
         else:
             return (None,None)
