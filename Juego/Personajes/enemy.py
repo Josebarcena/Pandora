@@ -6,12 +6,11 @@ import numpy as np
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, game, x, y, group):
         self.game = game
-        self._layer = ENEMY_LAYER
         self.groups = (self.game.all_sprites, group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.x = x * TILESIZE
-        self.y = y * TILESIZE
+        self.x = x * TILESIZE -3840
+        self.y = y * TILESIZE - 16
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
 
@@ -19,6 +18,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y_change = 0
         self.frames_jump = 0
         self.jump = 0
+        print(self.x, self.y, "ENEMIGO")
 
         self.facing = 'left'
         self.state = 'normal'
@@ -27,14 +27,19 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
 
+
+    def draw(self, surface):
+        print("H")
+        pygame.Surface.blit(surface, self.image, self.rect)
+'''
     def update(self):
         self.movement()
 
         self.rect.x += self.x_change
-        self.collide_blocks('x')
+        self.collide_blocks(self.game.collide_Fase(self),"x")
 
         self.rect.y += self.y_change
-        self.collide_blocks('y')
+        self.collide_blocks(self.game.collide_Fase(self),"y")
 
         self.x_change = 0
         self.y_change = 0
@@ -81,26 +86,25 @@ class Enemy(pygame.sprite.Sprite):
                     self.state = 'normal'
                     self.image.fill(BLACK)
                     self.x_change += ENEMY_SPEED
-    def collide_blocks(self, direction):
-        if direction == "x":
-            hits = pygame.sprite.spritecollide(self, self.game.full_collision, False)
-            if hits:
-                if self.x_change > 0:
-                    self.rect.x = hits[0].rect.left - self.rect.width
-                    self.facing = 'left'
-                    if self.state == 'agro' and self.frames_jump <= 0 and self.jump:
-                        self.frames_jump = ENEMIES_JUMP_FRAMES
-                if self.x_change < 0:
-                    self.rect.x = hits[0].rect.right
-                    self.facing = 'right'
-                    if self.state == 'agro' and self.frames_jump <= 0 and self.jump:
-                        self.frames_jump = ENEMIES_JUMP_FRAMES
 
-        if direction == "y":
-            hits = pygame.sprite.spritecollide(self, self.game.full_collision, False)
-            if hits:
-                if self.y_change > 0:
-                    self.rect.y = hits[0].rect.top - self.rect.height
-                    self.jump = True
-                if self.y_change < 0:
-                    self.rect.y = hits[0].rect.bottom
+    def collide_blocks(self, collision, direction):
+         #Comprobamos con que choca
+        if collision[0] == "Solid":
+            self.solid_Collision(collision[1],direction)
+
+
+    def solid_Collision(self,blocks, direction):
+        if  direction == "x":
+            if self.x_change > 0:
+                self.rect.x = blocks[0].rect.left - self.rect.width
+            if self.x_change < 0:
+                self.rect.x = blocks[0].rect.right
+        if  direction == "y":
+            if self.y_change > 0:
+                self.rect.y = blocks[0].rect.top - self.rect.height
+            if self.y_change < 0:
+                self.rect.y = blocks[0].rect.bottom
+
+
+
+        '''

@@ -39,7 +39,7 @@ class Control:
                 self.state = 'jumping'
                 self.cont_frames = FRAMES_JUMP
                 self.bool_dash = True
-                self.cooldown = 60
+                self.cooldown = 30
         if newstate == 'ground':
             # Se llama a este estado cuando el personaje a tenido una colisión con el Top de alguno de
             # los bloques del nivel

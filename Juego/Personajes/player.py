@@ -9,7 +9,6 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, game, x, y, group):
         # Iniciamos las variables del jugador para poder acceder a ellas más adelante
         self.game = game
-        self._layer = PLAYER_LAYER
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
@@ -18,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.y = y * TILESIZE
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
-
+        print(self.x, self.y)
 
         # Viewers
         self.viewers = [Life_Bar()]
@@ -134,4 +133,5 @@ class Player(pygame.sprite.Sprite):
                     self.rect.y = new_y
 
     def draw(self, surface):
+        print("S")
         pygame.Surface.blit(surface, self.image, self.rect)
