@@ -9,7 +9,7 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
 
         self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
         self.persist = {}
-        self.font = pygame.font.Font("Recursos\\Fuente\\FetteClassicUNZFraktur.ttf", 72)
+        self.font = pygame.font.Font(".\\Recursos\\Fuente\\FetteClassicUNZFraktur.ttf", 72)
         
     
     def get_event(self,event):
@@ -42,23 +42,39 @@ class Fase(Base_state):
 
     # Actualización del scoll de pantalla, antes se movían todos los sprites del mapa a la velocidad del jugador, ahora
     # se mueve a la velocidad a la que vaya el personaje
-    def screen_check(self, sprites):
-        if self.player.rect.x <= SCROLL_LIMIT_X:
-            for sprite in sprites:
-                sprite.rect.x += SCROLL_LIMIT_X - self.player.rect.x
-            self.player.rect.x = SCROLL_LIMIT_X
-        elif self.player.rect.x >= WIN_WIDTH - SCROLL_LIMIT_X:
-            for sprite in sprites:
-                sprite.rect.x -= self.player.rect.x - (WIN_WIDTH - SCROLL_LIMIT_X)
-            self.player.rect.x = WIN_WIDTH - SCROLL_LIMIT_X
-        if self.player.rect.y <= SCROLL_LIMIT_Y:
-            for sprite in sprites:
-                sprite.rect.y += SCROLL_LIMIT_Y - self.player.rect.y
-            self.player.rect.y = SCROLL_LIMIT_Y
-        elif self.player.rect.y >= WIN_HEIGHT - SCROLL_LIMIT_Y:
-            for sprite in sprites:
-                sprite.rect.y -= self.player.rect.y - (WIN_HEIGHT - SCROLL_LIMIT_Y)
-            self.player.rect.y = WIN_HEIGHT - SCROLL_LIMIT_Y
+    def screen_check(self, sprites, player, stage):
+        dx = 0
+        dy = 0
+        dx2 = 0
+        dy2 = 0
+        if player.rect.x > WIN_WIDTH - SCROLL_LIMIT_X and stage.rect.right > WIN_WIDTH:
+            dx = player.rect.x - (WIN_WIDTH - SCROLL_LIMIT_X)
+        elif player.rect.x < SCROLL_LIMIT_X and stage.rect.left < 0:
+            dx = player.rect.x - SCROLL_LIMIT_X
+        if player.rect.y > WIN_HEIGHT - SCROLL_LIMIT_Y and stage.rect.bottom > WIN_HEIGHT:
+            dy = player.rect.y - (WIN_HEIGHT - SCROLL_LIMIT_Y)
+        elif player.rect.y < SCROLL_LIMIT_Y and stage.rect.top < 0:
+            dy = player.rect.y - SCROLL_LIMIT_Y
+
+        # Aplicar el desplazamiento a todos los sprites
+            
+        if dx < stage.rect.left:
+            dx = stage.rect.left
+        elif dx > stage.rect.right - WIN_WIDTH:
+            dx = stage.rect.right - WIN_WIDTH
+        if dy < stage.rect.top:
+            dy = stage.rect.top
+        elif dy > stage.rect.bottom - WIN_HEIGHT:
+            dy = stage.rect.bottom - WIN_HEIGHT
+
+
+        for sprite in sprites:
+            sprite.rect.x -= dx
+            sprite.rect.y -= dy
+            
+
+
+
     def draw(self, surface): #pintar la fase
         pass
 

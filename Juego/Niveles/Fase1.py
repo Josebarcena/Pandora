@@ -16,6 +16,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
+        self.stage = pygame.sprite.Group() #Para limitar la camara
 
         self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador
         self.player = None
@@ -53,11 +54,13 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             'Enemigos': (self.enemies_layer, self.visible_sprites)
         }
 
+        Stage(self, 0, 0, self.stage_image, (self.visible_sprites,self.all_sprites, self.stage)) #una vez cargado el esqueleto se pinta el png por encima
+
         for layer_name, collision_func in collision_layers.items(): #bucle para agregarlo en sus grupos
             for x, y, surface in tmx_map.get_layer_by_name(layer_name).tiles():
                 Sprite(self, x*TILESIZE*SCALE, y*TILESIZE*SCALE, surface, (self.all_sprites, collision_func))
 
-        Stage(self, 0, 0, self.stage_image, (self.visible_sprites,self.all_sprites)) #una vez cargado el esqueleto se pinta el png por encima
+        
         
         for object_name, group in object_layers.items(): 
             for objeto in tmx_map.get_layer_by_name(object_name): #se carga el jugador por encima
@@ -65,7 +68,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                     Player(self, objeto.x * SCALE, objeto.y * SCALE, group)
                     self.player = self.player_layer.sprites()[0]
                 elif object_name == "Enemigos":
-                    Enemy(self, objeto.x , objeto.y, group)
+                    Enemy(self, objeto.x * SCALE, objeto.y * SCALE, group)
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
@@ -75,7 +78,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         surface.fill((123,211,247))
         sprites = self.all_sprites
         sprites.update()
-        self.screen_check(sprites)
+        self.screen_check(sprites, self.player, self.stage.sprites()[0])
         self.visible_sprites.draw(surface)
         pygame.display.update()
 
