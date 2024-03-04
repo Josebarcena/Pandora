@@ -1,9 +1,9 @@
 import pygame
-from Recursos.config import *
+from Juego.Recursos.config import *
 
 # Clase implementada para permitir el control del personaje
 class Control:
-    def __init__(self):
+    def __init__(self, game, player):
         # Para implementar el control del personaje se han implementado estas variables, que nos indican el estado del personaje:
         # self.state-> 'normal' en caso de que no esté en medio de ninguna animación
         #               'jumping' en caso de que esté saltando, se usa para evitar el doble salto entre otras cosas
@@ -24,6 +24,8 @@ class Control:
         self.cont_frames = 0
         self.facing = 'right'
         self.dash_face = 'right'
+        self.game = game
+        self.player = player
 
     #Retraso para evitar saltar varias veces de golpe
     def update_cd(self):
@@ -96,19 +98,33 @@ class Control:
     def movement(self):
         x_change, y_change = 0, 0
         keys = pygame.key.get_pressed()
+
+        # Verificar si ninguna tecla de dirección está presionada
+        if not (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]) and self.bool_air is False:
+            self.player.set_animacion_idle()
+
         if keys[pygame.K_LEFT]:
             x_change -= PLAYER_SPEED
             self.facing = 'left'
+            if self.state != 'jumping' and self.bool_air is False:
+                self.player.set_animacion_run()
             if self.state != 'dashing':
                 self.dash_face = 'left'
         if keys[pygame.K_RIGHT]:
             x_change += PLAYER_SPEED
             self.facing = 'right'
+            if self.state != 'jumping' and self.bool_air is False:
+                self.player.set_animacion_run()
             if self.state != 'dashing':
                 self.dash_face = 'right'
+
         if keys[pygame.K_SPACE]:
             self.change_state('jumping')
+            self.player.set_animacion_jump()
+
         # Se evita que se pueda dashear y saltar a la vez
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
+
         return x_change, y_change
+

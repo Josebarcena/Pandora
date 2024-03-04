@@ -1,13 +1,18 @@
 import pygame
-from Recursos.config import *
-from Personajes.control_pandora import *
-from Personajes.Viewers import *
+from Juego.Recursos.config import *
+from Juego.Personajes.control_pandora import *
+from Juego.Personajes.Viewers import *
+from Juego.Recursos.Gestor_recursos import GestorRecursos
+
 
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
     # Método con el que iniciamos el objeto, partimos de las coordenadas iniciales del juego y el propio juego
     def __init__(self, game, x, y, group):
         # Iniciamos las variables del jugador para poder acceder a ellas más adelante
+        self.animation_image = None
+        self.final_height = None
+        self.final_width = None
         self.game = game
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -25,22 +30,87 @@ class Player(pygame.sprite.Sprite):
         self.x_change = 0
         self.y_change = 0
 
+        # Variables de animación
+        self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0)
+        self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101)
+        self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361)
+        self.animacion_actual = self.animaciones_idle  # Inicialmente, el jugador está en estado quieto
+        self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
+        self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
+        self.frame_index_jump = 0  # Índice del fotograma actual para la animación de saltar
+        self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
+
         # Para las animaciones, sin implementar
-        self.facing = 'lef'
+        self.facing = 'left'
 
         # Control del personaje
-        self.control = Control()
+        self.control = Control(game, self)
 
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
         self.hp = 5
-        # Inicializamos el rect del Sprite, ya que es un objeto importado de la libreria debemos de inicializar el rect
-        # para poder usar estas librerias correctamente, véase en las colisiones
-        self.image = pygame.Surface([self.width, self.heigh])
-        self.image.fill(RED)
-        self.rect = self.image.get_rect(topleft = (x,y))
+
+        # Cargar la imagen del personaje
+        self.update_image(self.animacion_actual)
+
+        # Crear el rectángulo de colisión con las dimensiones del personaje recortado
+        self.rect = self.image.get_rect(bottomleft=(x, y))
         self.previous_rect = self.rect
-        print(self.rect.x, self.rect.y)
+
+    def update_image(self, animation_array):
+        tiempo_actual = pygame.time.get_ticks()
+
+        # Actualizamos las variables dependiendo del tipo de animacion que se esta realizando
+        if animation_array == self.animaciones_idle:
+            cooldown_animacion = 180
+            frame_index = self.frame_index_idle
+        elif animation_array == self.animaciones_run:
+            cooldown_animacion = 120
+            frame_index = self.frame_index_run
+        elif animation_array == self.animaciones_jump:
+            cooldown_animacion = 150
+            frame_index = self.frame_index_jump
+
+        if tiempo_actual - self.update_time >= cooldown_animacion:
+            frame_index += 1
+            self.update_time = tiempo_actual
+            if frame_index >= len(animation_array):
+                frame_index = 0
+
+        # Actualizar la animación actual y la imagen del personaje
+        if animation_array == self.animaciones_idle:
+            self.frame_index_idle = frame_index
+            self.animation_image = animation_array[frame_index]
+
+            if self.control.facing == 'left':
+                self.image = pygame.transform.flip(self.animation_image, True, False)
+            else:
+                self.image = self.animation_image
+
+        elif animation_array == self.animaciones_run:
+            self.frame_index_run = frame_index
+            self.animation_image = animation_array[frame_index]
+
+            if self.control.facing == 'left':
+                self.image = pygame.transform.flip(self.animation_image, True, False)
+            else:
+                self.image = self.animation_image
+
+        elif animation_array == self.animaciones_jump:
+            self.frame_index_jump = frame_index
+            self.animation_image = animation_array[frame_index]
+
+            if self.control.facing == 'left':
+                self.image = pygame.transform.flip(self.animation_image, True, False)
+            else:
+                self.image = self.animation_image
+
+
+        # Escalar la imagen según el tamaño final deseado
+        if animation_array == self.animaciones_run:
+            self.image = pygame.transform.scale(self.image, (TILESIZE *1.5 * SCALE, TILESIZE * 2* SCALE))
+        elif animation_array == self.animaciones_jump or animation_array == self.animaciones_idle:
+            self.image = pygame.transform.scale(self.image, (TILESIZE * SCALE, TILESIZE * 2 * SCALE))
 
     # Método en el que se actualiza el cubo
     def update(self):
@@ -132,3 +202,18 @@ class Player(pygame.sprite.Sprite):
                     self.control.change_state('ground')
                     # Mover al jugador a la nueva posición
                     self.rect.y = new_y
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+    def set_animacion_idle(self):
+        self.animacion_actual = self.animaciones_idle
+        self.update_image(self.animaciones_idle)
+
+    def set_animacion_run(self):
+        self.animacion_actual = self.animaciones_run
+        self.update_image(self.animaciones_run)
+
+    def set_animacion_jump(self):
+        self.animacion_actual = self.animaciones_jump
+        self.update_image(self.animaciones_jump)

@@ -1,7 +1,7 @@
 import pygame, sys, os
 from pygame.locals import *
 from pytmx.util_pygame import load_pygame
-from Recursos.config import *
+from Juego.Recursos.config import *
 
 # -------------------------------------------------
 # Clase GestorRecursos
@@ -18,6 +18,8 @@ class GestorRecursos(object):
             return cls.resources[name]
         # Si no ha sido cargado anteriormente
         else:
+            if (name == "sprites"):
+                resource = cls.LoadSpritesPandora()
             # Se carga la imagen indicando la carpeta en la que está
             fullname = os.path.join("Recursos\\",path, name)
             print(fullname)
@@ -44,22 +46,73 @@ class GestorRecursos(object):
             cls.resources[name] = resource
             # Se devuelve
             return resource
-'''
+
     @classmethod
-    def CargarArchivoCoordenadas(cls, ruta, nombre):
-        # Si el nombre de archivo está entre los recursos ya cargados
-        if nombre in cls.recursos:
-            # Se devuelve ese recurso
-            return cls.recursos[nombre]
-        # Si no ha sido cargado anteriormente
-        else:
-            # Se carga el recurso indicando el nombre de su carpeta
-            fullname = os.path.join(ruta, nombre)
-            pfile=open(fullname,'r')
-            datos=pfile.read()
-            pfile.close()
-            # Se almacena
-            cls.recursos[nombre] = datos
-            # Se devuelve
-            return datos
-'''
+    def LoadSpritesPandora(cls):
+        # Cargar la imagen desde el archivo
+        imagen = pygame.image.load('Warrior_Sheet-Effect.png').convert_alpha()
+
+        # Inicializar el vector bidimensional como una lista vacía
+        vectorBidimensional = []
+
+        # Verificar si la carga de la imagen fue exitosa
+        if imagen is not None:
+            # Definir las dimensiones de corte
+            corte_ancho = 64
+            corte_alto = 44
+            distancia_entre_imagenes = 5
+
+            # Iterar sobre las secciones de la imagen
+            for j in range(imagen.get_height() // corte_alto):
+                # Crear una nueva fila en el vector bidimensional
+                vectorBidimensional.append([])
+                for i in range(imagen.get_width() // (corte_ancho + distancia_entre_imagenes)):
+                    # Calcular las coordenadas de inicio y fin para el recorte
+                    x1 = (corte_ancho + distancia_entre_imagenes) * i
+                    x2 = x1 + corte_ancho
+                    y1 = j * corte_alto
+                    y2 = y1 + corte_alto
+
+                    # Recortar la sección de la imagen
+                    imagen_recortada = imagen.subsurface((x1, y1, corte_ancho, corte_alto))
+
+                    # Almacenar la imagen recortada en el vector bidimensional
+                    vectorBidimensional[j].append(imagen_recortada)
+
+        return vectorBidimensional
+
+    @classmethod
+    def almacenar_animacion_fila(cls, num_imagenes, ancho_imagen, altura_imagen, separacion_x, inicio_x, inicio_y,
+                                 inicio_siguiente_fila_x, inicio_siguiente_fila_y):
+        imagen = pygame.image.load('Warrior_Sheet-Effect.png').convert_alpha()
+        animaciones = []
+        j = 0  # Inicializamos j en 1 para rastrear la posición en la fila
+        limite = 414
+        cambioFila = False
+        for i in range(num_imagenes):
+
+            if i == 0:
+                x = inicio_x
+                y = inicio_y
+                j += 1  # Incrementamos j para rastrear la posición en la fila
+            else:
+                x = inicio_x + ((ancho_imagen + separacion_x) * (j - 1))
+                j += 1  # Incrementamos j para rastrear la posición en la fila
+
+            # Comprobacion para saber si cambiamos de fila
+            if (x + ancho_imagen + 31) > limite:
+                cambioFila = True
+                j = 0  # Reiniciamos j cuando cambiamos de fila
+
+            if cambioFila:
+                if j == 0:
+                    x = inicio_siguiente_fila_x
+                    y = inicio_siguiente_fila_y
+                    j += 1  # Incrementamos j para rastrear la posición en la fila
+                else:
+                    x = inicio_siguiente_fila_x + ((ancho_imagen + separacion_x) * (j - 1))
+                    j += 1  # Incrementamos j para rastrear la posición en la fila
+
+            imagen_recortada = imagen.subsurface((x, y, ancho_imagen, altura_imagen))
+            animaciones.append(imagen_recortada)
+        return animaciones
