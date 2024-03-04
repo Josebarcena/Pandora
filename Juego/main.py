@@ -1,5 +1,5 @@
 from Recursos.game import *
-from Juego.Niveles.Menus import *
+from Niveles.Menus import *
 
 # Creamos nuestra instancia juego y comenzamos el juego
 if __name__ == '__main__':

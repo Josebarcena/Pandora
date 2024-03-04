@@ -4,6 +4,8 @@ from Niveles.blocks import *
 from Niveles.Menus import *
 from Personajes.player import *
 from Personajes.enemy import *
+import random
+import math
 
 
 class Fase1(Fase): #Clase para el primer nivel del juego
@@ -15,12 +17,16 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
+        self.limite = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
 
         self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador
         self.player = None
         self.enemies_layer = pygame.sprite.Group()
+        self.max_enemies = None
+        self.enemies_pos = [(0,0)]
+        self.range = None
         
         self.attacks = pygame.sprite.Group()
 
@@ -46,7 +52,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         'Semi': self.upper_collision,
         'Pincho': self.damage_collision,
         'Escalera': self.stairs_collision,
-        'Meta': self.meta
+        'Meta': self.meta,
+        'Limite': self.limite
         }
 
         object_layers = {
@@ -67,8 +74,26 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 if object_name == "Jugador":
                     Player(self, objeto.x * SCALE, objeto.y * SCALE, group)
                     self.player = self.player_layer.sprites()[0]
-                elif object_name == "Enemigos":
-                    Enemy(self, objeto.x * SCALE, objeto.y * SCALE, group)
+
+            enemies = tmx_map.get_layer_by_name("Enemigos")
+            self.range = list(range(0,len(enemies)))
+            self.max_enemies = len(self.range) - 3
+
+            while(len(self.enemies_layer) < self.max_enemies):
+                index = random.choice(self.range)
+                enemy = enemies[index]
+                can_add = True
+
+                for x , y in self.enemies_pos:
+                    dist = abs(math.sqrt((enemy.x * SCALE - x)**2 + (enemy.y * SCALE - y)**2))
+                    if dist <= 5:
+                        can_add = False
+                        break
+                
+                if can_add:
+                    self.enemies_pos.append((enemy.x * SCALE ,enemy.y * SCALE ))
+                    Enemy(self, enemy.x * SCALE, enemy.y * SCALE, (self.enemies_layer, self.visible_sprites))
+                    self.range.remove(index)
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
@@ -85,21 +110,28 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
     def collide_Fase(self, player): # chequea las colisiones con los bloques de las fases
         if ((hits := pygame.sprite.spritecollide(player, self.full_collision, False))):
-            return ("Solid", hits)
-        elif((hits := pygame.sprite.spritecollide(player, self.upper_collision, False))):
-            return ("Platform", hits)
-        elif((hits := pygame.sprite.spritecollide(player, self.damage_collision, False))):
-            return ("Damage", hits)
-        elif((hits := pygame.sprite.spritecollide(player, self.stairs_collision, False))):
-            return ("Stairs", hits)
-        elif((hits := pygame.sprite.spritecollide(player, self.meta, False))):
-            self.done = True
-            return (None,None)
-        elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
-            print("ENEMY")
-            return ("Damage", hits)
-        else:
-            return (None,None)
+                return ("Solid", hits)
+        
+        elif self.player_layer.has(player):
+            if((hits := pygame.sprite.spritecollide(player, self.upper_collision, False))):
+                return ("Platform", hits)
+            elif((hits := pygame.sprite.spritecollide(player, self.damage_collision, False))):
+                return ("Damage", hits)
+            elif((hits := pygame.sprite.spritecollide(player, self.stairs_collision, False))):
+                return ("Stairs", hits)
+            elif((hits := pygame.sprite.spritecollide(player, self.meta, False))):
+                self.done = True
+                return (None,None)
+            elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
+                if self.player_layer.has(player):
+                    return("Damage",hits)
+            else:
+                return (None,None)
+        elif self.enemies_layer.has(player): 
+            if((hits := pygame.sprite.spritecollide(player, self.limite, False))):
+                    return ("Limit", hits)
+            else:
+                return (None,None)
 
     def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
         self.next_state = Game_Over(Main_menu(Fase1()))

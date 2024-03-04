@@ -1,7 +1,7 @@
 import pygame, sys, os
 from pygame.locals import *
 from pytmx.util_pygame import load_pygame
-from Juego.Recursos.config import *
+from Recursos.config import *
 
 # -------------------------------------------------
 # Clase GestorRecursos

@@ -26,10 +26,9 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
-        print(self.rect.x, self.rect.y, "ENEMIGO")
+        #print(self.rect.x, self.rect.y, "ENEMIGO")
 
     def draw(self, surface):
-        print("H")
         pygame.Surface.blit(surface, self.image, self.rect)
 
     def update(self):
@@ -91,8 +90,9 @@ class Enemy(pygame.sprite.Sprite):
          #Comprobamos con que choca
         if collision[0] == "Solid":
             self.solid_Collision(collision[1],direction)
-
-
+        elif collision[0] == "Limit":
+            
+            self.solid_Collision(collision[1],direction)
     def solid_Collision(self,blocks, direction):
         if  direction == "x":
             if self.x_change > 0:

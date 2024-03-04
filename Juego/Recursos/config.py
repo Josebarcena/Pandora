@@ -19,7 +19,7 @@ SCROLL_LIMIT_Y = 80 * SCALE
 
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
 GRAVITY = 3 * SCALE
-JUMPING_SPEED = 3 * SCALE
+JUMPING_SPEED = 2.5 * SCALE
 DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
@@ -36,9 +36,9 @@ PIXELS_ENEMIES_AGRO_Y = 150
 
 # Variables para controlar la cantidad de frames que dura el salto de los enemigos, velocidades de salto y velocidad
 ENEMIES_JUMP_FRAMES = 10
-ENEMIES_JUMP_SPEED = 2
-ENEMIES_SPEED_AGRO = 2 * SCALE
-ENEMY_SPEED = 1 * SCALE
+ENEMIES_JUMP_SPEED = 0.5
+ENEMIES_SPEED_AGRO = 0.5 * SCALE
+ENEMY_SPEED = 0.75 * SCALE
 
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)

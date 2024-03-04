@@ -1,5 +1,5 @@
 import pygame
-from Juego.Recursos.config import *
+from Recursos.config import *
 
 # Clase implementada para permitir el control del personaje
 class Control:

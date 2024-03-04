@@ -1,8 +1,8 @@
 import pygame
-from Juego.Recursos.config import *
-from Juego.Personajes.control_pandora import *
-from Juego.Personajes.Viewers import *
-from Juego.Recursos.Gestor_recursos import GestorRecursos
+from Recursos.config import *
+from Personajes.control_pandora import *
+from Personajes.Viewers import *
+from Recursos.Gestor_recursos import GestorRecursos
 
 
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
@@ -22,7 +22,6 @@ class Player(pygame.sprite.Sprite):
         self.y = y * TILESIZE
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
-        print(self.x, self.y)
 
         # Viewers
         self.viewers = [Life_Bar()]
@@ -164,7 +163,9 @@ class Player(pygame.sprite.Sprite):
         
         elif collision[0] == "Stairs":
             self.stairs_Collision(collision[1], direction)
-
+        
+        elif collision[0] != None:
+            pass
         else:
             self.control.change_state('air')
             
