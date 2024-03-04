@@ -26,7 +26,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect(topleft = (x,y))
         self.previous_rect = self.rect
-        #print(self.rect.x, self.rect.y, "ENEMIGO")
+        print(self.rect.x, self.rect.y, "ENEMIGO")
 
     def draw(self, surface):
         pygame.Surface.blit(surface, self.image, self.rect)

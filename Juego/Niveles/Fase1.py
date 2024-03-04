@@ -79,21 +79,21 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             self.range = list(range(0,len(enemies)))
             self.max_enemies = len(self.range) - 3
 
-            while(len(self.enemies_layer) < self.max_enemies):
+            while(len(self.enemies_layer) < self.max_enemies) and len(self.range)>0:
                 index = random.choice(self.range)
                 enemy = enemies[index]
                 can_add = True
 
                 for x , y in self.enemies_pos:
                     dist = abs(math.sqrt((enemy.x * SCALE - x)**2 + (enemy.y * SCALE - y)**2))
-                    if dist <= 5:
+                    if dist <= 1000:
                         can_add = False
                         break
                 
                 if can_add:
                     self.enemies_pos.append((enemy.x * SCALE ,enemy.y * SCALE ))
                     Enemy(self, enemy.x * SCALE, enemy.y * SCALE, (self.enemies_layer, self.visible_sprites))
-                    self.range.remove(index)
+                self.range.remove(index)
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
