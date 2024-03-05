@@ -81,28 +81,18 @@ class Player(pygame.sprite.Sprite):
             self.frame_index_idle = frame_index
             self.animation_image = animation_array[frame_index]
 
-            if self.control.facing == 'left':
-                self.image = pygame.transform.flip(self.animation_image, True, False)
-            else:
-                self.image = self.animation_image
-
         elif animation_array == self.animaciones_run:
             self.frame_index_run = frame_index
             self.animation_image = animation_array[frame_index]
-
-            if self.control.facing == 'left':
-                self.image = pygame.transform.flip(self.animation_image, True, False)
-            else:
-                self.image = self.animation_image
 
         elif animation_array == self.animaciones_jump:
             self.frame_index_jump = frame_index
             self.animation_image = animation_array[frame_index]
 
-            if self.control.facing == 'left':
-                self.image = pygame.transform.flip(self.animation_image, True, False)
-            else:
-                self.image = self.animation_image
+        if self.control.facing == 'left':
+            self.image = pygame.transform.flip(self.animation_image, True, False)
+        else:
+            self.image = self.animation_image
 
 
         # Escalar la imagen según el tamaño final deseado
