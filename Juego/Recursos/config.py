@@ -14,8 +14,10 @@ WIN_HEIGHT = 720
 TILESIZE = 16
 FPS = 60
 # Limites en el eje x e y (el limite de la izq es SCROLL_LIMIT_X y el de la derecha será WIN_WIDTH - SCROLL_LIMIT_X)
-SCROLL_LIMIT_X = 106 * SCALE
-SCROLL_LIMIT_Y = 80 * SCALE
+SCROLL_LIMIT_X_LEFT = 106 * SCALE
+SCROLL_LIMIT_X_RIGHT = WIN_WIDTH - (106 * SCALE)
+SCROLL_LIMIT_Y_BOTTOM = 80 * SCALE
+SCROLL_LIMIT_Y_TOP = WIN_HEIGHT - (80 * SCALE)
 
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
 GRAVITY = 3 * SCALE

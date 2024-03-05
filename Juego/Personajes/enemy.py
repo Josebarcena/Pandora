@@ -43,9 +43,9 @@ class Enemy(pygame.sprite.Sprite):
         self.x_change = 0
         self.y_change = 0
     def in_screen(self):
-        if self.rect.x < -TILESIZE or self.rect.x > WIN_WIDTH:
+        if self.rect.x + self.width < 0 or self.rect.x > WIN_WIDTH:
             return False
-        elif self.rect.y < - TILESIZE or self.rect.y > WIN_HEIGHT:
+        elif self.rect.y + self.heigh < 0 or self.rect.y > WIN_HEIGHT:
             return False
         else:
             return True
@@ -91,14 +91,17 @@ class Enemy(pygame.sprite.Sprite):
         if collision[0] == "Solid":
             self.solid_Collision(collision[1],direction)
         elif collision[0] == "Limit":
-            
             self.solid_Collision(collision[1],direction)
-    def solid_Collision(self,blocks, direction):
+    def solid_Collision(self, blocks, direction):
         if  direction == "x":
             if self.x_change > 0:
                 self.rect.x = blocks[0].rect.left - self.rect.width
+                if self.state == 'normal':
+                    self.facing = 'left'
             if self.x_change < 0:
                 self.rect.x = blocks[0].rect.right
+                if self.state == 'normal':
+                    self.facing = 'right'
         if  direction == "y":
             if self.y_change > 0:
                 self.rect.y = blocks[0].rect.top - self.rect.height

@@ -45,16 +45,14 @@ class Fase(Base_state):
     def screen_check(self, sprites, player, stage):
         dx = 0
         dy = 0
-        dx2 = 0
-        dy2 = 0
-        if player.rect.x > WIN_WIDTH - SCROLL_LIMIT_X and stage.rect.right > WIN_WIDTH:
-            dx = player.rect.x - (WIN_WIDTH - SCROLL_LIMIT_X)
-        elif player.rect.x < SCROLL_LIMIT_X and stage.rect.left < 0:
-            dx = player.rect.x - SCROLL_LIMIT_X
-        if player.rect.y > WIN_HEIGHT - SCROLL_LIMIT_Y and stage.rect.bottom > WIN_HEIGHT:
-            dy = player.rect.y - (WIN_HEIGHT - SCROLL_LIMIT_Y)
-        elif player.rect.y < SCROLL_LIMIT_Y and stage.rect.top < 0:
-            dy = player.rect.y - SCROLL_LIMIT_Y
+        if player.rect.x > SCROLL_LIMIT_X_RIGHT and stage.rect.right > WIN_WIDTH:
+            dx = player.rect.x - SCROLL_LIMIT_X_RIGHT
+        elif player.rect.x < SCROLL_LIMIT_X_LEFT and stage.rect.left < 0:
+            dx = player.rect.x - SCROLL_LIMIT_X_LEFT
+        if player.rect.y > SCROLL_LIMIT_Y_TOP and stage.rect.bottom > WIN_HEIGHT:
+            dy = player.rect.y - SCROLL_LIMIT_Y_TOP
+        elif player.rect.y < SCROLL_LIMIT_Y_BOTTOM and stage.rect.top < 0:
+            dy = player.rect.y - SCROLL_LIMIT_Y_BOTTOM
 
         # Aplicar el desplazamiento a todos los sprites
             
@@ -67,12 +65,9 @@ class Fase(Base_state):
         elif dy > stage.rect.bottom - WIN_HEIGHT:
             dy = stage.rect.bottom - WIN_HEIGHT
 
-
         for sprite in sprites:
             sprite.rect.x -= dx
             sprite.rect.y -= dy
-            
-
 
 
     def draw(self, surface): #pintar la fase
