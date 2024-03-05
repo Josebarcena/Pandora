@@ -116,3 +116,20 @@ class GestorRecursos(object):
             imagen_recortada = imagen.subsurface((x, y, ancho_imagen, altura_imagen))
             animaciones.append(imagen_recortada)
         return animaciones
+
+    @classmethod
+    def loadSpritesEnemies(cls, direccion, imagenes, inicio_x, inicio_y, separacion_x, width, height):
+        imagen = pygame.image.load(direccion).convert_alpha()
+        animaciones = []
+
+        x = inicio_x
+        y = inicio_y
+        for i in range(imagenes):
+
+            if i != 0:
+                x = x + width + separacion_x
+
+            imagen_recortada = imagen.subsurface((x, y, width, height))
+            animaciones.append(imagen_recortada)
+
+        return animaciones

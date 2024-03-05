@@ -2,6 +2,7 @@ import pygame
 from Recursos.config import *
 from Personajes.Viewers import *
 import numpy as np
+from Recursos.Gestor_recursos import GestorRecursos
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, game, x, y, group):
@@ -22,14 +23,44 @@ class Enemy(pygame.sprite.Sprite):
 
         self.facing = 'left'
         self.state = 'normal'
-        self.image = pygame.Surface([self.width, self.heigh])
-        self.image.fill(GREEN)
-        self.rect = self.image.get_rect(topleft = (x,y))
-        self.previous_rect = self.rect
-        print(self.rect.x, self.rect.y, "ENEMIGO")
+        self.animaciones_idle = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
+        self.animaciones_idle_angry = GestorRecursos.loadSpritesEnemies('EnemiesAngry_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
+        self.animacion_actual = self.animaciones_idle
+        self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
+        self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
+        self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
-    def draw(self, surface):
-        pygame.Surface.blit(surface, self.image, self.rect)
+        # Cargar la imagen del personaje
+        self.update_image(self.animacion_actual)
+
+        self.rect = self.image.get_rect(bottomleft = (x,y))
+        self.previous_rect = self.rect
+
+    def update_image(self, animation_array):
+        tiempo_actual = pygame.time.get_ticks()
+
+        cooldown_animacion = 180
+        frame_index = self.frame_index_idle
+
+        if tiempo_actual - self.update_time >= cooldown_animacion:
+            frame_index += 1
+            self.update_time = tiempo_actual
+            if frame_index >= len(animation_array):
+                frame_index = 0
+
+        self.frame_index_idle = frame_index
+        self.animation_image = animation_array[frame_index]
+
+        if self.facing == 'left':
+            self.image = pygame.transform.flip(self.animation_image, True, False)
+        else:
+            self.image = self.animation_image
+
+
+        self.image = pygame.transform.scale(self.image, (TILESIZE * SCALE, TILESIZE * 2 * SCALE))
+
+    def draw(self, screen):
+        screen.blit(screen, self.image, self.rect)
 
     def update(self):
         self.movement()
@@ -42,6 +73,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.x_change = 0
         self.y_change = 0
+
     def in_screen(self):
         if self.rect.x + self.width < 0 or self.rect.x > WIN_WIDTH:
             return False
@@ -49,6 +81,7 @@ class Enemy(pygame.sprite.Sprite):
             return False
         else:
             return True
+
     def checkPlayer(self):
         dx = np.sqrt((self.game.player.rect.x - self.rect.x)**2) < PIXELS_ENEMIES_AGRO_X
         dy = np.sqrt((self.game.player.rect.y - self.rect.y)**2) < PIXELS_ENEMIES_AGRO_Y
@@ -58,6 +91,7 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.facing = 'left'
         return dx and dy
+
     def movement(self):
         if self.frames_jump == ENEMIES_JUMP_FRAMES:
             self.jump = False
@@ -69,21 +103,25 @@ class Enemy(pygame.sprite.Sprite):
         if self.in_screen():
             if self.facing == 'left':
                 if self.checkPlayer():
-                    self.image.fill(RED)
+                    self.animacion_actual = self.animaciones_idle_angry
+                    self.update_image(self.animacion_actual)
                     self.state = 'agro'
                     self.x_change -= ENEMIES_SPEED_AGRO
                 else:
+                    self.animacion_actual = self.animaciones_idle
                     self.state = 'normal'
-                    self.image.fill(BLACK)
+                    self.update_image(self.animacion_actual)
                     self.x_change -= ENEMY_SPEED
             if self.facing == 'right':
                 if self.checkPlayer():
+                    self.animacion_actual = self.animaciones_idle_angry
                     self.state = 'agro'
-                    self.image.fill(RED)
+                    self.update_image(self.animacion_actual)
                     self.x_change += ENEMIES_SPEED_AGRO
                 else:
+                    self.animacion_actual = self.animaciones_idle
                     self.state = 'normal'
-                    self.image.fill(BLACK)
+                    self.update_image(self.animacion_actual)
                     self.x_change += ENEMY_SPEED
 
     def collide_blocks(self, collision, direction):
