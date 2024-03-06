@@ -9,8 +9,9 @@ import math
 
 
 class Fase1(Fase): #Clase para el primer nivel del juego
-    def __init__(self, next_state = None):
+    def __init__(self, director):
         super(Fase1,self).__init__()
+        self.director = director
         self.all_sprites = pygame.sprite.Group() #Los grupos de sprites dependiendo de su fisica de colision
         self.visible_sprites = pygame.sprite.Group() #sprites que se pintaran
         self.upper_collision = pygame.sprite.Group()
@@ -20,6 +21,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.limite = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
+
 
         self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador
         self.player = None
@@ -33,8 +35,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
         self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase12.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
-        self.next_state = next_state # se define que nivel va despues si todo va bien
-
+        self.director.add_state("MAIN_MENU")
+        
         self.sound = ("fase1.mp3") # el mp3 que sonara en la fase
         self.level = GestorRecursos.LoadImage("Fases","fase13.tmx") #El esqueleto del nivel
     
@@ -42,7 +44,11 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.createTilemap(self.level) #se llama para dibujar el mapa desde tiled
 
 
-    def update(self, tick):
+    def update(self, tick, events):
+        for event in events:
+            self.get_event(event)
+        if self.done:
+            self.director.unstack_state()
         if(self.player.hp <= 0):
             self.gameover()
 
@@ -97,7 +103,12 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
-                self.quit = True     
+                self.quit = True
+            elif event.type == KEYDOWN:
+            # Verificar si se presiona una tecla específica
+                if event.key == K_p:
+                    self.director.add_state("PAUSE")
+                    self.director.flip_state()
 
     def draw(self, surface): #la funcion que llama en bucle game para pintar cada frame la fase
         surface.fill((123,211,247))
@@ -134,5 +145,5 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 return (None,None)
 
     def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
-        self.next_state = Game_Over(Main_menu(Fase1()))
+        self.director.add_state("GAME_OVER")
         self.done = True

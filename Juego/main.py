@@ -9,7 +9,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
     #creas el objeto game  Splash(Main_menu(Fase1()))
-    game = Game(screen, Fase1())
+    game = Game(screen, "SPLASH")
     game.run()
 
     pygame.quit()

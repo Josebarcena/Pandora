@@ -9,7 +9,7 @@ from Recursos.config import *
 # En este caso se implementa como una clase vacía, solo con métodos de clase
 class GestorRecursos(object):
     resources = {}
-            
+    
     @classmethod
     def LoadImage(cls, path, name, transparent=None):
         # Si el nombre de archivo está entre los recursos ya cargados
@@ -22,7 +22,6 @@ class GestorRecursos(object):
                 resource = cls.LoadSpritesPandora()
             # Se carga la imagen indicando la carpeta en la que está
             fullname = os.path.join("Recursos\\",path, name)
-            print(fullname)
             if(path == "Imagenes"):
                 try:
                     resource = pygame.image.load(fullname)

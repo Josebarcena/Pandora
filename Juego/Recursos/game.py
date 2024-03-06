@@ -6,16 +6,18 @@ from Niveles.Fase1 import *
 from Recursos.Gestor_recursos import *
 from Niveles.Menus import *
 from Personajes.player import *
+from Recursos.Factory import *
 
 
 #Clase director que mira los states por los que pasa el juego, administra los states
 class Game(object):
     def __init__(self,screen, start_state):
         self.screen = screen
-        self.done = False #condicion para el siguiente nivel del juego
         self.clock = pygame.time.Clock() #reloj 
         self.fps = FPS #los fps para el reloj
-        self.state = start_state #se selecciona ese nivel de los estados que se pasaron
+        self.states = [start_state]
+
+        self.state = Factory.create_state(start_state,self) #se selecciona ese nivel de los estados que se pasaron
 
         mixer.init()
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
@@ -23,15 +25,27 @@ class Game(object):
         mixer.music.play()
 
 
-    def event_loop(self): #el state es el que recibe los eventos y actua acorde a ellos
-        for event in pygame.event.get():
-            self.state.get_event(event)
+    def add_state(self, state):
+        self.states.insert(0,Factory.create_state(state,self))
 
-    def flip_state(self): #Cambiar de estado
+    def unstack_state(self):
+        print("ANTES",self.states)
         mixer.music.stop() #se para la musica
         self.state.done = False #se resetea la condicion
-        self.state = self.state.next_state
+        self.state = self.states.pop(0)
+        print("DESPUES",self.states)
+        #Preparamos el siguiente nivel
+        self.screen.fill((0, 0, 0)) #pintar negro al principio del state
+        mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
+        mixer.music.set_volume(0.2) #el volumen
+        mixer.music.play()
 
+    def flip_state(self): #Cambiar de estado
+        print(self.states)
+        mixer.music.stop() #se para la musica
+        self.state.done = False #se resetea la condicion
+        print(self.states)
+        self.state = self.states[0]
 
         #Preparamos el siguiente nivel
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
@@ -39,20 +53,13 @@ class Game(object):
         mixer.music.set_volume(0.2) #el volumen
         mixer.music.play()
 
-    def update(self, tick): #actualiza el state de acuerdo a su funcion mirando si se dio la condicion de salir
-        if self.state.quit:
-            self.done = True
-        elif self.state.done:
-            self.flip_state()
-        self.state.update(tick)
-    
     def draw(self): # se pinta el state con su funcion
         self.state.draw(self.screen)
     
     def run(self): # el bucle clasico de pygame con los fps
-        while not self.done:
+        while not self.state.quit:
             tick = self.clock.tick(self.fps)
-            self.event_loop()
-            self.update(tick)
+            events =  pygame.event.get()
+            self.state.update(tick,events)
             self.draw()
             pygame.display.update()
