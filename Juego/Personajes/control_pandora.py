@@ -96,6 +96,7 @@ class Control:
                 self.bool_air = True
 
         if self.state == 'attacking':
+            self.player.set_animacion_attack()
             self.player.attack.run_att(True, self.dash_face)
             if self.cont_frames > 0:
                 self.cont_frames -= 1
@@ -121,23 +122,27 @@ class Control:
             self.facing = 'left'
             if self.state != 'jumping' and self.bool_air is False:
                 self.player.set_animacion_run()
-            if self.state != 'dashing' and self.state != 'attacking':
+            elif self.state != 'dashing' and self.state != 'attacking':
                 self.dash_face = 'left'
+            elif self.bool_air is True:
+                self.player.set_animacion_jump()
         if keys[pygame.K_RIGHT]:
             x_change += PLAYER_SPEED
             self.facing = 'right'
             if self.state != 'jumping' and self.bool_air is False:
                 self.player.set_animacion_run()
-            if self.state != 'dashing' and self.state != 'attacking':
+            elif self.state != 'dashing' and self.state != 'attacking':
                 self.dash_face = 'right'
+            elif self.bool_air is True:
+                self.player.set_animacion_jump()
 
         if keys[pygame.K_SPACE]:
             self.change_state('jumping')
             self.player.set_animacion_jump()
-
         # Se evita que se pueda dashear y saltar a la vez
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
+
         if keys[pygame.K_p]:
             self.change_state('attack')
 

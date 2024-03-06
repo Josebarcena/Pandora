@@ -14,8 +14,8 @@ class Attack(pygame.sprite.Sprite):
         self.height = ATTACK_HEIGHT * SCALE
 
         self.image = pygame.Surface([self.width, self.height])
+        self.image.set_alpha(0)
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.image.fill(RED)
 
         # Almacena si se está realizando el dash o no
         self.run = False
@@ -26,7 +26,6 @@ class Attack(pygame.sprite.Sprite):
         self.facing = dir
     def update(self):
         if self.run:
-            self.image.fill(BLACK)
             self.rect.y = self.player.rect.y - (self.height - self.player.heigh)
             if self.facing == 'right':
                 self.rect.x = self.player.rect.x

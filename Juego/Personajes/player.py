@@ -29,13 +29,15 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
 
         # Variables de animación
-        self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0)
-        self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101)
-        self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361)
+        self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
+        self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
+        self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
+        self.animaciones_attack = GestorRecursos.almacenar_animacion_fila(11, 55, 42, 10, 150, 89, 15, 133, 0, 179)
         self.animacion_actual = self.animaciones_idle  # Inicialmente, el jugador está en estado quieto
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.frame_index_jump = 0  # Índice del fotograma actual para la animación de saltar
+        self.frame_index_attack = 0 # Índice del fotograma actual para la animación de atacar
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
         # Para las animaciones, sin implementar
@@ -64,11 +66,14 @@ class Player(pygame.sprite.Sprite):
             cooldown_animacion = 180
             frame_index = self.frame_index_idle
         elif animation_array == self.animaciones_run:
-            cooldown_animacion = 120
+            cooldown_animacion = 80
             frame_index = self.frame_index_run
         elif animation_array == self.animaciones_jump:
             cooldown_animacion = 150
             frame_index = self.frame_index_jump
+        elif animation_array == self.animaciones_attack:
+            cooldown_animacion = 100
+            frame_index = self.frame_index_attack
 
         if tiempo_actual - self.update_time >= cooldown_animacion:
             frame_index += 1
@@ -89,6 +94,10 @@ class Player(pygame.sprite.Sprite):
             self.frame_index_jump = frame_index
             self.animation_image = animation_array[frame_index]
 
+        elif animation_array == self.animaciones_attack:
+            self.frame_index_attack = frame_index
+            self.animation_image = animation_array[frame_index]
+
         if self.control.facing == 'left':
             self.image = pygame.transform.flip(self.animation_image, True, False)
         else:
@@ -97,9 +106,11 @@ class Player(pygame.sprite.Sprite):
 
         # Escalar la imagen según el tamaño final deseado
         if animation_array == self.animaciones_run:
-            self.image = pygame.transform.scale(self.image, (TILESIZE *1.5 * SCALE, TILESIZE * 2* SCALE))
+            self.image = pygame.transform.scale(self.image, (TILESIZE *1.5 * SCALE, TILESIZE * 2 * SCALE))
         elif animation_array == self.animaciones_jump or animation_array == self.animaciones_idle:
             self.image = pygame.transform.scale(self.image, (TILESIZE * SCALE, TILESIZE * 2 * SCALE))
+        elif animation_array == self.animaciones_attack:
+            self.image = pygame.transform.scale(self.image, (TILESIZE * 2.5 * SCALE, TILESIZE * 2 * SCALE))
 
     # Método en el que se actualiza el cubo
     def update(self):
@@ -219,3 +230,7 @@ class Player(pygame.sprite.Sprite):
     def set_animacion_jump(self):
         self.animacion_actual = self.animaciones_jump
         self.update_image(self.animaciones_jump)
+
+    def set_animacion_attack(self):
+        self.animacion_actual = self.animaciones_attack
+        self.update_image(self.animaciones_attack)
