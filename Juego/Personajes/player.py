@@ -47,6 +47,7 @@ class Player(pygame.sprite.Sprite):
 
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
+        self.animation_change = None
         self.hp = 5
 
         # Cargar la imagen del personaje
@@ -105,11 +106,17 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.control.update_cd()
 
-        if self.invul != 0: #Durante este tiempo no se puede recibir daño de nuevo
+        if self.invul != 0:
+            self.animaciones_idle[0].set_alpha(0)
+            self.animaciones_run[0].set_alpha(0)
+            self.animaciones_jump[0].set_alpha(0)
             self.invul += 1
             if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
                 self.invul = 0
-
+                print("alpha")
+                self.animaciones_idle[0].set_alpha(255)
+                self.animaciones_run[0].set_alpha(255)
+                self.animaciones_jump[0].set_alpha(255)
         self.x_change, self.y_change = self.control.movement()
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)

@@ -117,12 +117,12 @@ class Enemy(pygame.sprite.Sprite):
                     self.animacion_actual = self.animaciones_idle_angry
                     self.state = 'agro'
                     self.update_image(self.animacion_actual)
-                    self.x_change += ENEMIES_SPEED_AGRO
+                    self.x_change += ENEMIES_SPEED_AGRO * 0.5
                 else:
                     self.animacion_actual = self.animaciones_idle
                     self.state = 'normal'
                     self.update_image(self.animacion_actual)
-                    self.x_change += ENEMY_SPEED
+                    self.x_change += ENEMY_SPEED * 0.5
 
     def collide_blocks(self, collision, direction):
          #Comprobamos con que choca
