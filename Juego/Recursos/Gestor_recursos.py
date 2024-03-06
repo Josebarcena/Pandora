@@ -82,12 +82,13 @@ class GestorRecursos(object):
 
     @classmethod
     def almacenar_animacion_fila(cls, num_imagenes, ancho_imagen, altura_imagen, separacion_x, inicio_x, inicio_y,
-                                 inicio_siguiente_fila_x, inicio_siguiente_fila_y):
+                                 inicio_fila2_x, inicio_fila2_y, inicio_fila3_x, inicio_fila3_y):
         imagen = pygame.image.load('Warrior_Sheet-Effect.png').convert_alpha()
         animaciones = []
-        j = 0  # Inicializamos j en 1 para rastrear la posición en la fila
+        j = 0  # Inicializamos j en 0 para rastrear la posición en la fila
         limite = 414
-        cambioFila = False
+        cambioFila = 0
+        finalFila = 31
         for i in range(num_imagenes):
 
             if i == 0:
@@ -99,17 +100,27 @@ class GestorRecursos(object):
                 j += 1  # Incrementamos j para rastrear la posición en la fila
 
             # Comprobacion para saber si cambiamos de fila
-            if (x + ancho_imagen + 31) > limite:
-                cambioFila = True
+            if (x + ancho_imagen + finalFila) > limite:
+                cambioFila += 1
                 j = 0  # Reiniciamos j cuando cambiamos de fila
 
-            if cambioFila:
+            if cambioFila == 1:
                 if j == 0:
-                    x = inicio_siguiente_fila_x
-                    y = inicio_siguiente_fila_y
+                    x = inicio_fila2_x
+                    y = inicio_fila2_y
                     j += 1  # Incrementamos j para rastrear la posición en la fila
                 else:
-                    x = inicio_siguiente_fila_x + ((ancho_imagen + separacion_x) * (j - 1))
+                    x = inicio_fila2_x + ((ancho_imagen + separacion_x) * (j - 1))
+                    j += 1  # Incrementamos j para rastrear la posición en la fila
+
+            if cambioFila == 2:
+                finalFila = 100
+                if j == 0:
+                    x = inicio_fila3_x
+                    y = inicio_fila3_y
+                    j += 1  # Incrementamos j para rastrear la posición en la fila
+                else:
+                    x = inicio_fila3_x + ((ancho_imagen + separacion_x) * (j - 1))
                     j += 1  # Incrementamos j para rastrear la posición en la fila
 
             imagen_recortada = imagen.subsurface((x, y, ancho_imagen, altura_imagen))
