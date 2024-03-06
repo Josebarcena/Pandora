@@ -3,7 +3,7 @@ from Recursos.config import *
 from Personajes.control_pandora import *
 from Personajes.Viewers import *
 from Recursos.Gestor_recursos import GestorRecursos
-
+from Personajes.attack import *
 
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
@@ -14,12 +14,11 @@ class Player(pygame.sprite.Sprite):
         self.final_height = None
         self.final_width = None
         self.game = game
+        self._layer = 5
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         # Posiciones iniciales del cubo y tamaño
-        self.x = x * TILESIZE
-        self.y = y * TILESIZE
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
 
@@ -44,6 +43,7 @@ class Player(pygame.sprite.Sprite):
 
         # Control del personaje
         self.control = Control(game, self)
+        self.attack = Attack(x, y, game, self)
 
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
@@ -125,11 +125,16 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.y += self.y_change
         self.collide_blocks(self.game.collide_Fase(self),"y")
-
+        self.collide_attack()
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
-    
+
+    def collide_attack(self):
+        if self.control.state == 'attacking':
+            hit = pygame.sprite.spritecollide(self.attack, self.game.enemies_layer, False)
+            if hit:
+                print("DAÑO AL ENEMIGO")
 
     def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:

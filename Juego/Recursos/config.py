@@ -13,6 +13,10 @@ WIN_HEIGHT = 720
 # Tamaño de los cubos usados y FPS que usará el reloj del programa
 TILESIZE = 16
 FPS = 60
+
+ATTACK_WIDTH = 44
+ATTACK_HEIGHT = 44
+
 # Limites en el eje x e y (el limite de la izq es SCROLL_LIMIT_X y el de la derecha será WIN_WIDTH - SCROLL_LIMIT_X)
 SCROLL_LIMIT_X_LEFT = 106 * SCALE
 SCROLL_LIMIT_X_RIGHT = WIN_WIDTH - (106 * SCALE)
@@ -25,10 +29,12 @@ JUMPING_SPEED = 2.5 * SCALE
 DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
+FRAMES_ATTACK = 120
 
 # Diferentes capas para el juego
-ENEMY_LAYER = 2
+ATTACK_LAYER = 4
 PLAYER_LAYER = 3
+ENEMY_LAYER = 2
 BLOCK_LAYER = 1
 PLAYER_SPEED = 3 * SCALE
 
