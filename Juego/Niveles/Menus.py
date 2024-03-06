@@ -8,7 +8,6 @@ class Splash(Base_state): #Clase splash para el principio del juego
         self.title  = self.font.render("Pandora's Game", True, pygame.Color(160, 192, 222)) #Titulo y color del titulo
         self.title_rect = self.title.get_rect(center = self.screen_rect.center) #Posicion del titulo
         self.director = director
-        self.director.add_state("MAIN_MENU")
         self.time = 0 #Timer para finalizar el splash
         self.background = GestorRecursos.LoadImage("Imagenes","splash.jpg") #fondo del Splash
         self.sound = "splash.mp3" # Sonido de nintendo de fondo
@@ -17,10 +16,11 @@ class Splash(Base_state): #Clase splash para el principio del juego
         for event in events:
             self.get_event(event)
         if self.done:
+            self.director.add_state("MAIN_MENU")
             self.director.unstack_state()
         else:
             self.time += tick
-            if self.time  >= 250:
+            if self.time  >= 2500:
                 self.done = True
 
     def draw(self, surface): # se dibuja el splash por pantalla
@@ -35,7 +35,6 @@ class Main_menu(Base_state):# Menu principal del juego
         self.index = 0 #indice para la opcion marcada
         self.options = ["START", "QUIT"] #opciones
         self.director = director
-        self.director.add_state("FASE1")
         self.background = GestorRecursos.LoadImage("Imagenes","bg.png")
         self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
         self.sound = "main_menu.mp3" 
@@ -65,6 +64,8 @@ class Main_menu(Base_state):# Menu principal del juego
         for event in events:
             self.get_event(event)
         if self.done:
+            self.director.add_state("FASE1")
+
             self.director.unstack_state()
         else:
             if self.alpha <= 120:
@@ -102,7 +103,7 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
             self.index = 0
             self.options = ["Menu", "Quit"]
             self.director = director
-            self.director.add_state("MAIN_MENU")
+            
             self.background = GestorRecursos.LoadImage("Imagenes","game_over.jpg")
             self.font = pygame.font.SysFont("trajan", 42)
             self.sound = "game_over.mp3"
@@ -134,6 +135,7 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
             self.get_event(event)
         
         if self.done:
+            self.director.add_state("MAIN_MENU")
             self.director.unstack_state()
         else:
             self.time += tick
@@ -202,7 +204,7 @@ class Pause_menu(Base_state):# Menu principal del juego
         for event in events:
             self.get_event(event)
         if self.done:
-            self.director.unstack_state()
+            self.director.flip_state()
         else:
             if self.alpha <= 120:
                 self.alpha = 255

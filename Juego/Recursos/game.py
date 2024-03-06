@@ -15,10 +15,10 @@ class Game(object):
         self.screen = screen
         self.clock = pygame.time.Clock() #reloj 
         self.fps = FPS #los fps para el reloj
-        self.states = [start_state]
 
+        self.states = []
         self.state = Factory.create_state(start_state,self) #se selecciona ese nivel de los estados que se pasaron
-
+        self.states.append(self.state)
         mixer.init()
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
@@ -29,11 +29,9 @@ class Game(object):
         self.states.insert(0,Factory.create_state(state,self))
 
     def unstack_state(self):
-        print("ANTES",self.states)
         mixer.music.stop() #se para la musica
         self.state.done = False #se resetea la condicion
         self.state = self.states.pop(0)
-        print("DESPUES",self.states)
         #Preparamos el siguiente nivel
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
