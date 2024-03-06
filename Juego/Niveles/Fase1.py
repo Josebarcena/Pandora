@@ -35,8 +35,6 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
         self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase12.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
-        self.director.add_state("MAIN_MENU")
-        
         self.sound = ("fase1.mp3") # el mp3 que sonara en la fase
         self.level = GestorRecursos.LoadImage("Fases","fase13.tmx") #El esqueleto del nivel
     

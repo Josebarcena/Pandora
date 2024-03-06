@@ -18,7 +18,7 @@ class Game(object):
 
         self.states = []
         self.state = Factory.create_state(start_state,self) #se selecciona ese nivel de los estados que se pasaron
-        self.states.append(self.state)
+        self.states.insert(0,self.state)
         mixer.init()
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
@@ -27,11 +27,14 @@ class Game(object):
 
     def add_state(self, state):
         self.states.insert(0,Factory.create_state(state,self))
+        print(self.states)
 
     def unstack_state(self):
+        print("ANTES UN: ",self.states)
         mixer.music.stop() #se para la musica
         self.state.done = False #se resetea la condicion
         self.state = self.states.pop(0)
+        print("DESPUES UN: ",self.states)
         #Preparamos el siguiente nivel
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
@@ -39,10 +42,10 @@ class Game(object):
         mixer.music.play()
 
     def flip_state(self): #Cambiar de estado
-        print(self.states)
+        print("ANTES FLIP: ",self.states)
         mixer.music.stop() #se para la musica
         self.state.done = False #se resetea la condicion
-        print(self.states)
+        print("DESPUES FLIP: ",self.states)
         self.state = self.states[0]
 
         #Preparamos el siguiente nivel

@@ -65,7 +65,6 @@ class Main_menu(Base_state):# Menu principal del juego
             self.get_event(event)
         if self.done:
             self.director.add_state("FASE1")
-
             self.director.unstack_state()
         else:
             if self.alpha <= 120:
@@ -204,7 +203,7 @@ class Pause_menu(Base_state):# Menu principal del juego
         for event in events:
             self.get_event(event)
         if self.done:
-            self.director.flip_state()
+            self.director.unstack_state()
         else:
             if self.alpha <= 120:
                 self.alpha = 255
