@@ -77,6 +77,7 @@ class Control:
         if self.state == 'normal' and self.bool_air:
             y_change += GRAVITY
         if self.state == 'jumping':
+            self.player.set_animacion_jump()
             if self.cont_frames > 0:
                 self.cont_frames -= 1
                 self.bool_air = True
@@ -85,6 +86,7 @@ class Control:
                 self.state = 'normal'
                 self.bool_air = True
         if self.state == 'dashing':
+            self.player.set_animacion_dash()
             if self.cont_frames > 0:
                 self.cont_frames -= 1
                 self.bool_air = True
@@ -139,14 +141,14 @@ class Control:
                 self.dash_face = 'right'
             elif self.bool_air is True: # Si el personaje esta en el aire se realiza la animacion de saltar
                 self.player.set_animacion_jump()
+
         # En este caso la tecla pulsada es la tecla de espacio
         if keys[pygame.K_SPACE]:
             self.change_state('jumping')
-            self.player.set_animacion_jump()
+
         # Se evita que se pueda dashear y saltar a la vez
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
-            self.player.set_animacion_dash()
 
         # En este caso la tecla pulsada es la tecla "P"
         if keys[pygame.K_p]:
