@@ -20,6 +20,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
         self.objects_layer = pygame.sprite.Group()
+        self.hope_layer = pygame.sprite.Group()
         self.limit = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
@@ -65,7 +66,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         object_layers = {
             'Jugador': (self.player_layer, self.visible_sprites),
             'Enemigos': (self.enemies_layer, self.visible_sprites),
-            'Pociones': (self.objects_layer, self.visible_sprites)
+            'Pociones': (self.objects_layer, self.visible_sprites),
+            'Esperanza': (self.hope_layer, self.visible_sprites)
         }
 
         Stage(self, 0, 0, self.stage_image, (self.visible_sprites,self.all_sprites, self.stage)) #una vez cargado el esqueleto se pinta el png por encima
@@ -80,7 +82,9 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             for objeto in tmx_map.get_layer_by_name(object_name): #se carga el jugador por encima
                 if object_name == "Pociones":
                     small_Potion(self, objeto.x * SCALE, objeto.y * SCALE, group)
-                if object_name == "Jugador":
+                elif object_name == "Esperanza":
+                    Hope(self, objeto.x * SCALE, objeto.y * SCALE, group)
+                elif object_name == "Jugador":
                     Player(self, objeto.x * SCALE, objeto.y * SCALE, group)
                     self.player = self.player_layer.sprites()[0]
                
@@ -142,6 +146,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 return (None,None)
             elif((hits:= pygame.sprite.spritecollide(player, self.objects_layer, False))):
                 return ("Potion",hits)
+            elif((hits:= pygame.sprite.spritecollide(player, self.hope_layer, False))):
+                return ("Hope",hits)
             elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
                 if(not hits[0].isdeath):
                     return("Damage",hits)

@@ -21,9 +21,11 @@ class Player(pygame.sprite.Sprite):
         # Posiciones iniciales del cubo y tamaño
         self.width = TILESIZE * SCALE
         self.height = TILESIZE * 2 * SCALE
+        
+        self.score = 0
 
         # Viewers
-        self.viewers = [Life_Bar()]
+        self.viewers = [Life_Bar(), Score(self)]
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
         self.x_change = 0
         self.y_change = 0
@@ -52,6 +54,7 @@ class Player(pygame.sprite.Sprite):
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
         self.health = MAX_HEALTH
+        
 
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
@@ -194,6 +197,11 @@ class Player(pygame.sprite.Sprite):
                 self.invul += 1
         elif collision[0] == "Potion":
             self.health = min(MAX_HEALTH,(self.health + collision[1][0].utility())) 
+            collision[1][0].kill()
+            self.viewers_update()
+        
+        elif collision[0] == "Hope":
+            self.score += 1
             collision[1][0].kill()
             self.viewers_update()
 

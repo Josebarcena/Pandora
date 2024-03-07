@@ -31,3 +31,25 @@ class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
         surface.blit(self.bar, (self.x + 16 * SCALE, self.y + 5 *SCALE))
         for i in range(1, self.max_health):
             pygame.draw.rect(surface, "black", (self.x + 16 * SCALE+(unit_width*i), self.y + 5 * SCALE, 2, self.bar_height))
+
+
+
+
+
+class Score(): #CLASE OBSERVADORA PARA LA VIDA
+    def __init__(self, player):
+        self.x = WIN_WIDTH - 80
+        self.y = 40
+        self.score = player.score
+        self.font = pygame.font.SysFont(None, 36)
+
+    def update(self, player):
+        self.score = player.score
+
+    def draw(self, surface):
+        text_surface = self.font.render(str(self.score), True, LIGHT_BLUE)
+        text_rect = text_surface.get_rect(center=(self.x, self.y))
+
+        # Dibujar el texto en la pantalla
+        surface.blit(text_surface, text_rect)
+
