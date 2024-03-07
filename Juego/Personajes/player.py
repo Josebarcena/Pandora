@@ -45,14 +45,13 @@ class Player(pygame.sprite.Sprite):
 
         self.facing = 'left'
         self.unstopable = 0
-        self.health = PLAYER_HEALTH
         # Control del personaje
         self.control = Control(game, self)
         self.attack = Attack(x, y, game, self)
 
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
-        self.hp = 5
+        self.health = MAX_HEALTH
 
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
@@ -185,11 +184,11 @@ class Player(pygame.sprite.Sprite):
 
         elif collision[0] == "Damage":
             if self.invul == 0:
-                self.hp -= 1
+                self.health -= 1
                 self.viewers_update()
             self.invul += 1
         elif collision[0] == "Potion":
-            self.hp += collision[1][0].utility()
+            self.health += collision[1][0].utility()
             collision[1][0].kill()
             self.viewers_update()
 

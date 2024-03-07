@@ -49,7 +49,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             self.get_event(event)
         if self.done:
             self.director.unstack_state()
-        if(self.player.hp <= 0):
+        if(self.player.health <= 0):
             self.gameover()
 
     def createTilemap(self, tmx_map): #crea el mapa desde tiled
@@ -118,10 +118,11 @@ class Fase1(Fase): #Clase para el primer nivel del juego
     def draw(self, surface): #la funcion que llama en bucle game para pintar cada frame la fase
         surface.fill((123,211,247))
         sprites = self.all_sprites
-        self.player.viewers.draw()
         sprites.update()
         self.screen_check(sprites, self.player, self.stage.sprites()[0])
         self.visible_sprites.draw(surface)
+        for viewer in self.player.viewers:
+            viewer.draw(surface)
         pygame.display.update()
 
 
