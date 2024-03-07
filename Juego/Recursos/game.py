@@ -45,7 +45,7 @@ class Game(object):
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
         mixer.music.set_volume(0.2) #el volumen
-        mixer.music.play()
+        mixer.music.play(-1)
 
     def flip_state(self): #Cambiar de estado
         print("ANTES FLIP: ",self.states)
@@ -55,10 +55,9 @@ class Game(object):
         self.state = self.states[0]
 
         #Preparamos el siguiente nivel
-        self.screen.fill((0, 0, 0)) #pintar negro al principio del state
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound) #se carga el nuevo sonido
         mixer.music.set_volume(0.2) #el volumen
-        mixer.music.play()
+        mixer.music.play(-1)
 
     def draw(self): # se pinta el state con su funcion
         self.state.draw(self.screen)

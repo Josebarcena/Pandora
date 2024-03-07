@@ -173,11 +173,11 @@ class Pause_menu(Base_state):# Menu principal del juego
     def __init__(self, director):
         super(Pause_menu, self).__init__()
         self.index = 0 #indice para la opcion marcada
-        self.options = ["START", "QUIT"] #opciones
+        self.options = ["RESUME", "QUIT"] #opciones
         self.director = director
-        self.background = GestorRecursos.LoadImage("Imagenes","bg.png")
+        #self.background = GestorRecursos.LoadImage("Imagenes","pause.png")
         self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
-        self.sound = "main_menu.mp3" 
+        self.sound = "pause.mp3" 
         self.alpha = 250 # alpha para el efecto parpadeo
 
     def render_text(self, index): # efecto parpadeo y marcado
@@ -229,7 +229,7 @@ class Pause_menu(Base_state):# Menu principal del juego
                 self.handle_action()
 
     def draw(self, surface): #pintar el menu por pantalla cada frame
-        surface.blit(self.background, (0,0))
+        #surface.blit(self.background, (0,0))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
