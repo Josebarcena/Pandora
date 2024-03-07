@@ -104,7 +104,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 self.quit = True
             elif event.type == KEYDOWN:
             # Verificar si se presiona una tecla específica
-                if event.key == K_p:
+                if event.key == K_ESCAPE:
                     self.director.add_state("PAUSE")
                     self.director.flip_state()
 
