@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="170" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="42" nextobjectid="51">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="170" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="43" nextobjectid="57">
  <tileset firstgid="1" name="prueba" tilewidth="16" tileheight="16" tilecount="8040" columns="120">
   <image source="prueba.png" width="1920" height="1080"/>
  </tileset>
  <tileset firstgid="8041" source="prueba.tsx"/>
+ <tileset firstgid="16081" name="pocion" tilewidth="1" tileheight="1" tilecount="0" columns="0"/>
  <layer id="30" name="Solido" width="170" height="90">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -568,8 +569,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="42" name="Pociones">
+  <object id="54" gid="122" x="136" y="1358.67" width="16" height="14"/>
+  <object id="55" gid="122" x="2584" y="990.667" width="16" height="14"/>
+  <object id="56" gid="122" x="2391.67" y="144.333" width="16" height="12.3333"/>
+ </objectgroup>
  <objectgroup id="8" name="Jugador">
-  <object id="1" gid="122" x="103.139" y="303.224" width="16" height="32"/>
+  <object id="1" gid="122" x="2459.47" y="147.891" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="35" name="Enemigos">
   <object id="35" gid="122" x="552" y="368" width="16" height="32"/>

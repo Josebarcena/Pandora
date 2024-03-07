@@ -18,10 +18,6 @@ class Player(pygame.sprite.Sprite):
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        # Posiciones iniciales del cubo y tamaño
-        self.width = TILESIZE * SCALE
-        self.height = TILESIZE * 2 * SCALE
-
         # Viewers
         self.viewers = [Life_Bar()]
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
@@ -60,6 +56,7 @@ class Player(pygame.sprite.Sprite):
         # Crear el rectángulo de colisión con las dimensiones del personaje recortado
         self.rect = self.image.get_rect(bottomleft=(x, y))
         self.previous_rect = self.rect
+        print("player",self.rect)
 
     def update_image(self, animation_array):
         # Recogemos el tiempo actual en el juego
@@ -185,12 +182,16 @@ class Player(pygame.sprite.Sprite):
         elif collision[0] == "Damage":
             if self.invul == 0:
                 self.hp -= 1
+
                 self.viewers_update()
             self.invul += 1
-        
+        elif collision[0] == "Potion":
+            self.hp += collision[1][0].utility()
+            collision[1][0].kill()
+            self.viewers_update()
+
         elif collision[0] == "Stairs":
             self.stairs_Collision(collision[1], direction)
-        
         elif collision[0] != None:
             pass
         else:
