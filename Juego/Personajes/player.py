@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.width = TILESIZE * SCALE
         self.height = TILESIZE * 2 * SCALE
         
-        self.score = 0
+        self.score = 123456788
 
         # Viewers
         self.viewers = [Life_Bar(), Score(self)]
@@ -135,7 +135,6 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.control.update_cd()
 
-        print(self.invul)
         if self.invul != 0:
             for sprite in self.idle_animations:
                 sprite.set_alpha(120)
@@ -201,7 +200,7 @@ class Player(pygame.sprite.Sprite):
             self.viewers_update()
         
         elif collision[0] == "Hope":
-            self.score += 1
+            self.score += collision[1][0].utility()
             collision[1][0].kill()
             self.viewers_update()
 

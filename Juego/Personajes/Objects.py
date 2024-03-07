@@ -52,9 +52,6 @@ class small_Potion(Item):
         screen.blit(self.image, self.rect)
 
 
-
-
-
 class Hope(Item):
     def __init__(self, game, x, y, group):
         super(Hope, self).__init__()
@@ -71,7 +68,7 @@ class Hope(Item):
         self.rect = self.image.get_rect(bottomleft = (x,y))
 
     def utility(self):
-        return 2
+        return 1
     
     def draw(self, screen):
         screen.blit(self.image, self.rect)

@@ -1,5 +1,6 @@
 from Recursos.config import *
 from Recursos.Gestor_recursos import GestorRecursos
+import os
 
 class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
     def __init__(self):
@@ -33,22 +34,23 @@ class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
             pygame.draw.rect(surface, "black", (self.x + 16 * SCALE+(unit_width*i), self.y + 5 * SCALE, 2, self.bar_height))
 
 
-
-
-
 class Score(): #CLASE OBSERVADORA PARA LA VIDA
     def __init__(self, player):
         self.x = WIN_WIDTH - 80
         self.y = 40
         self.score = player.score
-        self.font = pygame.font.SysFont(None, 36)
+        current_dir = os.path.dirname(__file__)
+        print(current_dir)
+        font_path = os.path.abspath(os.path.join(current_dir, "..", "Recursos", "Fuente", "RetroStyle.ttf"))
+        print(font_path)
+        self.font = pygame.font.Font(font_path, 36)
 
     def update(self, player):
         self.score = player.score
 
     def draw(self, surface):
         text_surface = self.font.render(str(self.score), True, LIGHT_BLUE)
-        text_rect = text_surface.get_rect(bottomright=(self.x, self.y))
+        text_rect = text_surface.get_rect(topright=(self.x, self.y))
 
         # Dibujar el texto en la pantalla
         surface.blit(text_surface, text_rect)
