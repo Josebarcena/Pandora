@@ -575,7 +575,7 @@
   <object id="56" gid="122" x="2391.67" y="144.333" width="16" height="12.3333"/>
  </objectgroup>
  <objectgroup id="8" name="Jugador">
-  <object id="1" gid="122" x="2459.47" y="147.891" width="16" height="32"/>
+  <object id="1" gid="122" x="92.1367" y="304.224" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="35" name="Enemigos">
   <object id="35" gid="122" x="552" y="368" width="16" height="32"/>

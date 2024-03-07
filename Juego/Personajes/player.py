@@ -57,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.update_image(self.actual_animation)
 
         # Crear el rectángulo de colisión con las dimensiones del personaje recortado
-        self.rect = self.image.get_rect(bottomleft=(x, y))
+        self.rect = self.image.get_rect(bottomleft=(x, y+self.height))
         self.previous_rect = self.rect
         print("player",self.rect)
 
@@ -150,17 +150,12 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.y += self.y_change
         self.collide_blocks(self.game.collide_Fase(self),"y")
-        self.collide_enemies()
+        #self.collide_enemies()
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
-    def collide_enemies(self):
-        hits = pygame.sprite.spritecollide(self, self.game.enemies_layer, False)
-        self.unstopable -= 1
-        if hits and self.unstopable < 0:
-            #print("--DAMAGE, helath: " + str(self.health - 1))
-            self.health -= 1
-            self.unstopable = UNSTOPBLE_FRAMES
+   
+    
 
     def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:
@@ -233,6 +228,15 @@ class Player(pygame.sprite.Sprite):
                     self.control.change_state('ground')
                     # Mover al jugador a la nueva posición
                     self.rect.y = new_y
+    '''
+    def collide_enemies(self):
+        hits = pygame.sprite.spritecollide(self, self.game.enemies_layer, False)
+        self.unstopable -= 1
+        if hits and self.unstopable < 0:
+            #print("--DAMAGE, helath: " + str(self.health - 1))
+            self.health -= 1
+            self.unstopable = UNSTOPBLE_FRAMES
+    ''' 
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
