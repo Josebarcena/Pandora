@@ -28,19 +28,19 @@ class Player(pygame.sprite.Sprite):
         self.x_change = 0
         self.y_change = 0
 
-        # Variables de animación
+        # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del personaje
         self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
         self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
         self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
         self.animaciones_attack = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
         self.animacion_actual = self.animaciones_idle  # Inicialmente, el jugador está en estado quieto
+        # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.frame_index_jump = 0  # Índice del fotograma actual para la animación de saltar
         self.frame_index_attack = 0 # Índice del fotograma actual para la animación de atacar
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
-        # Para las animaciones, sin implementar
         self.facing = 'left'
 
         # Control del personaje
@@ -59,6 +59,7 @@ class Player(pygame.sprite.Sprite):
         self.previous_rect = self.rect
 
     def update_image(self, animation_array):
+        # Recogemos el tiempo actual en el juego
         tiempo_actual = pygame.time.get_ticks()
 
         # Actualizamos las variables dependiendo del tipo de animacion que se esta realizando
@@ -75,6 +76,7 @@ class Player(pygame.sprite.Sprite):
             cooldown_animacion = 60
             frame_index = self.frame_index_attack
 
+        # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
         if tiempo_actual - self.update_time >= cooldown_animacion:
             frame_index += 1
             self.update_time = tiempo_actual
@@ -85,19 +87,17 @@ class Player(pygame.sprite.Sprite):
         if animation_array == self.animaciones_idle:
             self.frame_index_idle = frame_index
             self.animation_image = animation_array[frame_index]
-
         elif animation_array == self.animaciones_run:
             self.frame_index_run = frame_index
             self.animation_image = animation_array[frame_index]
-
         elif animation_array == self.animaciones_jump:
             self.frame_index_jump = frame_index
             self.animation_image = animation_array[frame_index]
-
         elif animation_array == self.animaciones_attack:
             self.frame_index_attack = frame_index
             self.animation_image = animation_array[frame_index]
 
+        # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
         if self.control.facing == 'left':
             self.image = pygame.transform.flip(self.animation_image, True, False)
         else:
@@ -221,18 +221,22 @@ class Player(pygame.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+    # Funcion para establecer la animacion de IDLE (parado)
     def set_animacion_idle(self):
         self.animacion_actual = self.animaciones_idle
         self.update_image(self.animaciones_idle)
 
+    # Funcion para establecer la animacion de RUN (corriendo)
     def set_animacion_run(self):
         self.animacion_actual = self.animaciones_run
         self.update_image(self.animaciones_run)
 
+    # Funcion para establecer la animacion de JUMP (saltando)
     def set_animacion_jump(self):
         self.animacion_actual = self.animaciones_jump
         self.update_image(self.animaciones_jump)
 
+    # Funcion para establecer la animacion de ATTACK (atacando)
     def set_animacion_attack(self):
         self.animacion_actual = self.animaciones_attack
         self.update_image(self.animaciones_attack)

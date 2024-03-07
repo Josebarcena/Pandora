@@ -29,6 +29,9 @@ JUMP_SCALE = TILESIZE * SCALE, TILESIZE * 2 * SCALE
 IDLE_SCALE = TILESIZE * SCALE, TILESIZE * 2 * SCALE
 ATTACK_SCALE = TILESIZE * 2.8 * SCALE, TILESIZE * 2 * SCALE
 
+# Variables de escalado de imagen del enemigo
+RUN_SCALE_ENEMY = TILESIZE * SCALE, TILESIZE * 2 * SCALE
+
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
 GRAVITY = 3 * SCALE
 JUMPING_SPEED = 2.5 * SCALE

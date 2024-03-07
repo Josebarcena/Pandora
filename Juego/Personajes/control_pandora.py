@@ -117,25 +117,27 @@ class Control:
         if not (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]) and self.bool_air is False:
             self.player.set_animacion_idle()
 
+        # En este caso la tecla pulsada es la tecla de direccion izquierda
         if keys[pygame.K_LEFT]:
             x_change -= PLAYER_SPEED
             self.facing = 'left'
-            if self.state != 'jumping' and self.bool_air is False:
+            if self.state != 'jumping' and self.bool_air is False: # Si esta en el suelo se realiza la animacion de correr
                 self.player.set_animacion_run()
-            elif self.state != 'dashing' and self.state != 'attacking':
+            elif self.state != 'dashing' and self.state != 'attacking': # Si no esta dasheando ni atacando se modifica el sentido en el que va a mirar dasheando
                 self.dash_face = 'left'
-            elif self.bool_air is True:
+            elif self.bool_air is True: # Si el personaje esta en el aire se realiza la animacion de saltar
                 self.player.set_animacion_jump()
+        # En este caso la tecla pulsada es la tecla de direccion derecha
         if keys[pygame.K_RIGHT]:
             x_change += PLAYER_SPEED
             self.facing = 'right'
-            if self.state != 'jumping' and self.bool_air is False:
+            if self.state != 'jumping' and self.bool_air is False: # Si esta en el suelo se realiza la animacion de correr
                 self.player.set_animacion_run()
-            elif self.state != 'dashing' and self.state != 'attacking':
+            elif self.state != 'dashing' and self.state != 'attacking': # Si no esta dasheando ni atacando se modifica el sentido en el que va a mirar dasheando
                 self.dash_face = 'right'
-            elif self.bool_air is True:
+            elif self.bool_air is True: # Si el personaje esta en el aire se realiza la animacion de saltar
                 self.player.set_animacion_jump()
-
+        # En este caso la tecla pulsada es la tecla de espacio
         if keys[pygame.K_SPACE]:
             self.change_state('jumping')
             self.player.set_animacion_jump()
@@ -143,6 +145,7 @@ class Control:
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
 
+        # En este caso la tecla pulsada es la tecla "P"
         if keys[pygame.K_p]:
             self.change_state('attack')
 

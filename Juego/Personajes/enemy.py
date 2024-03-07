@@ -23,9 +23,12 @@ class Enemy(pygame.sprite.Sprite):
 
         self.facing = 'left'
         self.state = 'normal'
+        # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del enemigo
+        # Si en la siguiente linea se modifica Enemies_Sheet-Effect.png por Enemies_Sheet-Effect2.png y viceversa se muestra otro sprite para el enemigo
         self.animaciones_idle = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
         self.animaciones_idle_angry = GestorRecursos.loadSpritesEnemies('EnemiesAngry_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
         self.animacion_actual = self.animaciones_idle
+        # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
@@ -39,9 +42,11 @@ class Enemy(pygame.sprite.Sprite):
     def update_image(self, animation_array):
         tiempo_actual = pygame.time.get_ticks()
 
+        # Cooldown entre cada una de las imagenes
         cooldown_animacion = 180
         frame_index = self.frame_index_idle
 
+        # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
         if tiempo_actual - self.update_time >= cooldown_animacion:
             frame_index += 1
             self.update_time = tiempo_actual
@@ -51,13 +56,14 @@ class Enemy(pygame.sprite.Sprite):
         self.frame_index_idle = frame_index
         self.animation_image = animation_array[frame_index]
 
+        # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
         if self.facing == 'left':
             self.image = pygame.transform.flip(self.animation_image, True, False)
         else:
             self.image = self.animation_image
 
 
-        self.image = pygame.transform.scale(self.image, (TILESIZE * SCALE, TILESIZE * 2 * SCALE))
+        self.image = pygame.transform.scale(self.image, (RUN_SCALE_ENEMY))
 
     def draw(self, screen):
         screen.blit(screen, self.image, self.rect)
