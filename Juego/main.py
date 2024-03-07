@@ -3,7 +3,6 @@ from Niveles.Menus import *
 
 # Creamos nuestra instancia juego y comenzamos el juego
 if __name__ == '__main__':
-    print(min(5,3))
     pygame.init()
     pygame.display.set_caption('Pandora\'s Game')
 
