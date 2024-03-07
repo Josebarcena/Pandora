@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.width = TILESIZE * SCALE
         self.height = TILESIZE * 2 * SCALE
         
-        self.score = 123456788
+        self.score = 0
 
         # Viewers
         self.viewers = [Life_Bar(), Score(self)]

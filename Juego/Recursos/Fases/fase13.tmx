@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="170" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="44" nextobjectid="59">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="170" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="44" nextobjectid="71">
  <tileset firstgid="1" name="prueba" tilewidth="16" tileheight="16" tilecount="8040" columns="120">
   <image source="prueba.png" width="1920" height="1080"/>
  </tileset>
  <tileset firstgid="8041" source="prueba.tsx"/>
  <tileset firstgid="16081" name="pocion" tilewidth="1" tileheight="1" tilecount="0" columns="0"/>
- <tileset firstgid="16081" source="./prueba.tsx"/>
  <layer id="30" name="Solido" width="170" height="90">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -577,9 +576,21 @@
  </objectgroup>
  <objectgroup id="43" name="Esperanza">
   <object id="58" gid="122" x="2570.67" y="170.667" width="16" height="20"/>
+  <object id="59" gid="122" x="250.667" y="298" width="16" height="20"/>
+  <object id="60" gid="122" x="898.667" y="364.667" width="16" height="20"/>
+  <object id="61" gid="122" x="1294.67" y="318" width="16" height="20"/>
+  <object id="62" gid="122" x="2536" y="335.333" width="16" height="20"/>
+  <object id="63" gid="122" x="1374.67" y="688.667" width="16" height="20"/>
+  <object id="64" gid="122" x="1242.67" y="643.333" width="16" height="20"/>
+  <object id="65" gid="122" x="1400" y="608.667" width="16" height="20"/>
+  <object id="66" gid="122" x="1072" y="558" width="16" height="20"/>
+  <object id="67" gid="122" x="278.667" y="527.333" width="16" height="20"/>
+  <object id="68" gid="122" x="374.667" y="976.667" width="16" height="20"/>
+  <object id="69" gid="122" x="1876" y="988.667" width="16" height="20"/>
+  <object id="70" gid="122" x="1884" y="1358" width="16" height="20"/>
  </objectgroup>
  <objectgroup id="8" name="Jugador">
-  <object id="1" gid="122" x="2455.77" y="140.588" width="16" height="32"/>
+  <object id="1" gid="122" x="111.77" y="303.255" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="35" name="Enemigos">
   <object id="35" gid="122" x="552" y="368" width="16" height="32"/>
