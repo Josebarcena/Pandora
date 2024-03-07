@@ -33,12 +33,14 @@ class Player(pygame.sprite.Sprite):
         self.run_animations = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
         self.jump_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
         self.attack_animations = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
+        self.dash_animations = GestorRecursos.almacenar_animacion_fila(4, 31, 21, 39, 151, 641, 0, 0, 0, 0)
         self.actual_animation = self.idle_animations  # Inicialmente, el jugador está en estado quieto
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.frame_index_jump = 0  # Índice del fotograma actual para la animación de saltar
         self.frame_index_attack = 0 # Índice del fotograma actual para la animación de atacar
+        self.frame_index_dash = 0   # Índice del fotograma actual para la animación de dash
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
         self.facing = 'left'
@@ -75,6 +77,10 @@ class Player(pygame.sprite.Sprite):
         elif animation_array == self.attack_animations:
             cooldown_animation = 60
             frame_index = self.frame_index_attack
+        elif animation_array == self.dash_animations:
+            cooldown_animation = 60
+            frame_index = self.frame_index_dash
+
 
         # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
         if actual_time - self.update_time >= cooldown_animation:
@@ -96,6 +102,9 @@ class Player(pygame.sprite.Sprite):
         elif animation_array == self.attack_animations:
             self.frame_index_attack = frame_index
             self.animation_image = animation_array[frame_index]
+        elif animation_array == self.dash_animations:
+            self.frame_index_dash = frame_index
+            self.animation_image = animation_array[frame_index]
 
         # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
         if self.control.facing == 'left':
@@ -106,13 +115,15 @@ class Player(pygame.sprite.Sprite):
 
         # Escalar la imagen según el tamaño final deseado
         if animation_array == self.run_animations:
-            self.image = pygame.transform.scale(self.image, (RUN_SCALE))
+            self.image = pygame.transform.scale(self.image, RUN_SCALE)
         elif animation_array == self.jump_animations:
-            self.image = pygame.transform.scale(self.image, (JUMP_SCALE))
+            self.image = pygame.transform.scale(self.image, JUMP_SCALE)
         elif animation_array == self.idle_animations:
-            self.image = pygame.transform.scale(self.image, (IDLE_SCALE))
+            self.image = pygame.transform.scale(self.image, IDLE_SCALE)
         elif animation_array == self.attack_animations:
-            self.image = pygame.transform.scale(self.image, (ATTACK_SCALE))
+            self.image = pygame.transform.scale(self.image, ATTACK_SCALE)
+        elif animation_array == self.dash_animations:
+            self.image = pygame.transform.scale(self.image, DASH_SCALE)
 
     # Método en el que se actualiza el cubo
     def update(self):
@@ -240,3 +251,7 @@ class Player(pygame.sprite.Sprite):
     def set_animacion_attack(self):
         self.actual_animation = self.attack_animations
         self.update_image(self.attack_animations)
+
+    def set_animacion_dash(self):
+        self.actual_animation = self.dash_animations
+        self.update_image(self.dash_animations)

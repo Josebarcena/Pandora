@@ -144,6 +144,8 @@ class Control:
         # Se evita que se pueda dashear y saltar a la vez
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
+            if self.bool_air is True:
+                self.player.set_animacion_dash()
 
         # En este caso la tecla pulsada es la tecla "P"
         if keys[pygame.K_p]:

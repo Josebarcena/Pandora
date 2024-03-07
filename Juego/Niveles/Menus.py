@@ -1,3 +1,4 @@
+import pygame.time
 from Recursos.config import *
 from Recursos.Gestor_recursos import *
 from Niveles.Fase import *

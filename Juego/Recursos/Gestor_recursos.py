@@ -83,7 +83,7 @@ class GestorRecursos(object):
     @classmethod
     def almacenar_animacion_fila(cls, num_imagenes, ancho_imagen, altura_imagen, separacion_x, inicio_x, inicio_y,
                                  inicio_fila2_x, inicio_fila2_y, inicio_fila3_x, inicio_fila3_y):
-        imagen = pygame.image.load('Warrior_Sheet-Effect.png').convert_alpha()
+        imagen = pygame.image.load('Warrior_SheetnoEffect.png').convert_alpha()
         animaciones = []
         j = 0  # Inicializamos j en 0 para rastrear la posición en la fila
         limite = 414
