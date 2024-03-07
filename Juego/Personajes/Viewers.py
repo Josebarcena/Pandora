@@ -4,7 +4,7 @@ class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
     def __init__(self):
         self.x = 40
         self.y = 40
-        self.witdh = 300 
+        self.width = 300 
         self.height = 40 
         self.max_health = MAX_HEALTH
         self.hp = MAX_HEALTH
@@ -14,5 +14,8 @@ class Life_Bar(): #CLASE OBSERVADORA PARA LA VIDA
 
     def draw(self, surface):
         ratio = self.hp/self.max_health
-        pygame.draw.rect(surface, "red", (self.x, self.y, self.witdh, self.height))
-        pygame.draw.rect(surface, "green", (self.x, self.y, self.witdh * ratio, self.height))
+        unit_width = self.width / self.max_health
+        pygame.draw.rect(surface, "red", (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(surface, "green", (self.x, self.y, self.width * ratio, self.height))
+        for i in range(self.max_health):
+            pygame.draw.rect(surface, "black", (self.x+(unit_width*i), self.y, 2, self.height))
