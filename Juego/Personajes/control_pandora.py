@@ -26,6 +26,7 @@ class Control:
         self.dash_face = 'right'
         self.game = game
         self.player = player
+        self.cooldown_attack = 0
 
     #Retraso para evitar saltar varias veces de golpe
     def update_cd(self):
@@ -63,7 +64,7 @@ class Control:
                 self.cont_frames = FRAMES_DASH
         if newstate == 'attack':
             # Solo se podrá realizar el ataque si el personaj está en modo normal y en el suelo
-            if self.state == 'normal' and self.bool_air == False:
+            if self.state == 'normal' and self.bool_air == False and self.cooldown_attack <= 0:
                 self.state = 'attacking'
                 self.cont_frames = FRAMES_ATTACK
 
@@ -102,8 +103,10 @@ class Control:
                 self.cont_frames -= 1
             else:
                 self.state = 'normal'
+                self.cooldown_attack = FRAMES_COOLDOWN_ATTACK
                 self.player.attack. update_state(False, self.dash_face)
             x_change, y_change = 0, 0
+        self.cooldown_attack -= 1
         return x_change, y_change
 
     # En este método capturamos las teclas pulsadas por el usuario y añadimos el movimiento necesario a las variables
@@ -143,8 +146,7 @@ class Control:
         # Se evita que se pueda dashear y saltar a la vez
         elif keys[pygame.K_TAB]:
             self.change_state('dashing')
-            if self.bool_air is True:
-                self.player.set_animacion_dash()
+            self.player.set_animacion_dash()
 
         # En este caso la tecla pulsada es la tecla "P"
         if keys[pygame.K_p]:
