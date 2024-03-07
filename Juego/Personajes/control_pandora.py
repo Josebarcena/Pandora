@@ -97,14 +97,13 @@ class Control:
 
         if self.state == 'attacking':
             self.player.set_animacion_attack()
-            self.player.attack.run_att(True, self.dash_face)
+            self.player.attack. update_state(True, self.dash_face)
             if self.cont_frames > 0:
                 self.cont_frames -= 1
             else:
                 self.state = 'normal'
+                self.player.attack. update_state(False, self.dash_face)
             x_change, y_change = 0, 0
-        else:
-            self.player.attack.run_att(False, self.dash_face)
         return x_change, y_change
 
     # En este método capturamos las teclas pulsadas por el usuario y añadimos el movimiento necesario a las variables

@@ -40,6 +40,8 @@ DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
 FRAMES_ATTACK = 35
+PLAYER_HEALTH = 5
+UNSTOPBLE_FRAMES = 15
 
 # Diferentes capas para el juego
 ATTACK_LAYER = 4
@@ -55,8 +57,11 @@ PIXELS_ENEMIES_AGRO_Y = 150
 # Variables para controlar la cantidad de frames que dura el salto de los enemigos, velocidades de salto y velocidad
 ENEMIES_JUMP_FRAMES = 10
 ENEMIES_JUMP_SPEED = 0.5
-ENEMIES_SPEED_AGRO = 0.5 * SCALE
-ENEMY_SPEED = 0.75 * SCALE
+ENEMIES_SPEED_AGRO = 0.75 * SCALE
+ENEMY_SPEED = 0.5 * SCALE
+ENEMY_HEALTH = 3
+FRAMES_ENEMIES_HIT = 25
+ENEMIES_SPEED_HIT = 2 * SCALE
 
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)

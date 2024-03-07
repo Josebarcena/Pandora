@@ -5,24 +5,36 @@ import numpy as np
 from Recursos.Gestor_recursos import GestorRecursos
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, game, x, y, group):
-        self.game = game
-        self.groups = (self.game.all_sprites, group)
+    def __init__(self, fase, x, y, group):
+        self.fase = fase
+        self.groups = (self.fase.all_sprites, group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.x = x * TILESIZE 
-        self.y = y * TILESIZE
+        # Se crea un nuevo grupo por cada enemigo para poder tratar las colisiones con el ataque individualmente, no
+        # nos sirve el grupo de fase.enemies_layer ya que restariamos vida a todos los enemigos
+        self.owngroup = pygame.sprite.Group()
+        self.owngroup.add(self)
+
+        # Tamaño del enemigo
         self.width = TILESIZE * SCALE
         self.heigh = TILESIZE * 2 * SCALE
-
+        
+        # Variables auxiliares
         self.x_change = 0
         self.y_change = 0
-        self.frames_jump = 0
-        self.jump = 0
-        
+        self.frames_hit = 0
 
+        # Variables para representar su facing, su vida y el estado del enemigo, puede ser:
+        #               -> 'normal': el enemigo no tiene cerca al personaje, estado de patrulla si se choca con algo 
+        #                           en el eje X cambia de direccion 
+        #               -> 'agro': el enemigo está cerca del jugador, su direccion de desplazamiento será en la que esté
+        #                           el jugador, se aumenta su velocidad
+        #               -> 'hitted': el jugador atacó al enemigo y le quita vida, se desplaza al enemigo para atrás 
+        self.health = ENEMY_HEALTH
         self.facing = 'left'
         self.state = 'normal'
+        
+        
         # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del enemigo
         # Si en la siguiente linea se modifica Enemies_Sheet-Effect.png por Enemies_Sheet-Effect2.png y viceversa se muestra otro sprite para el enemigo
         self.idle_animations = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
@@ -32,13 +44,14 @@ class Enemy(pygame.sprite.Sprite):
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
-
+        self.animation_dead_frames = 200
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
 
         self.rect = self.image.get_rect(bottomleft = (x,y))
-        self.previous_rect = self.rect
 
+    # Funcion que actualiza la imagen del sprite de los distintos enemigos, se encarga principalmente de gestionar las
+    # animaciones, se llama en cada actualización
     def update_image(self, animation_array):
         actual_time = pygame.time.get_ticks()
 
@@ -65,21 +78,36 @@ class Enemy(pygame.sprite.Sprite):
 
         self.image = pygame.transform.scale(self.image, (RUN_SCALE_ENEMY))
 
-    def draw(self, screen):
-        screen.blit(screen, self.image, self.rect)
 
+    # Se actualiza cada personaje, primero se calcula el movimiento que este realiza según su estado y su posición,
+    # luego se calculan las posiciones con el ataque del jugador y por último las colisiones los objetos del nivel,
+    # aqui también se comprueba si el enemigo está 'vivo', nótese que necesitan estar en pantalla para que se lleguen
+    # a actualizar
     def update(self):
-        self.movement()
+        if self.in_screen():
+            self.movement()
+            self.collide_enemies()
+            self.rect.x += self.x_change
+            self.collide_blocks(self.fase.collide_Fase(self),"x")
 
-        self.rect.x += self.x_change
-        self.collide_blocks(self.game.collide_Fase(self),"x")
+            self.rect.y += self.y_change
+            self.collide_blocks(self.fase.collide_Fase(self),"y")
 
-        self.rect.y += self.y_change
-        self.collide_blocks(self.game.collide_Fase(self),"y")
+        if self.health <= 0:
+            self.death()
 
         self.x_change = 0
         self.y_change = 0
 
+    # Se llama a esta función cuando el enemigo está muerto, se tarda un poco el kill() el personaje para
+    # poder añadir las animaciones de muerte
+    def death(self):
+        if self.animation_dead_frames <= 0:
+            self.kill()
+        else:
+            self.animation_dead_frames -= 1
+
+    # Función booleana que devuelve si el enemigo está o no en la pantalla
     def in_screen(self):
         if self.rect.x + self.width < 0 or self.rect.x > WIN_WIDTH:
             return False
@@ -88,48 +116,57 @@ class Enemy(pygame.sprite.Sprite):
         else:
             return True
 
+    # Función booleana que devuelve si el enemigo está cerca del jugador, además se encarga se actualizar la dirección
+    # del enemigo, necesario para que el enemigo vaya en la direccion en la que está el personaje
     def checkPlayer(self):
-        dx = np.sqrt((self.game.player.rect.x - self.rect.x)**2) < PIXELS_ENEMIES_AGRO_X
-        dy = np.sqrt((self.game.player.rect.y - self.rect.y)**2) < PIXELS_ENEMIES_AGRO_Y
+        dx = np.sqrt((self.fase.player.rect.x - self.rect.x)**2) < PIXELS_ENEMIES_AGRO_X
+        dy = np.sqrt((self.fase.player.rect.y - self.rect.y)**2) < PIXELS_ENEMIES_AGRO_Y
         if dx and dy:
-            if self.game.player.rect.x > self.rect.x:
+            if self.fase.player.rect.x > self.rect.x:
                 self.facing = 'right'
             else:
                 self.facing = 'left'
         return dx and dy
 
+    # Función que en base a la dirección del personaje y su estado, mueve a los distintos personajes en el mapa
+    # nótese que necesitan estar en pantalla para que se lleguen a mover
     def movement(self):
-        if self.frames_jump == ENEMIES_JUMP_FRAMES:
-            self.jump = False
-        if self.frames_jump <= 0:
+        if self.frames_hit <= 0:
             self.y_change += GRAVITY
-        else:
-            self.y_change -= ENEMIES_JUMP_SPEED
-            self.frames_jump -= 1
-        if self.in_screen():
-            if self.facing == 'left':
-                if self.checkPlayer():
-                    self.actual_animation = self.idle_animations_angry
-                    self.update_image(self.actual_animation)
-                    self.state = 'agro'
-                    self.x_change -= ENEMIES_SPEED_AGRO
-                else:
-                    self.actual_animation = self.idle_animations
-                    self.state = 'normal'
-                    self.update_image(self.actual_animation)
-                    self.x_change -= ENEMY_SPEED
-            if self.facing == 'right':
-                if self.checkPlayer():
-                    self.actual_animation = self.idle_animations_angry
-                    self.state = 'agro'
-                    self.update_image(self.actual_animation)
-                    self.x_change += ENEMIES_SPEED_AGRO
-                else:
-                    self.actual_animation = self.idle_animations
-                    self.state = 'normal'
-                    self.update_image(self.actual_animation)
-                    self.x_change += ENEMY_SPEED
+        if self.state == 'hitted':
+            self.frames_hit -= 1
+            if self.frames_hit > 0:
+                if self.facing == 'right':
+                    self.x_change -= ENEMIES_SPEED_HIT
+                elif self.facing == 'left':
+                    self.x_change += ENEMIES_SPEED_HIT
+            else:
+                self.state = 'normal'
+        elif self.facing == 'left' and self.health > 0:
+            if self.checkPlayer():
+                self.actual_animation = self.idle_animations_angry
+                self.update_image(self.actual_animation)
+                self.state = 'agro'
+                self.x_change -= ENEMIES_SPEED_AGRO
+            else:
+                self.actual_animation = self.idle_animations
+                self.state = 'normal'
+                self.update_image(self.actual_animation)
+                self.x_change -= ENEMY_SPEED
+        elif self.facing == 'right' and self.health > 0:
+            if self.checkPlayer():
+                self.actual_animation = self.idle_animations_angry
+                self.state = 'agro'
+                self.update_image(self.actual_animation)
+                self.x_change += ENEMIES_SPEED_AGRO
+            else:
+                self.actual_animation = self.idle_animations
+                self.state = 'normal'
+                self.update_image(self.actual_animation)
+                self.x_change += ENEMY_SPEED
 
+    # Distintas funciones de colisión de los enemigos, con los bloques que limitan su rango de acción y con los bloques
+    # que conforman el nivel del juego
     def collide_blocks(self, collision, direction):
          #Comprobamos con que choca
         if collision[0] == "Solid":
@@ -152,5 +189,12 @@ class Enemy(pygame.sprite.Sprite):
             if self.y_change < 0:
                 self.rect.y = blocks[0].rect.bottom
 
-
-
+    # Función de colisión de cada uno de los enemigos con el sprite de ataque, en caso de que haya se cambia el estado a
+    # 'hitted' y se resta vida al enemigo.
+    def collide_enemies(self):
+        if self.fase.player.attack.attacking:
+            hits = pygame.sprite.spritecollide(self.fase.player.attack, self.owngroup, False)
+            if hits and self.state != 'hitted':
+                self.state = 'hitted'
+                self.frames_hit = FRAMES_ENEMIES_HIT
+                self.health -= self.fase.player.damage_attack()

@@ -6,26 +6,30 @@ class Attack(pygame.sprite.Sprite):
         self.game = game
         self.groups = game.all_sprites
         self.player = player
-        self._layer = 4
         self.groups = self.game.all_sprites, self.game.visible_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
+        # Tamaño del sprite de ataque
         self.width = ATTACK_WIDTH * SCALE
         self.height = ATTACK_HEIGHT * SCALE
 
+        # Creación del sprite de ataque, nótese de que realmente no se está pintando nada
         self.image = pygame.Surface([self.width, self.height])
         self.image.set_alpha(0)
         self.rect = self.image.get_rect(topleft=(x, y))
 
-        # Almacena si se está realizando el dash o no
-        self.run = False
+        # Almacena si se está realizando el ataque o no, y en que dirección
+        self.attacking = False
         self.face = None
 
-    def run_att(self, run1, dir):
-        self.run = run1
+    # Actualización del ataque cada vez que el personaje está atacando
+    def update_state(self, attacking1, dir):
+        self.attacking = attacking1
         self.facing = dir
+
+    # Se reposiciona la posicion del sprite según la posición del personaje asociado y la direccion del ataque
     def update(self):
-        if self.run:
+        if self.attacking:
             self.rect.y = self.player.rect.y - (self.height - self.player.height)
             if self.facing == 'right':
                 self.rect.x = self.player.rect.x

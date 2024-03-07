@@ -44,7 +44,8 @@ class Player(pygame.sprite.Sprite):
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
         self.facing = 'left'
-
+        self.unstopable = 0
+        self.health = PLAYER_HEALTH
         # Control del personaje
         self.control = Control(game, self)
         self.attack = Attack(x, y, game, self)
@@ -149,16 +150,17 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.y += self.y_change
         self.collide_blocks(self.game.collide_Fase(self),"y")
-        self.collide_attack()
+        self.collide_enemies()
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
-
-    def collide_attack(self):
-        if self.control.state == 'attacking':
-            hit = pygame.sprite.spritecollide(self.attack, self.game.enemies_layer, False)
-            if hit:
-                print("DAÑO AL ENEMIGO")
+    def collide_enemies(self):
+        hits = pygame.sprite.spritecollide(self, self.game.enemies_layer, False)
+        self.unstopable -= 1
+        if hits and self.unstopable < 0:
+            #print("--DAMAGE, helath: " + str(self.health - 1))
+            self.health -= 1
+            self.unstopable = UNSTOPBLE_FRAMES
 
     def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:
@@ -255,3 +257,5 @@ class Player(pygame.sprite.Sprite):
     def set_animacion_dash(self):
         self.actual_animation = self.dash_animations
         self.update_image(self.dash_animations)
+    def damage_attack(self):
+        return 1
