@@ -32,7 +32,7 @@ class Control:
         if self.cooldown > 0:
             self.cooldown -=1
 
-    def change_state(self, newstate, facing= None):
+    def change_state(self, newstate):
         if newstate == 'jumping':
             # Para evitar que se pueda saltar en el aire/ doble salto, el jugador dede de haber terminado con la
             # animación de saltar y estar apoyado en una superficie, se inicializa a 30 el contador de frames

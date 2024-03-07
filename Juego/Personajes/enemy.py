@@ -25,31 +25,31 @@ class Enemy(pygame.sprite.Sprite):
         self.state = 'normal'
         # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del enemigo
         # Si en la siguiente linea se modifica Enemies_Sheet-Effect.png por Enemies_Sheet-Effect2.png y viceversa se muestra otro sprite para el enemigo
-        self.animaciones_idle = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
-        self.animaciones_idle_angry = GestorRecursos.loadSpritesEnemies('EnemiesAngry_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
-        self.animacion_actual = self.animaciones_idle
+        self.idle_animations = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
+        self.idle_animations_angry = GestorRecursos.loadSpritesEnemies('EnemiesAngry_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
+        self.actual_animation = self.idle_animations
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
 
         # Cargar la imagen del personaje
-        self.update_image(self.animacion_actual)
+        self.update_image(self.actual_animation)
 
         self.rect = self.image.get_rect(bottomleft = (x,y))
         self.previous_rect = self.rect
 
     def update_image(self, animation_array):
-        tiempo_actual = pygame.time.get_ticks()
+        actual_time = pygame.time.get_ticks()
 
         # Cooldown entre cada una de las imagenes
-        cooldown_animacion = 180
+        cooldown_animation = 180
         frame_index = self.frame_index_idle
 
         # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
-        if tiempo_actual - self.update_time >= cooldown_animacion:
+        if actual_time - self.update_time >= cooldown_animation:
             frame_index += 1
-            self.update_time = tiempo_actual
+            self.update_time = actual_time
             if frame_index >= len(animation_array):
                 frame_index = 0
 
@@ -109,25 +109,25 @@ class Enemy(pygame.sprite.Sprite):
         if self.in_screen():
             if self.facing == 'left':
                 if self.checkPlayer():
-                    self.animacion_actual = self.animaciones_idle_angry
-                    self.update_image(self.animacion_actual)
+                    self.actual_animation = self.idle_animations_angry
+                    self.update_image(self.actual_animation)
                     self.state = 'agro'
                     self.x_change -= ENEMIES_SPEED_AGRO
                 else:
-                    self.animacion_actual = self.animaciones_idle
+                    self.actual_animation = self.idle_animations
                     self.state = 'normal'
-                    self.update_image(self.animacion_actual)
+                    self.update_image(self.actual_animation)
                     self.x_change -= ENEMY_SPEED
             if self.facing == 'right':
                 if self.checkPlayer():
-                    self.animacion_actual = self.animaciones_idle_angry
+                    self.actual_animation = self.idle_animations_angry
                     self.state = 'agro'
-                    self.update_image(self.animacion_actual)
+                    self.update_image(self.actual_animation)
                     self.x_change += ENEMIES_SPEED_AGRO
                 else:
-                    self.animacion_actual = self.animaciones_idle
+                    self.actual_animation = self.idle_animations
                     self.state = 'normal'
-                    self.update_image(self.animacion_actual)
+                    self.update_image(self.actual_animation)
                     self.x_change += ENEMY_SPEED
 
     def collide_blocks(self, collision, direction):

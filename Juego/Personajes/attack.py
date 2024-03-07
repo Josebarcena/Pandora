@@ -26,7 +26,7 @@ class Attack(pygame.sprite.Sprite):
         self.facing = dir
     def update(self):
         if self.run:
-            self.rect.y = self.player.rect.y - (self.height - self.player.heigh)
+            self.rect.y = self.player.rect.y - (self.height - self.player.height)
             if self.facing == 'right':
                 self.rect.x = self.player.rect.x
             elif self.facing == 'left':

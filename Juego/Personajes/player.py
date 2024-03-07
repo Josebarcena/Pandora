@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
 
         # Posiciones iniciales del cubo y tamaño
         self.width = TILESIZE * SCALE
-        self.heigh = TILESIZE * 2 * SCALE
+        self.height = TILESIZE * 2 * SCALE
 
         # Viewers
         self.viewers = [Life_Bar()]
@@ -29,11 +29,11 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
 
         # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del personaje
-        self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
-        self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
-        self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
-        self.animaciones_attack = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
-        self.animacion_actual = self.animaciones_idle  # Inicialmente, el jugador está en estado quieto
+        self.idle_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
+        self.run_animations = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
+        self.jump_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
+        self.attack_animations = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
+        self.actual_animation = self.idle_animations  # Inicialmente, el jugador está en estado quieto
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
@@ -52,7 +52,7 @@ class Player(pygame.sprite.Sprite):
         self.hp = 5
 
         # Cargar la imagen del personaje
-        self.update_image(self.animacion_actual)
+        self.update_image(self.actual_animation)
 
         # Crear el rectángulo de colisión con las dimensiones del personaje recortado
         self.rect = self.image.get_rect(bottomleft=(x, y))
@@ -60,40 +60,40 @@ class Player(pygame.sprite.Sprite):
 
     def update_image(self, animation_array):
         # Recogemos el tiempo actual en el juego
-        tiempo_actual = pygame.time.get_ticks()
+        actual_time = pygame.time.get_ticks()
 
         # Actualizamos las variables dependiendo del tipo de animacion que se esta realizando
-        if animation_array == self.animaciones_idle:
-            cooldown_animacion = 180
+        if animation_array == self.idle_animations:
+            cooldown_animation = 180
             frame_index = self.frame_index_idle
-        elif animation_array == self.animaciones_run:
-            cooldown_animacion = 80
+        elif animation_array == self.run_animations:
+            cooldown_animation = 80
             frame_index = self.frame_index_run
-        elif animation_array == self.animaciones_jump:
-            cooldown_animacion = 150
+        elif animation_array == self.jump_animations:
+            cooldown_animation = 150
             frame_index = self.frame_index_jump
-        elif animation_array == self.animaciones_attack:
-            cooldown_animacion = 60
+        elif animation_array == self.attack_animations:
+            cooldown_animation = 60
             frame_index = self.frame_index_attack
 
         # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
-        if tiempo_actual - self.update_time >= cooldown_animacion:
+        if actual_time - self.update_time >= cooldown_animation:
             frame_index += 1
-            self.update_time = tiempo_actual
+            self.update_time = actual_time
             if frame_index >= len(animation_array):
                 frame_index = 0
 
         # Actualizar la animación actual y la imagen del personaje
-        if animation_array == self.animaciones_idle:
+        if animation_array == self.idle_animations:
             self.frame_index_idle = frame_index
             self.animation_image = animation_array[frame_index]
-        elif animation_array == self.animaciones_run:
+        elif animation_array == self.run_animations:
             self.frame_index_run = frame_index
             self.animation_image = animation_array[frame_index]
-        elif animation_array == self.animaciones_jump:
+        elif animation_array == self.jump_animations:
             self.frame_index_jump = frame_index
             self.animation_image = animation_array[frame_index]
-        elif animation_array == self.animaciones_attack:
+        elif animation_array == self.attack_animations:
             self.frame_index_attack = frame_index
             self.animation_image = animation_array[frame_index]
 
@@ -105,13 +105,13 @@ class Player(pygame.sprite.Sprite):
 
 
         # Escalar la imagen según el tamaño final deseado
-        if animation_array == self.animaciones_run:
+        if animation_array == self.run_animations:
             self.image = pygame.transform.scale(self.image, (RUN_SCALE))
-        elif animation_array == self.animaciones_jump:
+        elif animation_array == self.jump_animations:
             self.image = pygame.transform.scale(self.image, (JUMP_SCALE))
-        elif animation_array == self.animaciones_idle:
+        elif animation_array == self.idle_animations:
             self.image = pygame.transform.scale(self.image, (IDLE_SCALE))
-        elif animation_array == self.animaciones_attack:
+        elif animation_array == self.attack_animations:
             self.image = pygame.transform.scale(self.image, (ATTACK_SCALE))
 
     # Método en el que se actualiza el cubo
@@ -119,15 +119,15 @@ class Player(pygame.sprite.Sprite):
         self.control.update_cd()
 
         if self.invul != 0:
-            self.animaciones_idle[0].set_alpha(0) #Se cambia el alpha a 0 para dar sensacion de parpadeo
-            self.animaciones_run[0].set_alpha(0) # se cambia en todas porque puede cambiar la animacion a cualquiera en este estado
-            self.animaciones_jump[0].set_alpha(0)
+            self.idle_animations[0].set_alpha(0) #Se cambia el alpha a 0 para dar sensacion de parpadeo
+            self.run_animations[0].set_alpha(0) # se cambia en todas porque puede cambiar la animacion a cualquiera en este estado
+            self.jump_animations[0].set_alpha(0)
             self.invul += 1
             if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
                 self.invul = 0
-                self.animaciones_idle[0].set_alpha(255) #se ajusta de nuevo el valor por si cambio durante el invul
-                self.animaciones_run[0].set_alpha(255)
-                self.animaciones_jump[0].set_alpha(255)
+                self.idle_animations[0].set_alpha(255) #se ajusta de nuevo el valor por si cambio durante el invul
+                self.run_animations[0].set_alpha(255)
+                self.jump_animations[0].set_alpha(255)
 
         self.x_change, self.y_change = self.control.movement()
 
@@ -223,20 +223,20 @@ class Player(pygame.sprite.Sprite):
 
     # Funcion para establecer la animacion de IDLE (parado)
     def set_animacion_idle(self):
-        self.animacion_actual = self.animaciones_idle
-        self.update_image(self.animaciones_idle)
+        self.actual_animation = self.idle_animations
+        self.update_image(self.idle_animations)
 
     # Funcion para establecer la animacion de RUN (corriendo)
     def set_animacion_run(self):
-        self.animacion_actual = self.animaciones_run
-        self.update_image(self.animaciones_run)
+        self.actual_animation = self.run_animations
+        self.update_image(self.run_animations)
 
     # Funcion para establecer la animacion de JUMP (saltando)
     def set_animacion_jump(self):
-        self.animacion_actual = self.animaciones_jump
-        self.update_image(self.animaciones_jump)
+        self.actual_animation = self.jump_animations
+        self.update_image(self.jump_animations)
 
     # Funcion para establecer la animacion de ATTACK (atacando)
     def set_animacion_attack(self):
-        self.animacion_actual = self.animaciones_attack
-        self.update_image(self.animaciones_attack)
+        self.actual_animation = self.attack_animations
+        self.update_image(self.attack_animations)

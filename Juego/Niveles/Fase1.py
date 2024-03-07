@@ -18,7 +18,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.full_collision = pygame.sprite.Group()
         self.damage_collision = pygame.sprite.Group()
         self.stairs_collision = pygame.sprite.Group()
-        self.limite = pygame.sprite.Group()
+        self.limit = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
 
@@ -57,7 +57,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         'Pincho': self.damage_collision,
         'Escalera': self.stairs_collision,
         'Meta': self.meta,
-        'Limite': self.limite
+        'Limite': self.limit
         }
 
         object_layers = {
@@ -137,7 +137,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             else:
                 return (None,None)
         elif self.enemies_layer.has(player): 
-            if((hits := pygame.sprite.spritecollide(player, self.limite, False))):
+            if((hits := pygame.sprite.spritecollide(player, self.limit, False))):
                     return ("Limit", hits)
             else:
                 return (None,None)
