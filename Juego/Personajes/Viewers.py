@@ -48,7 +48,7 @@ class Score(): #CLASE OBSERVADORA PARA LA VIDA
 
     def draw(self, surface):
         text_surface = self.font.render(str(self.score), True, LIGHT_BLUE)
-        text_rect = text_surface.get_rect(center=(self.x, self.y))
+        text_rect = text_surface.get_rect(bottomright=(self.x, self.y))
 
         # Dibujar el texto en la pantalla
         surface.blit(text_surface, text_rect)
