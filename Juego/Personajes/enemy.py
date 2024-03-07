@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
 
-        self.rect = self.image.get_rect(bottomleft = (x,y))
+        self.rect = self.image.get_rect(bottomleft = (x,y + self.heigh))
 
     # Funcion que actualiza la imagen del sprite de los distintos enemigos, se encarga principalmente de gestionar las
     # animaciones, se llama en cada actualización

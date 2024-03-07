@@ -23,11 +23,33 @@ class small_Potion(Item):
         self.game = game
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.x = x * TILESIZE
-        self.y = y * TILESIZE
+        
         self.width = TILESIZE * SCALE
         self.height = TILESIZE * SCALE
         self.image = GestorRecursos.LoadImage("Imagenes","small_potion.png")
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        #self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(bottomleft = (x,y))
+
+    def utility(self):
+        return 1
+    
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+
+
+class Hope(Item):
+    def __init__(self, game, x, y, group):
+        super(Hope, self).__init__()
+
+        self.game = game
+        self.groups = (self.game.all_sprites,group)
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        
+        self.width = TILESIZE * SCALE
+        self.height = TILESIZE * SCALE
+        self.image = GestorRecursos.LoadImage("Imagenes","hope.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         #self.rect = self.image.get_rect(topleft=(x, y))
         self.rect = self.image.get_rect(bottomleft = (x,y))

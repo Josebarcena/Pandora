@@ -28,7 +28,7 @@ class GestorRecursos(object):
                 except pygame.error as message:
                     print('Cannot load image:', fullname)
                     raise SystemExit(message)
-                resource = resource.convert()
+                resource = resource.convert_alpha()
 
             elif(path == "Fases"):
                 try:
