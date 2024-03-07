@@ -105,7 +105,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             elif event.type == KEYDOWN:
             # Verificar si se presiona una tecla específica
                 if event.key == K_ESCAPE:
-                    self.director.add_state("PAUSE")
+                    self.director.add_state("PAUSE", True)
                     self.director.flip_state()
 
     def draw(self, surface): #la funcion que llama en bucle game para pintar cada frame la fase

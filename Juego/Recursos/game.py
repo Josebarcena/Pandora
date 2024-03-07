@@ -25,15 +25,21 @@ class Game(object):
         mixer.music.play()
 
 
-    def add_state(self, state):
-        self.states.insert(0,Factory.create_state(state,self))
+    def add_state(self, state, prio = False):
+        if prio:
+            self.states.insert(0,Factory.create_state(state,self))
+        else:
+            self.states.append(Factory.create_state(state,self))
         print(self.states)
+
+
 
     def unstack_state(self):
         print("ANTES UN: ",self.states)
         mixer.music.stop() #se para la musica
         self.state.done = False #se resetea la condicion
-        self.state = self.states.pop(0)
+        self.states.pop(0)
+        self.state = self.states[0]
         print("DESPUES UN: ",self.states)
         #Preparamos el siguiente nivel
         self.screen.fill((0, 0, 0)) #pintar negro al principio del state
