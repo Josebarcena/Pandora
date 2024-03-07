@@ -23,13 +23,19 @@ SCROLL_LIMIT_X_RIGHT = WIN_WIDTH - (106 * SCALE)
 SCROLL_LIMIT_Y_BOTTOM = 80 * SCALE
 SCROLL_LIMIT_Y_TOP = WIN_HEIGHT - (80 * SCALE)
 
+# Variables de escalado de imagen del personaje
+RUN_SCALE = TILESIZE * 1.5 * SCALE, TILESIZE * 2 * SCALE
+JUMP_SCALE = TILESIZE * SCALE, TILESIZE * 2 * SCALE
+IDLE_SCALE = TILESIZE * SCALE, TILESIZE * 2 * SCALE
+ATTACK_SCALE = TILESIZE * 2.8 * SCALE, TILESIZE * 2 * SCALE
+
 # Fuerza de la gravedad, velocidad del dash, numero de frames que dura el salto y dash
 GRAVITY = 3 * SCALE
 JUMPING_SPEED = 2.5 * SCALE
 DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
-FRAMES_ATTACK = 30
+FRAMES_ATTACK = 35
 
 # Diferentes capas para el juego
 ATTACK_LAYER = 4

@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.animaciones_idle = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
         self.animaciones_run = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
         self.animaciones_jump = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
-        self.animaciones_attack = GestorRecursos.almacenar_animacion_fila(11, 55, 42, 10, 150, 89, 15, 133, 0, 179)
+        self.animaciones_attack = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
         self.animacion_actual = self.animaciones_idle  # Inicialmente, el jugador está en estado quieto
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
@@ -72,7 +72,7 @@ class Player(pygame.sprite.Sprite):
             cooldown_animacion = 150
             frame_index = self.frame_index_jump
         elif animation_array == self.animaciones_attack:
-            cooldown_animacion = 100
+            cooldown_animacion = 60
             frame_index = self.frame_index_attack
 
         if tiempo_actual - self.update_time >= cooldown_animacion:
@@ -106,11 +106,13 @@ class Player(pygame.sprite.Sprite):
 
         # Escalar la imagen según el tamaño final deseado
         if animation_array == self.animaciones_run:
-            self.image = pygame.transform.scale(self.image, (TILESIZE *1.5 * SCALE, TILESIZE * 2 * SCALE))
-        elif animation_array == self.animaciones_jump or animation_array == self.animaciones_idle:
-            self.image = pygame.transform.scale(self.image, (TILESIZE * SCALE, TILESIZE * 2 * SCALE))
+            self.image = pygame.transform.scale(self.image, (RUN_SCALE))
+        elif animation_array == self.animaciones_jump:
+            self.image = pygame.transform.scale(self.image, (JUMP_SCALE))
+        elif animation_array == self.animaciones_idle:
+            self.image = pygame.transform.scale(self.image, (IDLE_SCALE))
         elif animation_array == self.animaciones_attack:
-            self.image = pygame.transform.scale(self.image, (TILESIZE * 2.5 * SCALE, TILESIZE * 2 * SCALE))
+            self.image = pygame.transform.scale(self.image, (ATTACK_SCALE))
 
     # Método en el que se actualiza el cubo
     def update(self):
