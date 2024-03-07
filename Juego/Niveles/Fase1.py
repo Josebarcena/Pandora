@@ -139,10 +139,12 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 self.done = True
                 return (None,None)
             elif((hits:= pygame.sprite.spritecollide(player, self.objects_layer, False))):
-                print("COLISION")
                 return ("Potion",hits)
             elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
-                return("Damage",hits)
+                if(not hits[0].isdeath):
+                    return("Damage",hits)
+                else:
+                    return(None,None)
             else:
                 return (None,None)
         

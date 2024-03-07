@@ -31,6 +31,7 @@ class Enemy(pygame.sprite.Sprite):
         #                           el jugador, se aumenta su velocidad
         #               -> 'hitted': el jugador atacó al enemigo y le quita vida, se desplaza al enemigo para atrás 
         self.health = ENEMY_HEALTH
+        self.isdeath = False
         self.facing = 'left'
         self.state = 'normal'
         
@@ -102,6 +103,7 @@ class Enemy(pygame.sprite.Sprite):
     # Se llama a esta función cuando el enemigo está muerto, se tarda un poco el kill() el personaje para
     # poder añadir las animaciones de muerte
     def death(self):
+        self.isdeath = True
         if self.animation_dead_frames <= 0:
             self.kill()
         else:

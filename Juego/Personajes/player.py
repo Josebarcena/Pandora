@@ -18,6 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.groups = (self.game.all_sprites,group)
         pygame.sprite.Sprite.__init__(self, self.groups)
 
+        # Posiciones iniciales del cubo y tamaño
+        self.width = TILESIZE * SCALE
+        self.height = TILESIZE * 2 * SCALE
+
         # Viewers
         self.viewers = [Life_Bar()]
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
@@ -182,7 +186,6 @@ class Player(pygame.sprite.Sprite):
         elif collision[0] == "Damage":
             if self.invul == 0:
                 self.hp -= 1
-
                 self.viewers_update()
             self.invul += 1
         elif collision[0] == "Potion":
