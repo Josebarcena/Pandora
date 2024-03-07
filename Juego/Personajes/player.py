@@ -136,12 +136,18 @@ class Player(pygame.sprite.Sprite):
             self.idle_animations[0].set_alpha(0) #Se cambia el alpha a 0 para dar sensacion de parpadeo
             self.run_animations[0].set_alpha(0) # se cambia en todas porque puede cambiar la animacion a cualquiera en este estado
             self.jump_animations[0].set_alpha(0)
+            self.idle_animations[2].set_alpha(0) #Se cambia el alpha a 0 para dar sensacion de parpadeo
+            self.run_animations[2].set_alpha(0) # se cambia en todas porque puede cambiar la animacion a cualquiera en este estado
+            self.jump_animations[2].set_alpha(0)
             self.invul += 1
             if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
                 self.invul = 0
                 self.idle_animations[0].set_alpha(255) #se ajusta de nuevo el valor por si cambio durante el invul
                 self.run_animations[0].set_alpha(255)
                 self.jump_animations[0].set_alpha(255)
+                self.idle_animations[2].set_alpha(0) #Se cambia el alpha a 0 para dar sensacion de parpadeo
+                self.run_animations[2].set_alpha(0) # se cambia en todas porque puede cambiar la animacion a cualquiera en este estado
+                self.jump_animations[2].set_alpha(0)
 
         self.x_change, self.y_change = self.control.movement()
 
@@ -185,7 +191,7 @@ class Player(pygame.sprite.Sprite):
                 self.viewers_update()
             self.invul += 1
         elif collision[0] == "Potion":
-            self.health += collision[1][0].utility()
+            self.health = min(MAX_HEALTH,(self.health + collision[1][0].utility())) 
             collision[1][0].kill()
             self.viewers_update()
 
