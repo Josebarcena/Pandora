@@ -59,8 +59,10 @@ class Player(pygame.sprite.Sprite):
         # Crear el rectángulo de colisión con las dimensiones del personaje recortado
         self.rect = self.image.get_rect(bottomleft=(x, y+self.height))
         self.previous_rect = self.rect
-        print("player",self.rect)
 
+    def isdeath(self):
+        return self.health == 0
+    
     def update_image(self, animation_array):
         # Recogemos el tiempo actual en el juego
         actual_time = pygame.time.get_ticks()

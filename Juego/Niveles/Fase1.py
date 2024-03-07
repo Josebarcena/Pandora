@@ -49,7 +49,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             self.get_event(event)
         if self.done:
             self.director.unstack_state()
-        if(self.player.health <= 0):
+        elif self.player.isdeath():
             self.gameover()
 
     def createTilemap(self, tmx_map): #crea el mapa desde tiled

@@ -31,7 +31,6 @@ class small_Potion(Item):
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         #self.rect = self.image.get_rect(topleft=(x, y))
         self.rect = self.image.get_rect(bottomleft = (x,y))
-        print(self.rect)
 
     def utility(self):
         return 1
