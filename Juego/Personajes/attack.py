@@ -30,10 +30,10 @@ class Attack(pygame.sprite.Sprite):
     # Se reposiciona la posicion del sprite según la posición del personaje asociado y la direccion del ataque
     def update(self):
         if self.attacking:
-            self.rect.y = self.player.rect.y - (self.height - self.player.height)
+            self.rect.y = self.player.hitbox.rect.y - (self.height - self.player.height)
             if self.facing == 'right':
-                self.rect.x = self.player.rect.x
+                self.rect.x = self.player.hitbox.rect.x
             elif self.facing == 'left':
-                self.rect.x = self.player.rect.x - (self.width - self.player.width)
+                self.rect.x = self.player.hitbox.rect.x - (self.width - self.player.width)
         else:
             self.rect.y = -300

@@ -138,10 +138,10 @@ class Enemy(pygame.sprite.Sprite):
     # Función booleana que devuelve si el enemigo está cerca del jugador, además se encarga se actualizar la dirección
     # del enemigo, necesario para que el enemigo vaya en la direccion en la que está el personaje
     def checkPlayer(self):
-        dx = np.sqrt((self.fase.player.rect.x - self.rect.x)**2) < PIXELS_ENEMIES_AGRO_X
-        dy = np.sqrt((self.fase.player.rect.y - self.rect.y)**2) < PIXELS_ENEMIES_AGRO_Y
+        dx = np.sqrt((self.fase.player.rect.centerx - self.rect.x)**2) < PIXELS_ENEMIES_AGRO_X
+        dy = np.sqrt((self.fase.player.rect.centery - self.rect.y)**2) < PIXELS_ENEMIES_AGRO_Y
         if dx and dy:
-            if self.fase.player.rect.x > self.rect.x:
+            if self.fase.player.rect.centerx > self.rect.centerx:
                 self.facing = 'right'
             else:
                 self.facing = 'left'

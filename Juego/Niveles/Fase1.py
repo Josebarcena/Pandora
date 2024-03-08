@@ -1,4 +1,3 @@
-import pygame.time
 from Niveles.Fase import *
 from Recursos.Gestor_recursos import *
 from Niveles.blocks import *
@@ -25,8 +24,6 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.limit = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
-
-        self.animation_dead_frames = 200
 
 
         self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador
@@ -134,24 +131,24 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
 
     def collide_Fase(self, player): # chequea las colisiones con los bloques de las fases
-        if ((hits := pygame.sprite.spritecollide(player, self.full_collision, False))):
+
+        if self.player_layer.has(player):
+            if ((hits := pygame.sprite.spritecollide(player.hitbox, self.full_collision, False))):
                 return ("Solid", hits)
-        
-        elif self.player_layer.has(player):
-            if((hits := pygame.sprite.spritecollide(player, self.upper_collision, False))):
+            if((hits := pygame.sprite.spritecollide(player.hitbox, self.upper_collision, False))):
                 return ("Platform", hits)
-            elif((hits := pygame.sprite.spritecollide(player, self.damage_collision, False))):
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.damage_collision, False))):
                 return ("Damage", hits)
-            elif((hits := pygame.sprite.spritecollide(player, self.stairs_collision, False))):
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.stairs_collision, False))):
                 return ("Stairs", hits)
-            elif((hits := pygame.sprite.spritecollide(player, self.meta, False))):
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta, False))):
                 self.done = True
                 return (None,None)
-            elif((hits:= pygame.sprite.spritecollide(player, self.objects_layer, False))):
+            elif((hits:= pygame.sprite.spritecollide(player.hitbox, self.objects_layer, False))):
                 return ("Potion",hits)
-            elif((hits:= pygame.sprite.spritecollide(player, self.hope_layer, False))):
+            elif((hits:= pygame.sprite.spritecollide(player.hitbox, self.hope_layer, False))):
                 return ("Hope",hits)
-            elif((hits := pygame.sprite.spritecollide(player, self.enemies_layer, False))):
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.enemies_layer, False))):
                 if(not hits[0].isdeath):
                     return("Damage",hits)
                 else:
@@ -160,6 +157,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                 return (None,None)
         
         elif self.enemies_layer.has(player): 
+            if ((hits := pygame.sprite.spritecollide(player, self.full_collision, False))):
+                return ("Solid", hits)
             if((hits := pygame.sprite.spritecollide(player, self.limit, False))):
                     return ("Limit", hits)
             else:

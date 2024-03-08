@@ -5,6 +5,19 @@ from Personajes.Viewers import *
 from Recursos.Gestor_recursos import GestorRecursos
 from Personajes.attack import *
 
+#Deinimos la clase Hitbox
+class Hitbox(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height):
+        super().__init__()
+        self.rect = pygame.Rect(x, y, width, height)
+
+    def update_position(self, x, y):
+        self.rect.centerx = x
+        self.rect.bottom = y
+
+
+
+
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
     # Método con el que iniciamos el objeto, partimos de las coordenadas iniciales del juego y el propio juego
@@ -24,6 +37,10 @@ class Player(pygame.sprite.Sprite):
         
         self.score = 0
 
+        #Hitbox del personaje
+        self.hitbox = Hitbox(x, y, self.width, self.height)
+
+
         # Viewers
         self.viewers = [Life_Bar(), Score(self)]
         # Variables auxiliares que nos ayudarán a actualizar la posición del personaje
@@ -31,12 +48,12 @@ class Player(pygame.sprite.Sprite):
         self.y_change = 0
 
         # Variables de animación -> Arrays con las imagenes que se usaran para mostrar la animacion del personaje
-        self.idle_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 18, 10, 0, 0, 0, 0)
-        self.run_animations = GestorRecursos.almacenar_animacion_fila(8, 29, 29, 41, 12, 58, 11, 101, 0, 0)
-        self.jump_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
-        self.attack_animations = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
-        self.dash_animations = GestorRecursos.almacenar_animacion_fila(4, 31, 21, 39, 151, 641, 0, 0, 0, 0)
-        self.dead_animations = GestorRecursos.almacenar_animacion_fila(11, 42, 42, 57, 152, 186, 4, 225, 1, 289)
+        self.idle_animations = GestorRecursos.almacenar_animacion_fila(6, 0, 0)
+        self.run_animations = GestorRecursos.almacenar_animacion_fila(8, 0, 1, 0, 2)
+        self.jump_animations = GestorRecursos.almacenar_animacion_fila(6, 1, 7, 0, 8)
+        self.attack_animations = GestorRecursos.almacenar_animacion_fila(10, 2, 2, 0, 3, 0, 4)
+        self.dash_animations = GestorRecursos.almacenar_animacion_fila(4, 3, 11, 0, 12)
+        self.dead_animations = GestorRecursos.almacenar_animacion_fila(11, 2, 4, 0, 5, 0, 6)
         self.actual_animation = self.idle_animations  # Inicialmente, el jugador está en estado quieto
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
@@ -53,7 +70,7 @@ class Player(pygame.sprite.Sprite):
         self.unstopable = 0
         # Control del personaje
         self.control = Control(game, self)
-        self.attack = Attack(x, y, game, self)
+        self.attack = Attack(self.hitbox.rect.x, self.hitbox.rect.y, game, self)
 
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
@@ -76,7 +93,7 @@ class Player(pygame.sprite.Sprite):
             # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
             if self.facing == 'left':
                 self.image = pygame.transform.flip(self.image, True, False)
-            self.image = pygame.transform.scale(self.image, (DEAD_SCALE))
+            self.image = pygame.transform.scale(self.image, (69 * SCALE, 44 * SCALE))
             self.frame_index_dead += 1
             if self.frame_index_dead >= len(self.dead_animations):
                 self.frame_index_dead = 0
@@ -97,7 +114,7 @@ class Player(pygame.sprite.Sprite):
             cooldown_animation = 150
             frame_index = self.frame_index_jump
         elif animation_array == self.attack_animations:
-            cooldown_animation = 60
+            cooldown_animation = FRAMES_COOLDOWN_ATTACK
             frame_index = self.frame_index_attack
         elif animation_array == self.dash_animations:
             cooldown_animation = 60
@@ -142,26 +159,15 @@ class Player(pygame.sprite.Sprite):
 
 
         # Escalar la imagen según el tamaño final deseado
-        if animation_array == self.run_animations:
-            self.image = pygame.transform.scale(self.image, RUN_SCALE)
-        elif animation_array == self.jump_animations:
-            self.image = pygame.transform.scale(self.image, JUMP_SCALE)
-        elif animation_array == self.idle_animations:
-            self.image = pygame.transform.scale(self.image, IDLE_SCALE)
-        elif animation_array == self.attack_animations:
-            self.image = pygame.transform.scale(self.image, ATTACK_SCALE)
-        elif animation_array == self.dash_animations:
-            self.image = pygame.transform.scale(self.image, DASH_SCALE)
-        elif animation_array == self.dead_animations:
-            self.image = pygame.transform.scale(self.image, DEAD_SCALE)
+        self.image = pygame.transform.scale(self.image, (69 * SCALE, 44 * SCALE))
+
+
 
     # Método en el que se actualiza el cubo
     def update(self):
         self.control.update_cd()
 
-        if self.health <= 0:
-            self.update_dead_image()
-        elif self.invul != 0:
+        if self.invul != 0:
             for sprite in self.idle_animations:
                 sprite.set_alpha(120)
             for sprite in self.run_animations:
@@ -183,11 +189,21 @@ class Player(pygame.sprite.Sprite):
 
         self.x_change, self.y_change = self.control.update_character(self.x_change, self.y_change)
         self.rect.x += self.x_change
+        #Actualizamos la hitbox
+        self.update_hitbox()
+
+
         #Se pregunta al nivel si chocamos con algo y con que
         self.collide_blocks(self.game.collide_Fase(self),"x")
 
         self.rect.y += self.y_change
+        
+        #Actualizamos la hitbox
+        self.update_hitbox()
         self.collide_blocks(self.game.collide_Fase(self),"y")
+
+        
+
         #self.collide_enemies()
         self.previous_rect = self.rect
         self.x_change = 0
@@ -240,15 +256,19 @@ class Player(pygame.sprite.Sprite):
     def solid_Collision(self,blocks, direction):
         if  direction == "x":
             if self.x_change > 0:
-                self.rect.x = blocks[0].rect.left - self.rect.width
+                self.hitbox.rect.right = blocks[0].rect.left
+                self.rect.centerx = self.hitbox.rect.centerx
             if self.x_change < 0:
-                self.rect.x = blocks[0].rect.right
+                self.hitbox.rect.left = blocks[0].rect.right
+                self.rect.centerx = self.hitbox.rect.centerx
         if  direction == "y":
             if self.y_change > 0:
-                self.rect.y = blocks[0].rect.top - self.rect.height
+                self.hitbox.rect.bottom = blocks[0].rect.top 
+                self.rect.bottom = self.hitbox.rect.bottom
                 self.control.change_state('ground')
             if self.y_change < 0:
-                self.rect.y = blocks[0].rect.bottom
+                self.hitbox.rect.top = blocks[0].rect.bottom
+                self.rect.bottom = self.hitbox.rect.bottom
 
 
     def platform_Collision(self, platforms, direction):
@@ -259,7 +279,8 @@ class Player(pygame.sprite.Sprite):
                 # Verificar si el jugador está por encima del 75% de la plataforma
                 if player_necessary_y < (platform_necessary_y):
                     if self.y_change > 0 and self.previous_rect.y < platforms[0].rect.top:
-                        self.rect.y = platforms[0].rect.top - self.rect.height
+                        self.hitbox.rect.bottom = platforms[0].rect.top 
+                        self.rect.bottom = self.hitbox.rect.bottom
                         self.control.change_state('ground')
 
 
@@ -307,6 +328,9 @@ class Player(pygame.sprite.Sprite):
     def set_animacion_dash(self):
         self.actual_animation = self.dash_animations
         self.update_image(self.dash_animations)
-
+    
     def damage_attack(self):
         return 1
+    
+    def update_hitbox(self):
+        self.hitbox.update_position(self.rect.centerx, self.rect.bottom)
