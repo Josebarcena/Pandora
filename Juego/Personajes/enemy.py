@@ -40,12 +40,14 @@ class Enemy(pygame.sprite.Sprite):
         # Si en la siguiente linea se modifica Enemies_Sheet-Effect.png por Enemies_Sheet-Effect2.png y viceversa se muestra otro sprite para el enemigo
         self.idle_animations = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
         self.idle_animations_angry = GestorRecursos.loadSpritesEnemies('EnemiesAngry_Sheet-Effect.png', 8, 25, 27, 51, 13, 22)
+        self.dead_animations = GestorRecursos.loadSpritesEnemies('Enemies_Sheet-Effect.png', 14, 25, 347, 44, 20, 21)
         self.actual_animation = self.idle_animations
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
         self.frame_index_run = 0  # Índice del fotograma actual para la animación de correr
+        self.frame_index_dead = 0   # Índice del fotograma actual para la animación de muerte
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
-        self.animation_dead_frames = 200
+        self.animation_dead_frames = 195
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
 
@@ -56,9 +58,13 @@ class Enemy(pygame.sprite.Sprite):
     def update_image(self, animation_array):
         actual_time = pygame.time.get_ticks()
 
-        # Cooldown entre cada una de las imagenes
-        cooldown_animation = 180
-        frame_index = self.frame_index_idle
+        if animation_array == self.idle_animations or animation_array == self.idle_animations_angry:
+            # Cooldown entre cada una de las imagenes
+            cooldown_animation = 180
+            frame_index = self.frame_index_idle
+        elif animation_array == self.dead_animations:
+            cooldown_animation = 70
+            frame_index = self.frame_index_dead
 
         # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
         if actual_time - self.update_time >= cooldown_animation:
@@ -107,6 +113,17 @@ class Enemy(pygame.sprite.Sprite):
         if self.animation_dead_frames <= 0:
             self.kill()
         else:
+            if self.animation_dead_frames % 15 == 0:
+                self.image = self.dead_animations[self.frame_index_dead]
+                # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
+                if self.facing == 'left':
+                    self.image = pygame.transform.flip(self.image, True, False)
+                else:
+                    self.image = self.animation_image
+                self.image = pygame.transform.scale(self.image, (DEAD_SCALE_ENEMY))
+                self.frame_index_dead += 1
+                if self.frame_index_dead >= len(self.dead_animations):
+                    self.frame_index_dead = 0
             self.animation_dead_frames -= 1
 
     # Función booleana que devuelve si el enemigo está o no en la pantalla
