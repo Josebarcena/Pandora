@@ -153,6 +153,7 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
             if event.key == pygame.K_LEFT:
                 if self.index == 0:
                     self.index = 1
+                    self.index = 1
                 else:
                     self.index = 0
             if event.key == pygame.K_RIGHT:

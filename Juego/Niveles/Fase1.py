@@ -1,3 +1,4 @@
+import pygame.time
 from Niveles.Fase import *
 from Recursos.Gestor_recursos import *
 from Niveles.blocks import *
@@ -24,6 +25,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.limit = pygame.sprite.Group()
         self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
+
+        self.animation_dead_frames = 200
 
 
         self.player_layer = pygame.sprite.Group() #Otra especial para definir el jugador

@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_animations = GestorRecursos.almacenar_animacion_fila(6, 20, 33, 49, 88, 316, 18, 361, 0, 0)
         self.attack_animations = GestorRecursos.almacenar_animacion_fila(9, 55, 42, 10, 150, 89, 15, 133, 0, 179)
         self.dash_animations = GestorRecursos.almacenar_animacion_fila(4, 31, 21, 39, 151, 641, 0, 0, 0, 0)
+        self.dead_animations = GestorRecursos.almacenar_animacion_fila(11, 42, 42, 57, 152, 186, 4, 225, 1, 289)
         self.actual_animation = self.idle_animations  # Inicialmente, el jugador está en estado quieto
         # Variables de animacion -> Variables para recorrer cada uno de los arrays con las imagenes
         self.frame_index_idle = 0  # Índice del fotograma actual para la animación de estar quieto
@@ -43,7 +44,10 @@ class Player(pygame.sprite.Sprite):
         self.frame_index_jump = 0  # Índice del fotograma actual para la animación de saltar
         self.frame_index_attack = 0 # Índice del fotograma actual para la animación de atacar
         self.frame_index_dash = 0   # Índice del fotograma actual para la animación de dash
+        self.frame_index_dead = 0  # Índice del fotograma actual para la animación de muerte
         self.update_time = 0  # Tiempo de última actualización de la animación de estar quieto
+
+        self.animation_dead_frames = 195
 
         self.facing = 'left'
         self.unstopable = 0
@@ -64,8 +68,20 @@ class Player(pygame.sprite.Sprite):
         self.previous_rect = self.rect
 
     def isdeath(self):
-        return self.health == 0
-    
+        return self.animation_dead_frames <= 0
+
+    def update_dead_image(self):
+        if self.animation_dead_frames % 15 == 0:
+            self.image = self.dead_animations[self.frame_index_dead]
+            # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
+            if self.facing == 'left':
+                self.image = pygame.transform.flip(self.image, True, False)
+            self.image = pygame.transform.scale(self.image, (DEAD_SCALE))
+            self.frame_index_dead += 1
+            if self.frame_index_dead >= len(self.dead_animations):
+                self.frame_index_dead = 0
+        self.animation_dead_frames -= 1
+
     def update_image(self, animation_array):
         # Recogemos el tiempo actual en el juego
         actual_time = pygame.time.get_ticks()
@@ -86,6 +102,9 @@ class Player(pygame.sprite.Sprite):
         elif animation_array == self.dash_animations:
             cooldown_animation = 60
             frame_index = self.frame_index_dash
+        elif animation_array == self.dead_animations:
+            cooldown_animation = 70
+            frame_index = self.frame_index_dead
 
 
         # Si se ha cumplido el tiempo de cooldown entre animacion se modifica la imagen
@@ -111,6 +130,9 @@ class Player(pygame.sprite.Sprite):
         elif animation_array == self.dash_animations:
             self.frame_index_dash = frame_index
             self.animation_image = animation_array[frame_index]
+        elif animation_array == self.dead_animations:
+            self.frame_index_dash = frame_index
+            self.animation_image = animation_array[frame_index]
 
         # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
         if self.control.facing == 'left':
@@ -130,12 +152,16 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.image, ATTACK_SCALE)
         elif animation_array == self.dash_animations:
             self.image = pygame.transform.scale(self.image, DASH_SCALE)
+        elif animation_array == self.dead_animations:
+            self.image = pygame.transform.scale(self.image, DEAD_SCALE)
 
     # Método en el que se actualiza el cubo
     def update(self):
         self.control.update_cd()
 
-        if self.invul != 0:
+        if self.health <= 0:
+            self.update_dead_image()
+        elif self.invul != 0:
             for sprite in self.idle_animations:
                 sprite.set_alpha(120)
             for sprite in self.run_animations:
@@ -281,5 +307,6 @@ class Player(pygame.sprite.Sprite):
     def set_animacion_dash(self):
         self.actual_animation = self.dash_animations
         self.update_image(self.dash_animations)
+
     def damage_attack(self):
         return 1
