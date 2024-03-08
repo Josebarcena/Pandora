@@ -89,14 +89,16 @@ class Player(pygame.sprite.Sprite):
 
     def update_dead_image(self):
         if self.animation_dead_frames % 15 == 0:
-            self.image = self.dead_animations[self.frame_index_dead]
-            # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
-            if self.facing == 'left':
-                self.image = pygame.transform.flip(self.image, True, False)
-            self.image = pygame.transform.scale(self.image, (69 * SCALE, 44 * SCALE))
-            self.frame_index_dead += 1
-            if self.frame_index_dead >= len(self.dead_animations):
-                self.frame_index_dead = 0
+            if self.frame_index_dead >= len(self.dead_animations) - 2: #HARDCDEADO AQUI DE MOMENTO, PREFERIBLEMENTE CAMBIARLO
+                pass
+            else: 
+                self.image = self.dead_animations[self.frame_index_dead]
+                # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
+                if self.facing == 'left':
+                    self.image = pygame.transform.flip(self.image, True, False)
+                self.image = pygame.transform.scale(self.image, (69 * SCALE, 44 * SCALE))
+                self.frame_index_dead += 1
+            
         self.animation_dead_frames -= 1
 
     def update_image(self, animation_array):
@@ -120,7 +122,7 @@ class Player(pygame.sprite.Sprite):
             cooldown_animation = 60
             frame_index = self.frame_index_dash
         elif animation_array == self.dead_animations:
-            cooldown_animation = 70
+            cooldown_animation = 130
             frame_index = self.frame_index_dead
 
 
@@ -166,8 +168,9 @@ class Player(pygame.sprite.Sprite):
     # Método en el que se actualiza el cubo
     def update(self):
         self.control.update_cd()
-
-        if self.invul != 0:
+        if self.health <= 0:
+            self.update_dead_image()
+        elif self.invul != 0:
             for sprite in self.idle_animations:
                 sprite.set_alpha(120)
             for sprite in self.run_animations:
