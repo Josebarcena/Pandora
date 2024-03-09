@@ -76,5 +76,5 @@ class Fase(Base_state):
        pass
 
     def gameover(self): # se le llama para indicar game_over en el nivel (QUEDA VER COMO RESETEAR EL NIVEL)
-        pass
-    
+        self.director.add_state("GAME_OVER")
+        self.done = True

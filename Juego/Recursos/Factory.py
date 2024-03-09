@@ -1,5 +1,6 @@
 from Niveles.Menus import *
 from Niveles.Fase1 import *
+from Niveles.fase3 import *
 
 class Factory:
     def create_state(name, director):
@@ -13,3 +14,5 @@ class Factory:
             return Pause_menu(director)
         elif name == "GAME_OVER":
             return Game_Over(director)
+        elif name == "FASE3":
+            return Fase3(director)

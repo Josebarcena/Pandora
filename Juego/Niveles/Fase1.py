@@ -142,7 +142,7 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             elif((hits := pygame.sprite.spritecollide(player.hitbox, self.stairs_collision, False))):
                 return ("Stairs", hits)
             elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta, False))):
-                self.done = True
+                self.next_Level()
                 return (None,None)
             elif((hits:= pygame.sprite.spritecollide(player.hitbox, self.objects_layer, False))):
                 return ("Potion",hits)
@@ -164,6 +164,8 @@ class Fase1(Fase): #Clase para el primer nivel del juego
             else:
                 return (None,None)
 
-    def gameover(self): #GAMEOVER se cambia el siguiente estado a game over y se marca la condicion en true
-        self.director.add_state("GAME_OVER")
-        self.done = True
+
+    def next_Level(self):
+        if not self.done:
+            self.director.add_state("FASE3")
+            self.done = True
