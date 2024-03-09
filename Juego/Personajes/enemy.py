@@ -118,8 +118,6 @@ class Enemy(pygame.sprite.Sprite):
                 # Analizamos en que sentido esta mirando el personaje para hacer flip o no a la imagen
                 if self.facing == 'left':
                     self.image = pygame.transform.flip(self.image, True, False)
-                else:
-                    self.image = self.animation_image
                 self.image = pygame.transform.scale(self.image, (DEAD_SCALE_ENEMY))
                 self.frame_index_dead += 1
                 if self.frame_index_dead >= len(self.dead_animations):
