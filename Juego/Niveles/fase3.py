@@ -36,7 +36,7 @@ class Fase3(Fase): #Clase para el primer nivel del juego
         self.attacks = pygame.sprite.Group()
 
 
-        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase3.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
+        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase31.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
         self.sound = ("fase3.mp3") # el mp3 que sonara en la fase
         self.level = GestorRecursos.LoadImage("Fases","fase3.tmx") #El esqueleto del nivel
