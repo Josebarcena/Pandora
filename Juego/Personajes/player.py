@@ -291,10 +291,11 @@ class Player(pygame.sprite.Sprite):
                     # Si el jugador está sobre la rampa y su centro vertical está por encima del borde superior de la rampa
                 if self.rect.colliderect(ramps[0].rect) and self.rect.centery < ramps[0].rect.centery:
                     # Calcular la nueva posición vertical del jugador para subir la rampa
-                    new_y = ramps[0].rect.top - self.rect.height + (self.rect.centerx - ramps[0].rect.left) * 0.5  # Pendiente del 45%
+                    new_y = ramps[0].rect.top  # Pendiente del 45%
                     self.control.change_state('ground')
                     # Mover al jugador a la nueva posición
-                    self.rect.y = new_y
+                    self.hitbox.rect.bottom = new_y
+                    self.rect.bottom = self.hitbox.rect.bottom
     '''
     def collide_enemies(self):
         hits = pygame.sprite.spritecollide(self, self.game.enemies_layer, False)
