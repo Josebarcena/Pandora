@@ -9,9 +9,9 @@ import random
 import math
 
 
-class Fase1(Fase): #Clase para el primer nivel del juego
+class Fase2(Fase): #Clase para el primer nivel del juego
     def __init__(self, director):
-        super(Fase1,self).__init__()
+        super(Fase2,self).__init__()
         self.director = director
         self.all_sprites = pygame.sprite.Group() #Los grupos de sprites dependiendo de su fisica de colision
         self.visible_sprites = pygame.sprite.Group() #sprites que se pintaran
@@ -36,10 +36,10 @@ class Fase1(Fase): #Clase para el primer nivel del juego
         self.attacks = pygame.sprite.Group()
 
 
-        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase12.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
+        self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase22.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
         self.sound = ("fase1.mp3") # el mp3 que sonara en la fase
-        self.level = GestorRecursos.LoadImage("Fases","fase13.tmx") #El esqueleto del nivel
+        self.level = GestorRecursos.LoadImage("Fases","fase23.tmx") #El esqueleto del nivel
     
 
         self.createTilemap(self.level) #se llama para dibujar el mapa desde tiled
@@ -167,5 +167,5 @@ class Fase1(Fase): #Clase para el primer nivel del juego
 
     def next_Level(self):
         if not self.done:
-            self.director.add_state("FASE2")
+            self.director.add_state("FASE3")
             self.done = True
