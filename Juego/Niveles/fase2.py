@@ -167,5 +167,6 @@ class Fase2(Fase): #Clase para el primer nivel del juego
 
     def next_Level(self):
         if not self.done:
+            GestorRecursos.change_xml([("score",self.player.score)])
             self.director.add_state("FASE3")
             self.done = True

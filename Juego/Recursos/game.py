@@ -23,6 +23,7 @@ class Game(object):
         mixer.music.load("Recursos\\Sonidos\\"+ self.state.sound)
         mixer.music.set_volume(0.2)
         mixer.music.play()
+        
 
 
     def add_state(self, state, prio = False):

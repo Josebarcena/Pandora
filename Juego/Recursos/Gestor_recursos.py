@@ -1,3 +1,4 @@
+import xml.etree.ElementTree as ET
 import pygame, sys, os
 from pygame.locals import *
 from pytmx.util_pygame import load_pygame
@@ -144,3 +145,39 @@ class GestorRecursos(object):
             animaciones.append(imagen_recortada)
 
         return animaciones
+    
+    def create_xml(data):
+        # Crea el elemento raíz del XML
+        root = ET.Element("Data")
+
+        # Crea un elemento llamado 'score' y lo agrega como hijo del elemento raíz
+        for tag, value in data:
+            element = ET.SubElement(root, tag)
+            element.text = str(value)
+
+        # Crea un objeto ElementTree con la raíz y luego escribe el XML en un archivo
+        tree = ET.ElementTree(root)
+        with open("recursos/data.xml", "wb") as file:
+            tree.write(file)
+
+    def change_xml(data):
+        # Parsea el archivo XML
+        tree = ET.parse("recursos/data.xml")
+        root = tree.getroot()
+
+        # Busca el elemento a modificar por su nombre y actualiza su valor
+        for tag, value in data:
+            for element in root.iter(tag):
+                element.text = str(value)
+
+        # Guarda los cambios en el archivo XML
+        tree.write("recursos/data.xml")
+
+    def read_xml(field):
+        # Parsea el archivo XML
+        tree = ET.parse("recursos/data.xml")
+        root = tree.getroot()
+
+        # Busca el elemento por su nombre y devuelve su valor
+        for element in root.iter(field):
+            return element.text

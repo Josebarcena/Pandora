@@ -19,3 +19,6 @@ class Factory:
             return Pause_menu(director)
         elif name == "GAME_OVER":
             return Game_Over(director)
+        elif name == "WIN":
+            return Win_menu(director)
+

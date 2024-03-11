@@ -143,7 +143,7 @@ class Fase3(Fase): #Clase para el primer nivel del juego
             elif((hits := pygame.sprite.spritecollide(player.hitbox, self.stairs_collision, False))):
                 return ("Stairs", hits)
             elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta, False))):
-                self.done = True
+                self.next_Level()
                 return (None,None)
             elif((hits:= pygame.sprite.spritecollide(player.hitbox, self.objects_layer, False))):
                 return ("Potion",hits)
@@ -164,4 +164,9 @@ class Fase3(Fase): #Clase para el primer nivel del juego
                     return ("Limit", hits)
             else:
                 return (None,None)
-
+            
+    def next_Level(self):
+        if not self.done:
+            GestorRecursos.change_xml([("score",self.player.score)])
+            self.director.add_state("WIN")
+            self.done = True

@@ -17,8 +17,8 @@ ATTACK_HEIGHT = 35
 
 # Limites en el eje x e y (el limite de la izq es SCROLL_LIMIT_X y el de la derecha será WIN_WIDTH - SCROLL_LIMIT_X)
 SCROLL_LIMIT_X_LEFT = 106 * SCALE
-SCROLL_LIMIT_X_RIGHT = WIN_WIDTH - (156 * SCALE)
-SCROLL_LIMIT_Y_BOTTOM = 80 * SCALE
+SCROLL_LIMIT_X_RIGHT = WIN_WIDTH - (206 * SCALE)
+SCROLL_LIMIT_Y_BOTTOM = 55 * SCALE
 SCROLL_LIMIT_Y_TOP = WIN_HEIGHT - (80 * SCALE)
 
 # Variables de escalado de imagen del personaje
@@ -40,7 +40,7 @@ DASH_SPEED = 8 * SCALE
 FRAMES_JUMP = 25
 FRAMES_DASH = 10
 FRAMES_ATTACK = 35
-MAX_HEALTH = 5
+MAX_HEALTH = 1
 UNSTOPBLE_FRAMES = 15
 
 # Diferentes capas para el juego

@@ -1,5 +1,5 @@
 from Recursos.config import *
-
+from Recursos.Gestor_recursos import *
 class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o niveles del juego)
 
     def __init__(self):
@@ -76,5 +76,6 @@ class Fase(Base_state):
        pass
 
     def gameover(self): # se le llama para indicar game_over en el nivel (QUEDA VER COMO RESETEAR EL NIVEL)
+        GestorRecursos.change_xml([("score",self.player.score)])
         self.director.add_state("GAME_OVER")
         self.done = True

@@ -35,8 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.width = TILESIZE * SCALE
         self.height = TILESIZE * 2 * SCALE
         
-        self.score = 0
-
+        self.score = int(GestorRecursos.read_xml("score"))
         #Hitbox del personaje
         self.hitbox = Hitbox(x, y, self.width, self.height)
 

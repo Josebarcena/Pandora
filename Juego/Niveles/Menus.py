@@ -103,7 +103,7 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
             self.index = 0
             self.options = ["Menu", "Quit"]
             self.director = director
-            
+            self.score = "SCORE: " + GestorRecursos.read_xml("score")
             self.background = GestorRecursos.LoadImage("Imagenes","game_over.jpg")
             self.font = pygame.font.SysFont("trajan", 42)
             self.sound = "game_over.mp3"
@@ -139,8 +139,8 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
             self.director.unstack_state()
         else:
             self.time += tick
-            if self.time  >= 12500:
-                self.quit = True
+            if self.time  >= 50500:
+                self.done = True
             elif self.alpha <= 120:
                 self.alpha = 255
             else:
@@ -166,6 +166,11 @@ class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU
 
     def draw(self, surface):
         surface.blit(self.background, (0,0))
+        text = self.font.render(self.score, True, pygame.Color("orange"))
+        #RECUADRO PARA VER BIEN EL SCORE
+        text_rect = text.get_rect(center=(WIN_WIDTH / 2, WIN_HEIGHT - 300))
+        pygame.draw.rect(surface, pygame.Color(25, 51, 77), (text_rect.left - 50, text_rect.bottom - 20, text_rect.width*1.5, text_rect.height*1.2))
+        surface.blit(text, (WIN_WIDTH/2 - 100 ,WIN_HEIGHT - 300))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
@@ -231,6 +236,85 @@ class Pause_menu(Base_state):# Menu principal del juego
 
     def draw(self, surface): #pintar el menu por pantalla cada frame
         #surface.blit(self.background, (0,0))
+        for index, option in enumerate(self.options):
+            text_render = self.render_text(index)
+            surface.blit(text_render, self.get_text_position(text_render, index))
+
+class Win_menu(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
+    def __init__(self, director):
+            super(Win_menu, self).__init__()
+            self.index = 0
+            self.options = ["Menu", "Quit"]
+            self.director = director
+            self.score = "SCORE: " + GestorRecursos.read_xml("score")
+            self.background = GestorRecursos.LoadImage("Imagenes","win.png")
+            self.font = pygame.font.SysFont("trajan", 42)
+            self.sound = "win.mp3"
+            self.alpha = 250
+            self.time = 0
+
+    def render_text(self, index):
+        if index == self.index:
+            color = pygame.Color("white")
+            text = self.font.render(self.options[index], True, color)
+            text.set_alpha(self.alpha)
+        else:
+            color = pygame.Color(115, 115, 115)
+            text = self.font.render(self.options[index], True, color)
+        return text
+    
+    def get_text_position(self, text, index): #SE CAMBIA AQUI PARA QUE ESTE LADEADO NO ENCIMA Y DEBAJO
+        center = (self.screen_rect.center[0]- 100 + (index * (WIN_WIDTH/10)), self.screen_rect.center[1])
+        return text.get_rect(center = center)
+
+    def handle_action(self):
+        if self.index == 0:
+            self.done = True
+        elif self.index == 1:
+            self.quit = True
+
+    def update(self, tick, events): #Se pone un timer por si no se pulsa nada en un rato largo
+        for event in events:
+            self.get_event(event)
+        
+        if self.done:
+            self.director.add_state("MAIN_MENU")
+            self.director.unstack_state()
+        else:
+            self.time += tick
+            if self.time  >= 50500:
+                self.done = True
+            elif self.alpha <= 120:
+                self.alpha = 255
+            else:
+                self.alpha -= (tick * 0.1)
+
+    def get_event(self, event):
+        if event.type == pygame.QUIT:
+            self.quit = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                if self.index == 0:
+                    self.index = 1
+                    self.index = 1
+                else:
+                    self.index = 0
+            if event.key == pygame.K_RIGHT:
+                if self.index == 0:
+                    self.index = 1
+                else:
+                    self.index = 0
+            elif event.key == pygame.K_RETURN:
+                self.handle_action()
+
+    def draw(self, surface):
+        surface.blit(self.background, (0,0))
+        text = self.font.render(self.score, True, pygame.Color("orange"))
+        #RECUADRO PARA QUE SE VEA BIEN SCORE
+        text_rect = text.get_rect(center=(WIN_WIDTH / 2, WIN_HEIGHT - 300))
+        pygame.draw.rect(surface, pygame.Color(25, 51, 77), (text_rect.left - 50, text_rect.bottom - 20, text_rect.width*1.5, text_rect.height*1.2))
+        
+        surface.blit(text, (WIN_WIDTH/2 - 100 ,WIN_HEIGHT - 300))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
