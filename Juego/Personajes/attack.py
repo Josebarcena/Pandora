@@ -15,7 +15,7 @@ class Attack(pygame.sprite.Sprite):
 
         # Creación del sprite de ataque, nótese de que realmente no se está pintando nada
         self.image = pygame.Surface([self.width, self.height])
-        self.image.set_alpha(0)
+        self.image.set_alpha(120)
         self.rect = self.image.get_rect(topleft=(x, y))
 
         # Almacena si se está realizando el ataque o no, y en que dirección

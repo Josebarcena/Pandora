@@ -68,7 +68,7 @@
   <object id="56" x="763.5" y="301.5" width="17" height="15"/>
  </objectgroup>
  <objectgroup id="9" name="Jugador">
-  <object id="36" x="3067.17" y="124.667" width="17" height="32"/>
+  <object id="36" x="48" y="288" width="17" height="32"/>
  </objectgroup>
  <objectgroup id="11" name="Esperanza">
   <object id="37" x="146.5" y="302.5" width="17" height="15"/>

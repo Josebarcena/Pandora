@@ -100,13 +100,15 @@ class Control:
 
         if self.state == 'attacking':
             self.player.set_animacion_attack()
-            self.player.attack. update_state(True, self.dash_face)
+            self.player.attack.update_state(True, self.dash_face)
             if self.cont_frames > 0:
                 self.cont_frames -= 1
+                if self.cont_frames < 15:
+                    self.player.attack.update_state(False, self.dash_face)
             else:
                 self.state = 'normal'
                 self.cooldown_attack = FRAMES_COOLDOWN_ATTACK
-                self.player.attack. update_state(False, self.dash_face)
+                self.player.attack.update_state(False, self.dash_face)
             x_change, y_change = 0, 0
         self.cooldown_attack -= 1
         return x_change, y_change

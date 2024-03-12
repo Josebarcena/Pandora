@@ -22,7 +22,8 @@ class Fase2(Fase): #Clase para el primer nivel del juego
         self.objects_layer = pygame.sprite.Group()
         self.hope_layer = pygame.sprite.Group()
         self.limit = pygame.sprite.Group()
-        self.meta = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
+        self.meta1 = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
+        self.meta2 = pygame.sprite.Group() #Especial si chocas es porque se cosidera completo el nivel
         self.stage = pygame.sprite.Group() #Para limitar la camara
 
 
@@ -59,7 +60,8 @@ class Fase2(Fase): #Clase para el primer nivel del juego
         'Semi': self.upper_collision,
         'Pincho': self.damage_collision,
         'Escalera': self.stairs_collision,
-        'Meta': self.meta,
+        'Meta1': self.meta1,
+        'Meta2': self.meta2,
         'Limite': self.limit
         }
 
@@ -141,8 +143,11 @@ class Fase2(Fase): #Clase para el primer nivel del juego
                 return ("Damage", hits)
             elif((hits := pygame.sprite.spritecollide(player.hitbox, self.stairs_collision, False))):
                 return ("Stairs", hits)
-            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta, False))):
-                self.next_Level()
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta1, False))):
+                self.next_Level2()
+                return (None,None)
+            elif((hits := pygame.sprite.spritecollide(player.hitbox, self.meta2, False))):
+                self.next_Level1()
                 return (None,None)
             elif((hits:= pygame.sprite.spritecollide(player.hitbox, self.objects_layer, False))):
                 return ("Potion",hits)
@@ -165,8 +170,14 @@ class Fase2(Fase): #Clase para el primer nivel del juego
                 return (None,None)
 
 
-    def next_Level(self):
+    def next_Level1(self):
         if not self.done:
             GestorRecursos.change_xml([("score",self.player.score)])
             self.director.add_state("FASE3")
+            self.done = True
+
+    def next_Level2(self):
+        if not self.done:
+            GestorRecursos.change_xml([("score",self.player.score)])
+            self.director.add_state("FASE4")
             self.done = True

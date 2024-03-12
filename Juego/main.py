@@ -11,7 +11,7 @@ if __name__ == '__main__':
     GestorRecursos.create_xml([("score",0)])
 
 
-    game = Game(screen, "FASE4")
+    game = Game(screen, "SPLASH")
     game.run()
 
     pygame.quit()
