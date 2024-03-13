@@ -39,14 +39,15 @@ classDiagram
 
 
     Sprite <|-- Sprite_PyGame
+    Stage <|-- Sprite_PyGame
 
-    Player <|-- Sprite
-    Hitbox <|-- Sprite
-    Item <|-- Sprite
+    Player <|-- Sprite_PyGame
+    Hitbox <|-- Sprite_PyGame
+    Item <|-- Sprite_PyGame
     small_potion <|-- Item
     Hope <|-- Item
-    Enemy <|-- Sprite
-    Attack <|-- Sprite
+    Enemy <|-- Sprite_PyGame
+    Attack <|-- Sprite_PyGame
 
     Win_menu <|-- Base_state
     Pause_menu <|-- Base_state
@@ -59,8 +60,29 @@ classDiagram
     Fase2 <|-- Fase
     Fase3 <|-- Fase
     Fase4 <|-- Fase
+    
 
-    StageFase <|-- Sprite
+    Score --* Player
+    Life_Bar --* Player
+    Hitbox --* Player
+    Control --* Player
+    Attack --* Player
+
+    Game ..> Factory
+    Factory ..> Main_menu
+    Factory ..> Splash
+    Factory ..> Game_Over
+    Factory ..> Pause_menu
+    Factory ..> Win_menu
+
+
+    Player ..> GestorRecursos
+
+
+    
+
+
+
     
 
 
