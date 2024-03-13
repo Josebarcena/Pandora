@@ -47,6 +47,7 @@ class Control:
             # Se llama a este estado cuando el personaje a tenido una colisión con el Top de alguno de
             # los bloques del nivel
             self.bool_air = False
+            self.bool_dash = False
         if newstate == 'air':
             # Se llama a este estado cuando no se ha detectado ninguna colisión vertical
             self.bool_air = True

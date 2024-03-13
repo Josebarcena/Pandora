@@ -265,9 +265,15 @@ class Player(pygame.sprite.Sprite):
                 self.rect.centerx = self.hitbox.rect.centerx
         if  direction == "y":
             if self.y_change > 0:
-                self.hitbox.rect.bottom = blocks[0].rect.top 
-                self.rect.bottom = self.hitbox.rect.bottom
-                self.control.change_state('ground')
+                player_necessary_y = self.rect.bottom
+                platform_necessary_y = blocks[0].rect.top + 0.9 * blocks[0].rect.height
+
+                # Verificar si el jugador está por encima del 75% de la plataforma
+                if player_necessary_y < (platform_necessary_y):
+                    if self.y_change > 0 and self.previous_rect.y < blocks[0].rect.top:
+                        self.hitbox.rect.bottom = blocks[0].rect.top
+                        self.rect.bottom = self.hitbox.rect.bottom
+                        self.control.change_state('ground')
             if self.y_change < 0:
                 self.hitbox.rect.top = blocks[0].rect.bottom
                 self.rect.bottom = self.hitbox.rect.bottom
