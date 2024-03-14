@@ -17,7 +17,7 @@ class Control:
         # self.facing -> pensada para las animaciones , no tiene uso de momento
         # self.dash_face-> almacena la ultima direccion del personaje (left o right) para realizar el dash en esa direccion
         # Ya que empezamos con nuestro personaje en el aire, sin realizar el salto así es como se inicializan.
-        self.cooldown = 0
+        self.cooldown_jump = 0
         self.state = 'normal'
         self.bool_air = True
         self.bool_dash = False
@@ -30,19 +30,19 @@ class Control:
 
     #Retraso para evitar saltar varias veces de golpe
     def update_cd(self):
-        if self.cooldown > 0:
-            self.cooldown -=1
+        if self.cooldown_jump > 0:
+            self.cooldown_jump -=1
 
     def change_state(self, newstate):
         if newstate == 'jumping':
             # Para evitar que se pueda saltar en el aire/ doble salto, el jugador dede de haber terminado con la
             # animación de saltar y estar apoyado en una superficie, se inicializa a 30 el contador de frames
             # para la animación de saltar
-            if self.state == 'normal' and self.bool_air == False and self.cooldown == 0:
+            if self.state == 'normal' and self.bool_air == False and self.cooldown_jump == 0:
                 self.state = 'jumping'
                 self.cont_frames = FRAMES_JUMP
                 self.bool_dash = True
-                self.cooldown = 30
+                self.cooldown_jump = 40
         if newstate == 'ground':
             # Se llama a este estado cuando el personaje a tenido una colisión con el Top de alguno de
             # los bloques del nivel
@@ -158,4 +158,3 @@ class Control:
             self.change_state('attack')
 
         return x_change, y_change
-

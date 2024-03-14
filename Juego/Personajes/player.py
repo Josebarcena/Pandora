@@ -15,9 +15,6 @@ class Hitbox(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.bottom = y
 
-
-
-
 # Definimos la clase Player en la que está implementada la mayoría de funcionalidad del código, debería de encapsularse y quitarle "responsabilidades"
 class Player(pygame.sprite.Sprite):
     # Método con el que iniciamos el objeto, partimos de las coordenadas iniciales del juego y el propio juego
@@ -38,7 +35,6 @@ class Player(pygame.sprite.Sprite):
         self.score = int(GestorRecursos.read_xml("score"))
         #Hitbox del personaje
         self.hitbox = Hitbox(x, y, self.width, self.height)
-
 
         # Viewers
         self.viewers = [Life_Bar(), Score(self)]
@@ -74,7 +70,6 @@ class Player(pygame.sprite.Sprite):
         #TIMER DONDE NO RECIBE DAÑO
         self.invul = 0
         self.health = MAX_HEALTH
-        
 
         # Cargar la imagen del personaje
         self.update_image(self.actual_animation)
@@ -162,8 +157,6 @@ class Player(pygame.sprite.Sprite):
         # Escalar la imagen según el tamaño final deseado
         self.image = pygame.transform.scale(self.image, (69 * SCALE, 44 * SCALE))
 
-
-
     # Método en el que se actualiza el cubo
     def update(self):
         self.control.update_cd()
@@ -194,7 +187,6 @@ class Player(pygame.sprite.Sprite):
         #Actualizamos la hitbox
         self.update_hitbox()
 
-
         #Se pregunta al nivel si chocamos con algo y con que
         self.collide_blocks(self.game.collide_Fase(self),"x")
 
@@ -204,14 +196,10 @@ class Player(pygame.sprite.Sprite):
         self.update_hitbox()
         self.collide_blocks(self.game.collide_Fase(self),"y")
 
-        
-
         #self.collide_enemies()
         self.previous_rect = self.rect
         self.x_change = 0
         self.y_change = 0
-   
-    
 
     def viewers_update(self): #Se avisa de los eventos al observador 
         for viewer in self.viewers:
@@ -301,18 +289,6 @@ class Player(pygame.sprite.Sprite):
                     # Mover al jugador a la nueva posición
                     self.hitbox.rect.bottom = new_y
                     self.rect.bottom = self.hitbox.rect.bottom
-    '''
-    def collide_enemies(self):
-        hits = pygame.sprite.spritecollide(self, self.game.enemies_layer, False)
-        self.unstopable -= 1
-        if hits and self.unstopable < 0:
-            #print("--DAMAGE, helath: " + str(self.health - 1))
-            self.health -= 1
-            self.unstopable = UNSTOPBLE_FRAMES
-    ''' 
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
 
     # Funcion para establecer la animacion de IDLE (parado)
     def set_animacion_idle(self):
