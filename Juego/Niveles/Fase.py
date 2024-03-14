@@ -48,10 +48,10 @@ class Fase(Base_state):
             dx = player.rect.x - SCROLL_LIMIT_X_RIGHT
         elif player.rect.x < SCROLL_LIMIT_X_LEFT and stage.rect.left < 0:
             dx = player.rect.x - SCROLL_LIMIT_X_LEFT
-        if player.rect.y > SCROLL_LIMIT_Y_TOP and stage.rect.bottom > WIN_HEIGHT:
-            dy = player.rect.y - SCROLL_LIMIT_Y_TOP
-        elif player.rect.y < SCROLL_LIMIT_Y_BOTTOM and stage.rect.top < 0:
+        if player.rect.y > SCROLL_LIMIT_Y_BOTTOM and stage.rect.bottom > WIN_HEIGHT:
             dy = player.rect.y - SCROLL_LIMIT_Y_BOTTOM
+        elif player.rect.y < SCROLL_LIMIT_Y_TOP and stage.rect.top < 0:
+            dy = player.rect.y - SCROLL_LIMIT_Y_TOP
 
         # Aplicar el desplazamiento a todos los sprites
             
