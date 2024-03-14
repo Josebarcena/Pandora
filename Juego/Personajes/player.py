@@ -169,6 +169,11 @@ class Player(pygame.sprite.Sprite):
                 sprite.set_alpha(120)
             for sprite in self.jump_animations:
                 sprite.set_alpha(120)
+            for sprite in self.attack_animations:
+                sprite.set_alpha(120)
+            for sprite in self.dash_animations:
+                sprite.set_alpha(120)
+        
             self.invul += 1
             
             if self.invul >= 300: #Si se llega a 5 segundos puedes recibir otra vez daño
@@ -178,6 +183,10 @@ class Player(pygame.sprite.Sprite):
                 for sprite in self.run_animations:
                     sprite.set_alpha(255)
                 for sprite in self.jump_animations:
+                    sprite.set_alpha(255)
+                for sprite in self.attack_animations:
+                    sprite.set_alpha(255)
+                for sprite in self.dash_animations:
                     sprite.set_alpha(255)
 
         self.x_change, self.y_change = self.control.movement()

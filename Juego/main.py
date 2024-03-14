@@ -5,7 +5,7 @@ from Recursos.Gestor_recursos import *
 # Creamos nuestra instancia juego y comenzamos el juego
 if __name__ == '__main__':
     pygame.init()
-    pygame.display.set_caption('Pandora\'s Game')
+    pygame.display.set_caption('Pandora\'s Fate')
 
     screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     GestorRecursos.create_xml([("score",0)])
