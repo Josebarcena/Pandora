@@ -3,7 +3,7 @@ from Recursos.config import *
 
 # Clase implementada para permitir el control del personaje
 class Control:
-    def __init__(self, game, player):
+    def __init__(self, player):
         # Para implementar el control del personaje se han implementado estas variables, que nos indican el estado del personaje:
         # self.state-> 'normal' en caso de que no esté en medio de ninguna animación
         #               'jumping' en caso de que esté saltando, se usa para evitar el doble salto entre otras cosas
@@ -24,7 +24,6 @@ class Control:
         self.cont_frames = 0
         self.facing = 'right'
         self.dash_face = 'right'
-        self.game = game
         self.player = player
         self.cooldown_attack = 0
 

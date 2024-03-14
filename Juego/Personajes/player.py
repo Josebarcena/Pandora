@@ -64,7 +64,7 @@ class Player(pygame.sprite.Sprite):
         self.facing = 'left'
         self.unstopable = 0
         # Control del personaje
-        self.control = Control(game, self)
+        self.control = Control(self)
         self.attack = Attack(self.hitbox.rect.x, self.hitbox.rect.y, game, self)
 
         #TIMER DONDE NO RECIBE DAÑO
