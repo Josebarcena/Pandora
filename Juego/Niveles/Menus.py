@@ -6,6 +6,7 @@ from Niveles.Fase import *
 class Splash(Base_state): #Clase splash para el principio del juego
     def __init__(self, director):
         super(Splash,self).__init__()
+        self.font = pygame.font.Font(join(".", "Recursos", "Fuente", "FetteClassicUNZFraktur.ttf"), 72)
         self.title  = self.font.render("Pandora's Game", True, pygame.Color(160, 192, 222)) #Titulo y color del titulo
         self.title_rect = self.title.get_rect(center = self.screen_rect.center) #Posicion del titulo
         self.director = director
