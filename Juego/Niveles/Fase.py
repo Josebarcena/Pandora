@@ -8,13 +8,12 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
         self.next_state = None #Siguiente fase
 
         self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
-        self.font = pygame.font.Font(join(".", "Recursos", "Fuente", "FetteClassicUNZFraktur.ttf"), 72)
         
     
     def get_event(self,event):
         pass
     
-    def update(self, tick): # lo que se tiene que actualizar acorde a los ticks del juego
+    def update(self, tick, events): # lo que se tiene que actualizar acorde a los ticks del juego
         pass
 
     def draw(self, surface):
