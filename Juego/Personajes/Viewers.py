@@ -49,7 +49,7 @@ class Score(): #CLASE OBSERVADORA PARA LA VIDA
         self.score = player.score
 
     def draw(self, surface):
-        text_surface = self.font.render(str(self.score), True, LIGHT_BLUE)
+        text_surface = self.font.render(str(self.score), True, RED)
         text_rect = text_surface.get_rect(topright=(self.x, self.y))
 
         # Dibujar el texto en la pantalla

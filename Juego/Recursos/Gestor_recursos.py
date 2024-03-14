@@ -22,7 +22,7 @@ class GestorRecursos(object):
             if (name == "sprites"):
                 resource = cls.LoadSpritesPandora()
             # Se carga la imagen indicando la carpeta en la que está
-            fullname = os.path.join("Recursos\\",path, name)
+            fullname = os.path.join("Recursos", path, name)
             if(path == "Imagenes"):
                 try:
                     resource = pygame.image.load(fullname)
@@ -157,12 +157,12 @@ class GestorRecursos(object):
 
         # Crea un objeto ElementTree con la raíz y luego escribe el XML en un archivo
         tree = ET.ElementTree(root)
-        with open("recursos/data.xml", "wb") as file:
+        with open(join("recursos", "data.xml"), "wb") as file:
             tree.write(file)
 
     def change_xml(data):
         # Parsea el archivo XML
-        tree = ET.parse("recursos/data.xml")
+        tree = ET.parse(join("recursos", "data.xml"))
         root = tree.getroot()
 
         # Busca el elemento a modificar por su nombre y actualiza su valor
@@ -171,11 +171,11 @@ class GestorRecursos(object):
                 element.text = str(value)
 
         # Guarda los cambios en el archivo XML
-        tree.write("recursos/data.xml")
+        tree.write(join("recursos", "data.xml"))
 
     def read_xml(field):
         # Parsea el archivo XML
-        tree = ET.parse("recursos/data.xml")
+        tree = ET.parse(join("recursos", "data.xml"))
         root = tree.getroot()
 
         # Busca el elemento por su nombre y devuelve su valor

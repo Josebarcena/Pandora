@@ -1,5 +1,6 @@
 import sys
 import pygame
+from os.path import join
 from pygame import mixer
 
 #DECLARACIÓN DE VARIABLES
