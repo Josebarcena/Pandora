@@ -6,7 +6,7 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
         self.done = False # Condicion final
         self.quit = False # Condicion cierre juego
         self.next_state = None #Siguiente fase
-
+        self.sound = None
         self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
         
     

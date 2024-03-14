@@ -99,9 +99,9 @@ class Main_menu(Base_state):# Menu principal del juego
             surface.blit(text_render, self.get_text_position(text_render, index))
 
 
-class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
+class Game_over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
     def __init__(self, director):
-            super(Game_Over, self).__init__()
+            super(Game_over, self).__init__()
             self.index = 0
             self.options = ["Menu", "Quit"]
             self.director = director
