@@ -89,26 +89,26 @@ class Fase1(Fase): #Clase para el primer nivel del juego
                     self.player = self.player_layer.sprites()[0]
                
 
+            #GENERACION DE ENEMIGOS EN POSICIONES ALEATORIAS ALEJADAS UNAS DE OTRAS POR UNA DISTANCIA MINIMA
+            enemies = tmx_map.get_layer_by_name("Enemigos")  #cargamos la capa enemigos de donde sacaremos las posiciones
+            self.range = list(range(0,len(enemies))) #lista que contiene la cantidad de enemigos que se encuentran en dicha capa y servira para la eleccion aleatoria
+            self.max_enemies = len(self.range) - 3 #se decide cuantos enemigos habrá como máximo en el nivel
 
-            enemies = tmx_map.get_layer_by_name("Enemigos")
-            self.range = list(range(0,len(enemies)))
-            self.max_enemies = len(self.range) - 3
-
-            while(len(self.enemies_layer) < self.max_enemies) and len(self.range)>0:
-                index = random.choice(self.range)
+            while(len(self.enemies_layer) < self.max_enemies) and len(self.range)>0: #condicion para no seguir generando enemios o la lista esta vacia o hay suficientes enemigos 
+                index = random.choice(self.range) #se elige un enemigo aleatorio
                 enemy = enemies[index]
-                can_add = True
+                can_add = True # se incializa la condicion
 
-                for x , y in self.enemies_pos:
-                    dist = abs(math.sqrt((enemy.x * SCALE - x)**2 + (enemy.y * SCALE - y)**2))
-                    if dist <= 1000:
+                for x , y in self.enemies_pos: #revisamos la distancia respecto a la lista de posiciones del resto de enemigos
+                    dist = abs(math.sqrt((enemy.x * SCALE - x)**2 + (enemy.y * SCALE - y)**2)) #empleamos una lista ya que es mas sencillo que revisar una a una toda la capa
+                    if dist <= 1000: #distancia arbitraria para la generacion
                         can_add = False
                         break
                 
-                if can_add:
-                    self.enemies_pos.append((enemy.x * SCALE ,enemy.y * SCALE ))
-                    Enemy(self, enemy.x * SCALE, enemy.y * SCALE, (self.enemies_layer, self.visible_sprites))
-                self.range.remove(index)
+                if can_add: # si se puede añadir
+                    self.enemies_pos.append((enemy.x * SCALE ,enemy.y * SCALE )) #se añade la posicion a la lista con la posicion de los enemigos generados
+                    Enemy(self, enemy.x * SCALE, enemy.y * SCALE, (self.enemies_layer, self.visible_sprites)) #se genera la instancia del enemigo
+                self.range.remove(index) # da igual si se añadio o no, como se comprobo este enemigo se elimina y se procede con el siguiente
 
     def get_event(self, event): # si se quiere cerrar el juego
             if event.type == pygame.QUIT:
