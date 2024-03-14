@@ -38,7 +38,7 @@ class Fase4(Fase): #Clase para el primer nivel del juego
 
         self.stage_image = GestorRecursos.LoadImage("Imagenes", "fase41.png") #Se carga el png que hace de fondo del nivel (por encima del esqueleto)
         
-        self.sound = ("fase3.mp3") # el mp3 que sonara en la fase
+        self.sound = ("fase4.mp3") # el mp3 que sonara en la fase
         self.level = GestorRecursos.LoadImage("Fases","fase4.tmx") #El esqueleto del nivel
     
 

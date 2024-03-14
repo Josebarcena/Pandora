@@ -41,7 +41,7 @@ class Main_menu(Base_state):# Menu principal del juego
         self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
         self.sound = "main_menu.mp3" 
         self.alpha = 250 # alpha para el efecto parpadeo
-        GestorRecursos.change_xml([("score",0)])
+        GestorRecursos.create_xml([("score",0)])
 
     def render_text(self, index): # efecto parpadeo y marcado
         if index == self.index:
