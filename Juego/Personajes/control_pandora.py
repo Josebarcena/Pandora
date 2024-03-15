@@ -80,23 +80,19 @@ class Control:
             self.player.set_animacion_jump()
             if self.cont_frames > 0:
                 self.cont_frames -= 1
-                self.bool_air = True
                 y_change -= JUMPING_SPEED
             else:
                 self.state = 'normal'
-                self.bool_air = True
         if self.state == 'dashing':
             self.player.set_animacion_dash()
             if self.cont_frames > 0:
                 self.cont_frames -= 1
-                self.bool_air = True
                 if self.dash_face == 'left':
                     x_change = -DASH_SPEED
                 if self.dash_face == 'right':
                     x_change = DASH_SPEED
             else:
                 self.state = 'normal'
-                self.bool_air = True
 
         if self.state == 'attacking':
             self.player.set_animacion_attack()
