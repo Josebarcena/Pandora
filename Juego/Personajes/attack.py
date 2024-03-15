@@ -20,7 +20,7 @@ class Attack(pygame.sprite.Sprite):
 
         # Almacena si se está realizando el ataque o no, y en que dirección
         self.attacking = False
-        self.face = None
+        self.facing = None
 
     # Actualización del ataque cada vez que el personaje está atacando
     def update_state(self, attacking1, dir):
