@@ -8,7 +8,7 @@ class Control:
         # self.state-> 'normal' en caso de que no esté en medio de ninguna animación
         #               'jumping' en caso de que esté saltando, se usa para evitar el doble salto entre otras cosas
         #               'dashing' en caso de estar dasheando, cancela la animación de salto
-        # self.bool_dash-> booleano que almacena si el personaje ha dasheado o no, esto se implementa para evitar dashes
+        # self.bool_dash-> booleano que almacena si el personaje puede dashear, esto se implementa para evitar dashes
         #                   infinitos, se resetea a true cada vez que se toca el suelo
         # self.bool_air-> booleano que almacena si personaje se encuentra sobre el aire, True, o si está sobre una
         #               plataforma, False
