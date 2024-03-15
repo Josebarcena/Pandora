@@ -41,7 +41,7 @@ class Main_menu(Base_state):# Menu principal del juego
         self.font = pygame.font.SysFont("arialblack", 42) #fuente del sistema que se usara
         self.sound = "main_menu.mp3" 
         self.alpha = 250 # alpha para el efecto parpadeo
-        GestorRecursos.change_xml([("score",0)])
+        GestorRecursos.create_xml([("score",0)])
 
     def render_text(self, index): # efecto parpadeo y marcado
         if index == self.index:
@@ -99,9 +99,9 @@ class Main_menu(Base_state):# Menu principal del juego
             surface.blit(text_render, self.get_text_position(text_render, index))
 
 
-class Game_Over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
+class Game_over(Base_state): #COPIA Y PEGA DE LA CLASE MAIN MENU 
     def __init__(self, director):
-            super(Game_Over, self).__init__()
+            super(Game_over, self).__init__()
             self.index = 0
             self.options = ["Menu", "Quit"]
             self.director = director

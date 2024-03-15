@@ -6,7 +6,8 @@ class Base_state(object): # Objeto super de la clase state ( TODAS LAS fases o n
         self.done = False # Condicion final
         self.quit = False # Condicion cierre juego
         self.next_state = None #Siguiente fase
-
+        self.director = None
+        self.sound = None
         self.screen_rect = pygame.display.get_surface().get_rect() #Tamaño ventana
         
     
@@ -25,18 +26,12 @@ class Fase(Base_state):
         super(Fase,self).__init__()
 
         self.stage_image = None
-        
-        self.next_state = None
 
-        self.sound = None
         self.level = None
     
 
     def createTilemap(self, tmx_map):
        pass
-
-    def get_event(self, event):
-        pass    
 
     # Actualización del scoll de pantalla, antes se movían todos los sprites del mapa a la velocidad del jugador, ahora
     # se mueve a la velocidad a la que vaya el personaje
@@ -66,10 +61,6 @@ class Fase(Base_state):
         for sprite in sprites:
             sprite.rect.x -= dx
             sprite.rect.y -= dy
-
-
-    def draw(self, surface): #pintar la fase
-        pass
 
     def collide_Fase(self, player): # chequea las colisiones con los bloques de las fases
        pass

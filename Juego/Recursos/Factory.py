@@ -21,7 +21,7 @@ class Factory:
         elif name == "PAUSE":
             return Pause_menu(director)
         elif name == "GAME_OVER":
-            return Game_Over(director)
+            return Game_over(director)
         elif name == "WIN":
             return Win_menu(director)
 

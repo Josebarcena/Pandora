@@ -8,10 +8,8 @@ if __name__ == '__main__':
     pygame.display.set_caption('Pandora\'s Fate')
 
     screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-    GestorRecursos.create_xml([("score",0)])
-
-
-    game = Game(screen, "SPLASH")
+    
+    game = Game(screen, "FASE4")
     game.run()
 
     pygame.quit()
