@@ -6,7 +6,7 @@ class Attack(pygame.sprite.Sprite):
         self.game = game
         self.groups = game.all_sprites
         self.player = player
-        self.groups = self.game.all_sprites, self.game.visible_sprites
+        self.groups = self.game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         # Tamaño del sprite de ataque
@@ -35,5 +35,3 @@ class Attack(pygame.sprite.Sprite):
                 self.rect.x = self.player.hitbox.rect.x
             elif self.facing == 'left':
                 self.rect.x = self.player.hitbox.rect.x - (self.width - self.player.width)
-        else:
-            self.rect.y = -300
