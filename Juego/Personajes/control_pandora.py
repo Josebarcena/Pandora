@@ -145,11 +145,11 @@ class Control:
             self.change_state('jumping')
 
         # Se evita que se pueda dashear y saltar a la vez
-        elif keys[pygame.K_TAB] and self.player.health > 0:
+        elif keys[pygame.K_z] and self.player.health > 0:
             self.change_state('dashing')
 
         # En este caso la tecla pulsada es la tecla "P"
-        if keys[pygame.K_p] and self.player.health > 0:
+        if keys[pygame.K_x] and self.player.health > 0:
             self.change_state('attack')
 
         return x_change, y_change

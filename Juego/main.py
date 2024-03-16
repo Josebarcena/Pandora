@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     
-    game = Game(screen, "FASE4")
+    game = Game(screen, "SPLASH")
     game.run()
 
     pygame.quit()
